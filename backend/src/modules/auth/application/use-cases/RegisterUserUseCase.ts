@@ -1,12 +1,10 @@
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
 import { RegisterUserDTO } from "../dtos/RegisterUserDTO";
 import {Role} from "@prisma/client"
-import {AuthResponse, safeUser,User} from "../../domain/entities/User"
+import {AuthResponse} from "../../domain/entities/User"
 
 // utils 
 import { hashPassword } from "../../../../shared/utils/hashPassword";
-import { generateAccessToken } from "../../../../shared/utils/generateAccessToken";
-import { generateTokens } from "../../../../shared/utils/generateToken";
 
 // user signup(register) useCase
 export class RegisterUserUseCase{
@@ -30,16 +28,10 @@ export class RegisterUserUseCase{
             role:Role.USER,
         })
 
-        const {accessToken,refreshToken} = generateTokens({
-            userId:user.id,
-            role:user.role,
-        })
-
         const {password,...safeUser} = user
         return {
             user:safeUser,
-            accessToken,
-            refreshToken,
+
         };
     }
 }

@@ -4,10 +4,12 @@ import { RegisterUserUseCase } from "../../application/use-cases/RegisterUserUse
 import { registerSchema } from "../validators/register.validator";
 import { RefreshTokenUseCase } from "../../application/use-cases/RefreshTokenUseCase";
 import { AthenticatedRequest } from "../../../../shared/types/AuthenticateRequest";
-import { success } from "zod";
+
 import { loginSchema } from "../validators/login.validator";
 import { LoginUserUseCase } from "../../application/use-cases/LoginUserUseCase";
-
+import { Role } from "@prisma/client";
+import { generateAccessToken } from "../../../../shared/utils/generateAccessToken";
+import { generateRefreshToken } from "../../../../shared/utils/generateRefreshToken";
 
 export class AuthController {
     async register(req:Request,res:Response){
@@ -17,11 +19,44 @@ export class AuthController {
                                         // dependency injection 
         const registerUserUseCase = new RegisterUserUseCase(userRepository);
 
-        const user = await registerUserUseCase.execute(validatedData)
+        const result = await registerUserUseCase.execute(validatedData)
+        const accessToken = generateAccessToken({
+            userId:result.user.id,
+            role:result.user.role,
+        })
 
+
+          res.cookie(
+            "accessToken",
+             accessToken,
+            {
+                httpOnly:true,
+                secure:false,
+                sameSite:"strict",
+                maxAge:15 * 60 * 1000,
+            }
+         );
+
+                 const refreshToken = generateRefreshToken({
+            userId:result.user.id,role:result.user.role
+        });
+ 
+
+         res.cookie(
+            "refreshToken",
+             refreshToken,
+            {
+                httpOnly:true,
+                secure:false,
+                sameSite:"strict",
+                maxAge:7 * 24 * 60 * 60 * 1000,
+            }
+         )
+
+         
         return res.status(201).json({
             success:true,
-            data:user
+            data:result
         })
     }
 
@@ -32,12 +67,19 @@ export class AuthController {
         const loginUserUseCase = new LoginUserUseCase(userRepository )
 
         const result = await loginUserUseCase.execute(validatedData)
+         
+         const accessToken = generateAccessToken({
+            userId:result.safeUser.id,role:result.safeUser.role
 
+        });
+        const refreshToken = generateRefreshToken({
+            userId:result.safeUser.id,role:result.safeUser.role
+        });
  
         
          res.cookie(
             "accessToken",
-             result.accessToken,
+             accessToken,
             {
                 httpOnly:true,
                 secure:false,
@@ -48,7 +90,7 @@ export class AuthController {
 
          res.cookie(
             "refreshToken",
-             result.refreshToken,
+             refreshToken,
             {
                 httpOnly:true,
                 secure:false,

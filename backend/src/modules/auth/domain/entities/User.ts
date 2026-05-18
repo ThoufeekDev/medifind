@@ -9,8 +9,10 @@ export interface User{
 }
 
 export type safeUser = Omit<User,"password">
+
+// for login type
+export type CreateUserData =Omit<User, "id">
 export interface AuthResponse {
     user:safeUser
-    accessToken:string
-    refreshToken:string
+
 }
