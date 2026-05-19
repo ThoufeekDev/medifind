@@ -1,8 +1,8 @@
 import prisma from "../../../../config/database";
 
 import { User } from "../../domain/entities/User";
-import { CreateUserData, IUserRepository } from "../../domain/repositories/IUserRepository";
-
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { CreateUserData } from "../../domain/entities/User";
 // Thsi is called Liskov Substitution Principle
 export class PrismaUserRepository implements IUserRepository{
     async create(userData:CreateUserData): Promise<User> {
@@ -20,5 +20,16 @@ export class PrismaUserRepository implements IUserRepository{
             }
         })
         return user;
+    }
+
+    async verifyUser(userId: string):Promise<void> {
+        await prisma.user.update({
+            where:{
+                id:userId
+            },
+            data:{
+                isVerified:true
+            }
+        })
     }
 }

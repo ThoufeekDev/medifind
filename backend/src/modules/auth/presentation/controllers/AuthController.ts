@@ -4,9 +4,16 @@ import { RegisterUserUseCase } from "../../application/use-cases/RegisterUserUse
 import { registerSchema } from "../validators/register.validator";
 import { RefreshTokenUseCase } from "../../application/use-cases/RefreshTokenUseCase";
 import { AthenticatedRequest } from "../../../../shared/types/AuthenticateRequest";
-import { success } from "zod";
+
 import { loginSchema } from "../validators/login.validator";
 import { LoginUserUseCase } from "../../application/use-cases/LoginUserUseCase";
+
+import { generateAccessToken } from "../../../../shared/utils/generateAccessToken";
+import { generateRefreshToken } from "../../../../shared/utils/generateRefreshToken";
+
+
+import { VerifyOtpUseCase } from "../../application/use-cases/VerifyOtpUseCase";
+import { verifyUserOtpSchema } from "../validators/verifyOtp.validator";
 
 
 export class AuthController {
@@ -17,27 +24,38 @@ export class AuthController {
                                         // dependency injection 
         const registerUserUseCase = new RegisterUserUseCase(userRepository);
 
-        const user = await registerUserUseCase.execute(validatedData)
-
+        const result = await registerUserUseCase.execute(validatedData)
+        
         return res.status(201).json({
             success:true,
-            data:user
+            message:"OTP send to email",
+            // data:{
+            //     user:result.user
+            // }
         })
     }
 
-    async login(req:Request,res:Response){
-        const validatedData = loginSchema.parse(req.body);
+    async verifyOtp(req:Request,res:Response){
+        const validatedData = verifyUserOtpSchema.parse(req.body);
+
         const userRepository = new PrismaUserRepository();
-                                     // dependancy injecttion
-        const loginUserUseCase = new LoginUserUseCase(userRepository )
+        const verifyOtpUseCase = new VerifyOtpUseCase(userRepository);
 
-        const result = await loginUserUseCase.execute(validatedData)
+        const result = await verifyOtpUseCase.execute(validatedData);
 
- 
-        
-         res.cookie(
+        const accessToken = generateAccessToken({
+            userId:result.user.id,
+            role:result.user.role,
+        })
+
+       const refreshToken = generateRefreshToken({
+            userId:result.user.id,role:result.user.role
+        });
+
+
+          res.cookie(
             "accessToken",
-             result.accessToken,
+             accessToken,
             {
                 httpOnly:true,
                 secure:false,
@@ -48,7 +66,53 @@ export class AuthController {
 
          res.cookie(
             "refreshToken",
-             result.refreshToken,
+             refreshToken,
+            {
+                httpOnly:true,
+                secure:false,
+                sameSite:"strict",
+                maxAge:7 * 24 * 60 * 60 * 1000,
+            }
+         )
+
+         
+        return res.status(201).json({
+            success:true,
+            data:result
+        })
+    }
+
+    async login(req:Request,res:Response){
+        const validatedData = loginSchema.parse(req.body);
+        const userRepository = new PrismaUserRepository();
+                                     // dependancy injecttion
+        const loginUserUseCase = new LoginUserUseCase(userRepository )
+
+        const result = await loginUserUseCase.execute(validatedData)
+         
+         const accessToken = generateAccessToken({
+            userId:result.user.id,role:result.user.role
+
+        });
+        const refreshToken = generateRefreshToken({
+            userId:result.user.id,role:result.user.role
+        });
+ 
+        
+         res.cookie(
+            "accessToken",
+             accessToken,
+            {
+                httpOnly:true,
+                secure:false,
+                sameSite:"strict",
+                maxAge:15 * 60 * 1000,
+            }
+         );
+
+         res.cookie(
+            "refreshToken",
+             refreshToken,
             {
                 httpOnly:true,
                 secure:false,
@@ -60,7 +124,7 @@ export class AuthController {
          return res.status(200).json({
             success:true,
             data:{
-                user: result.safeUser
+                user: result.user
             }
          })
     }

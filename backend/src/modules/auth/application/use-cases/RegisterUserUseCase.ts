@@ -1,12 +1,13 @@
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
 import { RegisterUserDTO } from "../dtos/RegisterUserDTO";
 import {Role} from "@prisma/client"
-import {AuthResponse, safeUser,User} from "../../domain/entities/User"
+import {AuthResponse} from "../../domain/entities/User"
 
+import { generateOtp } from "../../../../shared/utils/generateOtp";
+import {redis} from "../../../../shared/config/redis";
+import { otpQueue } from "../../../../shared/queues/otp.queue";
 // utils 
 import { hashPassword } from "../../../../shared/utils/hashPassword";
-import { generateAccessToken } from "../../../../shared/utils/generateAccessToken";
-import { generateTokens } from "../../../../shared/utils/generateToken";
 
 // user signup(register) useCase
 export class RegisterUserUseCase{
@@ -28,18 +29,23 @@ export class RegisterUserUseCase{
             ...data,
             password:hashpassword,
             role:Role.USER,
+            isVerified:false
         })
 
-        const {accessToken,refreshToken} = generateTokens({
-            userId:user.id,
-            role:user.role,
+        const otp = generateOtp();
+
+        await redis.set(`otp:${user.email}`,otp,"EX",300);
+
+        await otpQueue.add("send-otp-email",{
+            email:user.email,
+            otp,
         })
 
         const {password,...safeUser} = user
         return {
             user:safeUser,
-            accessToken,
-            refreshToken,
+
         };
     }
 }
+
