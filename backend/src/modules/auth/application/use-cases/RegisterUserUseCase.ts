@@ -3,6 +3,9 @@ import { RegisterUserDTO } from "../dtos/RegisterUserDTO";
 import {Role} from "@prisma/client"
 import {AuthResponse} from "../../domain/entities/User"
 
+import { generateOtp } from "../../../../shared/utils/generateOtp";
+import {redis} from "../../../../shared/config/redis";
+import { otpQueue } from "../../../../shared/queues/otp.queue";
 // utils 
 import { hashPassword } from "../../../../shared/utils/hashPassword";
 
@@ -26,6 +29,16 @@ export class RegisterUserUseCase{
             ...data,
             password:hashpassword,
             role:Role.USER,
+            isVerified:false
+        })
+
+        const otp = generateOtp();
+
+        await redis.set(`otp:${user.email}`,otp,"EX",300);
+
+        await otpQueue.add("send-otp-email",{
+            email:user.email,
+            otp,
         })
 
         const {password,...safeUser} = user
@@ -35,3 +48,4 @@ export class RegisterUserUseCase{
         };
     }
 }
+

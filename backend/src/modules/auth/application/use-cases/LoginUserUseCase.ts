@@ -29,6 +29,13 @@ export class LoginUserUseCase {
         if(!isPasswordValid){
             throw new Error("Invalid credentials")
         }
+       
+        if(!user.isVerified){
+            throw new Error(
+                "Please verify your email"
+            )
+        }
+
         const {
             password,
             ...safeUser
@@ -36,7 +43,7 @@ export class LoginUserUseCase {
          
         return{
 
-            safeUser,
+            user:safeUser,
         }
      }
 }

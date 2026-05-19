@@ -7,9 +7,14 @@ import { AthenticatedRequest } from "../../../../shared/types/AuthenticateReques
 
 import { loginSchema } from "../validators/login.validator";
 import { LoginUserUseCase } from "../../application/use-cases/LoginUserUseCase";
-import { Role } from "@prisma/client";
+
 import { generateAccessToken } from "../../../../shared/utils/generateAccessToken";
 import { generateRefreshToken } from "../../../../shared/utils/generateRefreshToken";
+
+
+import { VerifyOtpUseCase } from "../../application/use-cases/VerifyOtpUseCase";
+import { verifyUserOtpSchema } from "../validators/verifyOtp.validator";
+
 
 export class AuthController {
     async register(req:Request,res:Response){
@@ -20,10 +25,32 @@ export class AuthController {
         const registerUserUseCase = new RegisterUserUseCase(userRepository);
 
         const result = await registerUserUseCase.execute(validatedData)
+        
+        return res.status(201).json({
+            success:true,
+            message:"OTP send to email",
+            // data:{
+            //     user:result.user
+            // }
+        })
+    }
+
+    async verifyOtp(req:Request,res:Response){
+        const validatedData = verifyUserOtpSchema.parse(req.body);
+
+        const userRepository = new PrismaUserRepository();
+        const verifyOtpUseCase = new VerifyOtpUseCase(userRepository);
+
+        const result = await verifyOtpUseCase.execute(validatedData);
+
         const accessToken = generateAccessToken({
             userId:result.user.id,
             role:result.user.role,
         })
+
+       const refreshToken = generateRefreshToken({
+            userId:result.user.id,role:result.user.role
+        });
 
 
           res.cookie(
@@ -36,11 +63,6 @@ export class AuthController {
                 maxAge:15 * 60 * 1000,
             }
          );
-
-                 const refreshToken = generateRefreshToken({
-            userId:result.user.id,role:result.user.role
-        });
- 
 
          res.cookie(
             "refreshToken",
@@ -69,11 +91,11 @@ export class AuthController {
         const result = await loginUserUseCase.execute(validatedData)
          
          const accessToken = generateAccessToken({
-            userId:result.safeUser.id,role:result.safeUser.role
+            userId:result.user.id,role:result.user.role
 
         });
         const refreshToken = generateRefreshToken({
-            userId:result.safeUser.id,role:result.safeUser.role
+            userId:result.user.id,role:result.user.role
         });
  
         
@@ -102,7 +124,7 @@ export class AuthController {
          return res.status(200).json({
             success:true,
             data:{
-                user: result.safeUser
+                user: result.user
             }
          })
     }

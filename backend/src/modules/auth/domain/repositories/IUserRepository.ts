@@ -5,6 +5,8 @@ export interface IUserRepository{
     create(user:CreateUserData):Promise<User>;
 
     findByEmail(email:string):Promise<User | null>
+
+    verifyUser(userId:string):Promise<void>
 }
 
 // export interface CreateUserData {
@@ -13,3 +15,4 @@ export interface IUserRepository{
 //     password:string;
 //     role?:Role,
 // }
+
