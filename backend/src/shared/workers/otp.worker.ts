@@ -17,7 +17,7 @@ export const otpWorker = new Worker(
       );
 
       console.log(
-        "OTP email sent"
+        "OTP email sent "+job.data.otp
       );
 
     } catch(error){

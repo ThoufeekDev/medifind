@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/AuthController";
-
+import cors from "cors"
 import { authorizeRoles } from "../../../../shared/middleware/authorizeRoles";
 import { Role } from "@prisma/client";
 import { authenticateUser } from "../../../../shared/middleware/authenticateUser";
@@ -9,11 +9,16 @@ import { verifyTurnStile } from "../../../../shared/middleware/verifyTurnstile.m
 
  const router = Router();
 
+ // Source - https://stackoverflow.com/q/79127611
+// Posted by GuanHong Jiang, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-05-19, License - CC BY-SA 4.0
+
+
  const authController = new AuthController();
 
 
 // Register & Logout routes
-router.post("/register",verifyTurnStile,otpRateLimit,authController.register);
+router.post("/register",otpRateLimit,authController.register);
 router.post('/verify-otp',authController.verifyOtp);
 
 // Logout Route

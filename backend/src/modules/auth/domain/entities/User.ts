@@ -7,6 +7,7 @@ export interface User{
     role:Role
     isVerified:boolean
     password:string
+
 }
 
 export type safeUser = Omit<User,"password">
