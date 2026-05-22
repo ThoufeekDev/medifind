@@ -11,7 +11,7 @@ export class LoginUserUseCase {
 
      async execute(data:LoginUserDTO){
 
-        console.log("trigger")
+     
          
          const user = await this.userRepository.findByEmail(
             data.email
