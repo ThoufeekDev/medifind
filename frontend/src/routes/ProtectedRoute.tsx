@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../features/auth/store/auth.store";
+import Loader from "../components/common/Loader";
 
 
 interface Props {
@@ -13,7 +14,7 @@ export default function ProtectedRoute({children,}:Props){
 
      if(isCheckingAuth){
 
-        return <p>Loading...</p>
+        return <Loader/>
      }
     
      if(!isAuthenticated){

@@ -23,7 +23,7 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       await login(data);
-      navigate('/');
+      navigate('/',{replace:true});
     } catch (error) {
       console.log(error);
     }
