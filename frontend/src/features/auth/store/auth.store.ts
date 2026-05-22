@@ -3,18 +3,26 @@ import {create} from "zustand";
 import {
     loginUser,
     logoutUser,
-    getProfile
+    getProfile,
+    registerUser,
+    verifyOtpPaylod
 } from "../services/auth.service"
 
 import type { LoginDTO } from "../dtos/login.dto";
 import type {User} from "../types/auth.types"
+import type { RegisterDTO } from "../dtos/register.dto";
+import type { VerifyOtpDTO } from "../dtos/verify-otp.dto";
+
 
 
 interface AuthStore {
     user:User | null;
 
     isAuthenticated:boolean;
+    isCheckingAuth:boolean
     isLoading:boolean;
+
+    register:(data:RegisterDTO)=>Promise<void>;
 
     login:(
         data:LoginDTO
@@ -24,14 +32,32 @@ interface AuthStore {
 
     fetchProfile:()=>Promise<void>;
     
-    verifyOtpAndLogin:()=>Promise<void>
+    verifyOtpAndLogin:(data:VerifyOtpDTO)=>Promise<void>
 }
 
 
-export const useAthStore = create<AuthStore>((set)=>({
+export const useAuthStore = create<AuthStore>((set,get)=>({
      user:null,
      isAuthenticated:false,
      isLoading:false,
+     isCheckingAuth:true,
+
+
+     register: async(data)=>{
+        try {
+            set({
+                isLoading:true,
+            });
+
+            await registerUser(data)
+        } catch (error) {
+            console.error(error)
+        } finally {
+            set({
+                isLoading:false
+            })
+        }
+     },
 
      login: async(data)=>{
        try {
@@ -43,7 +69,7 @@ export const useAthStore = create<AuthStore>((set)=>({
          const profile = await getProfile();
 
          set({
-            user:profile.user,
+            user:profile.data,
             isAuthenticated:true,
          })
        } finally {
@@ -56,7 +82,6 @@ export const useAthStore = create<AuthStore>((set)=>({
      logout:async()=>{
 
         try {
-
             await logoutUser();
             set({
                 user:null,
@@ -69,16 +94,14 @@ export const useAthStore = create<AuthStore>((set)=>({
      },
 
      fetchProfile:async()=>{
-
         try {
             set({
                 isLoading:true,
             })
 
             const profile = await getProfile();
-
             set({
-                user:profile.user,
+                user:profile.data,
                 isAuthenticated:true,
             })
         } catch (error) {
@@ -89,21 +112,20 @@ export const useAthStore = create<AuthStore>((set)=>({
         }finally{
             set({
                 isLoading:false,
+                isCheckingAuth:false,
             })
         }
 
      },
 
-     verifyOtpAndLogin:async()=>{
+     verifyOtpAndLogin:async(data)=>{
          try {
             set({
                 isLoading:true,
             });
-            const profile = await getProfile();
-            set({
-                user:profile.user,
-                isAuthenticated:true,
-            })
+            await verifyOtpPaylod(data);
+            await get().fetchProfile();
+            
          } catch (error) {
             console.error(error);
          }finally{

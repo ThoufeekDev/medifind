@@ -9,11 +9,6 @@ import { verifyTurnStile } from "../../../../shared/middleware/verifyTurnstile.m
 
  const router = Router();
 
- // Source - https://stackoverflow.com/q/79127611
-// Posted by GuanHong Jiang, modified by community. See post 'Timeline' for change history
-// Retrieved 2026-05-19, License - CC BY-SA 4.0
-
-
  const authController = new AuthController();
 
 

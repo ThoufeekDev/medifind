@@ -7,6 +7,8 @@ export interface IUserRepository{
     findByEmail(email:string):Promise<User | null>
 
     verifyUser(userId:string):Promise<void>
+
+    findById(id:string):Promise<User | null>
 }
 
 // export interface CreateUserData {

@@ -3,12 +3,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import "../../../styles/register.css"
 import { registerUser } from "../services/auth.service";
+import {Turnstile} from "react-turnstile";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import {
   registerSchema,
   type RegisterFormData,
 } from "../validators/register.schema";
 import { useNavigate } from "react-router-dom";
 export default function RegisterPage() {
+  const [turnstileToken,setTurnstileToken] = useState('');
   const {
     register,
     handleSubmit,
@@ -20,13 +24,13 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const onSubmit = async (data: RegisterFormData) => {
       try {
-        console.log("trigger")
+    
          await registerUser({
             ...data,
-            turnstileToken:"temporary-token"
+            turnstileToken
          })
 
-         console.log("Registered succesful")
+
          navigate('/verify-otp',{
            state:{
             email:data.email
@@ -138,7 +142,14 @@ export default function RegisterPage() {
             </label>
           </div>
           {errors.terms && <p className="error-message" style={{marginTop: '-1rem', marginBottom: '1rem'}}>{errors.terms.message}</p>} */}
-
+         <Turnstile
+         sitekey = {
+          import.meta.env.VITE_TURNSTILE_SITE_KEY!
+         }
+         onVerify={(token:string)=>{
+          setTurnstileToken(token)
+         }}
+         />
           {/* Submit Button */}
           <button type="submit" className="submit-btn">
             Create Account
@@ -168,6 +179,9 @@ export default function RegisterPage() {
             Apple
           </button>
         </div>
+          <p className="footer-text">
+          Don't have an account? <Link to="/login">Sign Up</Link>
+        </p>
 
       </div>
     </div>

@@ -3,13 +3,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocation } from "react-router-dom";
 import "../../../styles/verifyOtp.css"; // Importing the clean OTP styles
 import { useNavigate } from "react-router-dom";
-import { useAthStore } from "../store/auth.store";
+import { useAuthStore } from "../store/auth.store";
 import {
   verifyOtpSchema,
   type VerifyOtpFormData,
 } from "../validators/verify-otp.schema";
-
-import { verifyOtpPaylod } from "../services/auth.service";
 
 export default function VerifyOtpPage() {
   const location = useLocation();
@@ -27,15 +25,13 @@ export default function VerifyOtpPage() {
   });
 
   const navigate = useNavigate();
-  const verifyOtpAndLogin = useAthStore(
-    (state)=>state.verifyOtpAndLogin
-  )
+  const verifyOtpAndLogin = useAuthStore((state=>state.verifyOtpAndLogin))
 
   const onSubmit = async (data: VerifyOtpFormData) => {
     try {
-       await verifyOtpPaylod(data);
-       await verifyOtpAndLogin();
-       navigate("/home")
+     
+       await verifyOtpAndLogin(data);
+       navigate("/")
     } catch (error) {
       console.log(error);
     }
