@@ -10,6 +10,8 @@ export class LoginUserUseCase {
      constructor(private userRepository:IUserRepository ){}
 
      async execute(data:LoginUserDTO){
+
+     
          
          const user = await this.userRepository.findByEmail(
             data.email

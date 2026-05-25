@@ -3,7 +3,7 @@ import { PrismaUserRepository } from "../../infrastructure/repositories/PrismaUs
 import { RegisterUserUseCase } from "../../application/use-cases/RegisterUserUseCase";
 import { registerSchema } from "../validators/register.validator";
 import { RefreshTokenUseCase } from "../../application/use-cases/RefreshTokenUseCase";
-import { AthenticatedRequest } from "../../../../shared/types/AuthenticateRequest";
+import { AuthenticatedRequest } from "../../../../shared/types/AuthenticateRequest";
 
 import { loginSchema } from "../validators/login.validator";
 import { LoginUserUseCase } from "../../application/use-cases/LoginUserUseCase";
@@ -14,17 +14,20 @@ import { generateRefreshToken } from "../../../../shared/utils/generateRefreshTo
 
 import { VerifyOtpUseCase } from "../../application/use-cases/VerifyOtpUseCase";
 import { verifyUserOtpSchema } from "../validators/verifyOtp.validator";
+import { GetProfileUseCase } from "../../application/use-cases/GetProfileUseCase";
+import { string } from "zod";
 
 
 export class AuthController {
     async register(req:Request,res:Response){
+        console.log("trigger")
         const validatedData = registerSchema.parse(req.body);
 
         const userRepository = new PrismaUserRepository();
                                         // dependency injection 
         const registerUserUseCase = new RegisterUserUseCase(userRepository);
 
-        const result = await registerUserUseCase.execute(validatedData)
+       await registerUserUseCase.execute(validatedData)
         
         return res.status(201).json({
             success:true,
@@ -59,7 +62,7 @@ export class AuthController {
             {
                 httpOnly:true,
                 secure:false,
-                sameSite:"strict",
+                sameSite:"lax",
                 maxAge:15 * 60 * 1000,
             }
          );
@@ -70,7 +73,7 @@ export class AuthController {
             {
                 httpOnly:true,
                 secure:false,
-                sameSite:"strict",
+                sameSite:"lax",
                 maxAge:7 * 24 * 60 * 60 * 1000,
             }
          )
@@ -105,7 +108,7 @@ export class AuthController {
             {
                 httpOnly:true,
                 secure:false,
-                sameSite:"strict",
+                sameSite:"lax",
                 maxAge:15 * 60 * 1000,
             }
          );
@@ -116,7 +119,7 @@ export class AuthController {
             {
                 httpOnly:true,
                 secure:false,
-                sameSite:"strict",
+                sameSite:"lax",
                 maxAge:7 * 24 * 60 * 60 * 1000,
             }
          )
@@ -155,7 +158,7 @@ export class AuthController {
                 {
                     httpOnly:true,
                     secure:false,
-                    sameSite:"strict",
+                    sameSite:"lax",
                     maxAge:15 * 60 * 1000,
 
                 }
@@ -189,13 +192,17 @@ export class AuthController {
 
     // profile
 
-    async profile(req:AthenticatedRequest,res:Response):Promise<void>{
+    async profile(req:AuthenticatedRequest,res:Response):Promise<void>{
+        console.log("profile trigger")
+        const userId = req.userId;
+        const userRepository = new PrismaUserRepository();
+        const getProfileUserUseCase = new GetProfileUseCase(userRepository);
+ 
+        const user = await getProfileUserUseCase.execute(userId!)
+        console.log("this is the user",user)
          res.status(200).json({
             success:true,
-            data:{
-                userId:req.userId,
-                role:req.role
-            }
+            data:user
          })
     }
 }

@@ -18,7 +18,8 @@ export class RegisterUserUseCase{
         const existingUser = await this.userRepository.findByEmail(
             data.email
         );
-
+       
+        console.log("data given by frontend",data)
         if(existingUser){
             throw new Error("User already exists");
         }
@@ -26,10 +27,12 @@ export class RegisterUserUseCase{
         const hashpassword = await hashPassword(data.password);
 
         const user = await this.userRepository.create({
-            ...data,
+            name:data.name,
+            email:data.email,
             password:hashpassword,
-            role:Role.USER,
-            isVerified:false
+            role:data.role,
+            isVerified:false,
+            
         })
 
         const otp = generateOtp();

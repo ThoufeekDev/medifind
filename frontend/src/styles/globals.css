@@ -1,0 +1,25 @@
+.loader-container{
+
+    height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#f8fafc;
+}
+
+.loader-circle{
+
+    width:60px;
+
+    height:60px;
+
+    border:6px solid #dbeafe;
+
+    border-top:6px solid #2563eb;
+
+    border-radius:50%;
+}
