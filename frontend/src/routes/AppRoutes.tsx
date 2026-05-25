@@ -10,6 +10,7 @@ import LoginPage from "../features/auth/pages/LoginPage"
 import ProtectedRoute from "./ProtectedRoute"
 
 import PublicRoute from "./PublicRoute"
+import AdminLoginPage from "../features/admin/pages/AdminLoginPage"
 
 export default function AppRoutes() {
     return (
@@ -42,6 +43,10 @@ export default function AppRoutes() {
 
                     }
                 />
+
+                <Route path="admin/login" element={
+                    <AdminLoginPage/>
+                }/>
 
             </Routes>
         </BrowserRouter>
