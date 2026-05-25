@@ -1,22 +1,33 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
-import RegisterPage from "../features/auth/pages/RegisterPage"
+import RegisterPage from "../features/auth/pages/UserRegisterPage"
 import VerifyOtpPage from "../features/auth/pages/VerifyOtpPage"
 
 
 import HomePage from "../features/auth/pages/HomePage"
 import LoginPage from "../features/auth/pages/LoginPage"
 
+import GatewayPage from "../features/onboarding/RegisterSelectionPage"
+
 import ProtectedRoute from "./ProtectedRoute"
 
 import PublicRoute from "./PublicRoute"
 import AdminLoginPage from "../features/admin/pages/AdminLoginPage"
+import HospitalRegisterPage from "../features/admin/pages/HospitalRegisterPage"
 
 export default function AppRoutes() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/register" element={
+
+                <Route path="/register"
+                element={
+                    <PublicRoute>
+                        <GatewayPage/>
+                        </PublicRoute>
+                }
+                />
+                <Route path="/register/user" element={
                     <PublicRoute>
                         <RegisterPage />
                     </PublicRoute>
@@ -29,7 +40,7 @@ export default function AppRoutes() {
                     </PublicRoute>
                 } />
 
-                <Route path="/login" element={
+                <Route path="/login/user" element={
                     <PublicRoute>
                         <LoginPage />
                     </PublicRoute>
@@ -42,6 +53,12 @@ export default function AppRoutes() {
                         </ProtectedRoute>
 
                     }
+                />
+
+
+                <Route
+                path="/register/hospital"
+                element={<HospitalRegisterPage/>}
                 />
 
                 <Route path="admin/login" element={

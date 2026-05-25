@@ -30,7 +30,7 @@ export class RegisterUserUseCase{
             name:data.name,
             email:data.email,
             password:hashpassword,
-            role:Role.USER,
+            role:data.role,
             isVerified:false,
             
         })

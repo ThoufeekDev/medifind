@@ -11,7 +11,7 @@ import {
   type RegisterFormData,
 } from "../validators/register.schema";
 import { useNavigate } from "react-router-dom";
-export default function RegisterPage() {
+export default function UserRegisterPage() {
   const [turnstileToken,setTurnstileToken] = useState('');
   const {
     register,
@@ -24,9 +24,10 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const onSubmit = async (data: RegisterFormData) => {
       try {
-    
+         console.log("frontend triggerign")
          await registerUser({
             ...data,
+            role:"USER",
             turnstileToken
          })
 

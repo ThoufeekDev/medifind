@@ -20,6 +20,7 @@ import { string } from "zod";
 
 export class AuthController {
     async register(req:Request,res:Response){
+        console.log("trigger")
         const validatedData = registerSchema.parse(req.body);
 
         const userRepository = new PrismaUserRepository();

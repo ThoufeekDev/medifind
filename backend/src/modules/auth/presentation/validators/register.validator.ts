@@ -5,6 +5,12 @@ export const registerSchema = z.object({
     email:z.email(),
     password:z.string().min(6),
     confirmPassword:z.string(),
+    role:z.enum([
+
+   "USER",
+
+   "ADMIN"
+]),
     turnstileToken:z.string()
 }).refine((data)=>data.password===data.confirmPassword,{
     message:"Password do not match",
