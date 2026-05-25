@@ -3,7 +3,7 @@ import { PrismaUserRepository } from "../../infrastructure/repositories/PrismaUs
 import { RegisterUserUseCase } from "../../application/use-cases/RegisterUserUseCase";
 import { registerSchema } from "../validators/register.validator";
 import { RefreshTokenUseCase } from "../../application/use-cases/RefreshTokenUseCase";
-import { AthenticatedRequest } from "../../../../shared/types/AuthenticateRequest";
+import { AuthenticatedRequest } from "../../../../shared/types/AuthenticateRequest";
 
 import { loginSchema } from "../validators/login.validator";
 import { LoginUserUseCase } from "../../application/use-cases/LoginUserUseCase";
@@ -192,7 +192,7 @@ export class AuthController {
 
     // profile
 
-    async profile(req:AthenticatedRequest,res:Response):Promise<void>{
+    async profile(req:AuthenticatedRequest,res:Response):Promise<void>{
         console.log("profile trigger")
         const userId = req.userId;
         const userRepository = new PrismaUserRepository();

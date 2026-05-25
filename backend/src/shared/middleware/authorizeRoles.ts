@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import { Role } from "@prisma/client";
-import { AthenticatedRequest } from "../types/AuthenticateRequest";
+import { AuthenticatedRequest } from "../types/AuthenticateRequest";
 import { success } from "zod";
 
 
@@ -8,7 +8,7 @@ export const authorizeRoles = (
     ...allowedRoles:Role[]
 )=>{
     return (
-        req:AthenticatedRequest,
+        req:AuthenticatedRequest,
         res:Response,
         next:NextFunction
     ) =>{

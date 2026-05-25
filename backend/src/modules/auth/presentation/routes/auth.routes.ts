@@ -1,11 +1,8 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/AuthController";
-import cors from "cors"
-import { authorizeRoles } from "../../../../shared/middleware/authorizeRoles";
-import { Role } from "@prisma/client";
+
 import { authenticateUser } from "../../../../shared/middleware/authenticateUser";
 import { otpRateLimit } from "../../../../shared/middleware/rateLimit.middleware";
-import { verifyTurnStile } from "../../../../shared/middleware/verifyTurnstile.middleware";
 
  const router = Router();
 

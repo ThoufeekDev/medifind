@@ -1,12 +1,13 @@
 import { NextFunction,Response } from "express";
 import {env} from "../../config/env"
 import { verifyToken } from "../utils/verifyToken";
-import { AthenticatedRequest } from "../types/AuthenticateRequest";
+import { AuthenticatedRequest } from "../types/AuthenticateRequest";
+import { Role } from "@prisma/client";
 
 
 
 export const authenticateUser = (
-    req:AthenticatedRequest,
+    req:AuthenticatedRequest,
     res:Response,
     next:NextFunction
 ):void=>{
@@ -27,6 +28,7 @@ export const authenticateUser = (
       )
 
       req.userId = decoded.userId as string
+      req.role = decoded.role as Role
         next()
     } catch (error) {
          res.status(401).json({
