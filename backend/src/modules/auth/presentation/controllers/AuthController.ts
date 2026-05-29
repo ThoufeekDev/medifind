@@ -15,7 +15,7 @@ import { generateRefreshToken } from "../../../../shared/utils/generateRefreshTo
 import { VerifyOtpUseCase } from "../../application/use-cases/VerifyOtpUseCase";
 import { verifyUserOtpSchema } from "../validators/verifyOtp.validator";
 import { GetProfileUseCase } from "../../application/use-cases/GetProfileUseCase";
-import { string } from "zod";
+
 
 
 export class AuthController {
@@ -91,14 +91,14 @@ export class AuthController {
                                      // dependancy injecttion
         const loginUserUseCase = new LoginUserUseCase(userRepository )
 
-        const result = await loginUserUseCase.execute(validatedData)
+        const user = await loginUserUseCase.execute(validatedData)
          
          const accessToken = generateAccessToken({
-            userId:result.user.id,role:result.user.role
+            userId:user.safeUser.id,role:user.safeUser.role
 
         });
         const refreshToken = generateRefreshToken({
-            userId:result.user.id,role:result.user.role
+            userId:user.safeUser.id,role:user.safeUser.role
         });
  
         
@@ -124,11 +124,12 @@ export class AuthController {
             }
          )
 
+         console.log("Login successful for user:", user);
+
          return res.status(200).json({
             success:true,
-            data:{
-                user: result.user
-            }
+             user:user.safeUser
+            
          })
     }
 
@@ -193,16 +194,17 @@ export class AuthController {
     // profile
 
     async profile(req:AuthenticatedRequest,res:Response):Promise<void>{
-        console.log("profile trigger")
+  
         const userId = req.userId;
         const userRepository = new PrismaUserRepository();
         const getProfileUserUseCase = new GetProfileUseCase(userRepository);
  
         const user = await getProfileUserUseCase.execute(userId!)
-        console.log("this is the user",user)
+        
+        console.log("Fetched user profile:", user);
          res.status(200).json({
             success:true,
-            data:user
+            user:user.user
          })
     }
 }

@@ -15,17 +15,21 @@ import PublicRoute from "./PublicRoute"
 import AdminLoginPage from "../features/admin/pages/AdminLoginPage"
 import HospitalRegisterPage from "../features/admin/pages/HospitalRegisterPage"
 
+import CreatHospitalPage from "../features/admin/pages/CreateHospitalPage"
+import AdminRoute from "./AdminProtectedRoute"
+import AdminPublicRoute from "./AdminPublicRoute"
+
 export default function AppRoutes() {
     return (
         <BrowserRouter>
             <Routes>
 
                 <Route path="/register"
-                element={
-                    <PublicRoute>
-                        <GatewayPage/>
+                    element={
+                        <PublicRoute>
+                            <GatewayPage />
                         </PublicRoute>
-                }
+                    }
                 />
                 <Route path="/register/user" element={
                     <PublicRoute>
@@ -57,13 +61,29 @@ export default function AppRoutes() {
 
 
                 <Route
-                path="/register/hospital"
-                element={<HospitalRegisterPage/>}
+                    path="/register/hospital"
+                    element={
+                       <AdminPublicRoute>
+                        <HospitalRegisterPage />
+                       </AdminPublicRoute>
+
+                    }
                 />
 
                 <Route path="admin/login" element={
-                    <AdminLoginPage/>
-                }/>
+                    <AdminPublicRoute>  
+                        <AdminLoginPage />
+                    </AdminPublicRoute>
+                } />
+
+                <Route
+                    path="/admin/create-hospital"
+                    element={
+                        <AdminRoute>
+                            <CreatHospitalPage />
+                        </AdminRoute>
+                    }
+                />
 
             </Routes>
         </BrowserRouter>

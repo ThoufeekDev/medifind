@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../auth/store/auth.store";
 import { loginSchema, type LoginFormData } from "../../auth/validators/login.schema";
+import { getMyHospital } from "../services/hospital.service";
 import { useState } from "react";
 import "../../../styles/adminLogin.css";
 
@@ -28,7 +29,12 @@ export default function AdminLoginPage() {
         return;
       }
 
-      navigate("/dashboard");
+      const hospitalResponse = await getMyHospital();
+      if(hospitalResponse.hospital){
+          navigate("/admin/dashboard")
+      }else{
+        navigate("/admin/create-hospital")
+      }
     } catch (error) {
       console.error("[AUTH_FAILURE]", error);
       setAuthError("The credentials provided do not match our administrative database profiles.");

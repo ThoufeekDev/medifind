@@ -24,7 +24,6 @@ export default function UserRegisterPage() {
   const navigate = useNavigate();
   const onSubmit = async (data: RegisterFormData) => {
       try {
-         console.log("frontend triggerign")
          await registerUser({
             ...data,
             role:"USER",

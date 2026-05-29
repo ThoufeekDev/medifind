@@ -28,11 +28,11 @@ export class HospitalController {
             const repository = new PrismaHospitalRepository();
             const useCase = new CreateHospitalUseCase(repository);
 
-            const hospital = await useCase.execute(hospitalData, adminId);
+            const hospitalInfo = await useCase.execute(hospitalData, adminId);
 
             return res.status(201).json({
                 success: true,
-                hospital,
+                hospitalInfo,
             })
         } catch (error) {
             return res.status(400).json({

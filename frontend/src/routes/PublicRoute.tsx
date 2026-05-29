@@ -8,14 +8,17 @@ interface Props{
 }
 
 export default function PublicRoute({children}:Props){
-   const {isAuthenticated,isCheckingAuth} = useAuthStore();
+   const {isAuthenticated,isCheckingAuth,user} = useAuthStore();
 
    if(isCheckingAuth){
        return <Loader/>
    }
 
 
-   if(isAuthenticated){
+   if(isAuthenticated && user){
+      if(user.role === "ADMIN"){
+         return <Navigate to="/admin/dashboard" replace/>
+      }
       return (
          <Navigate to="/" replace/>
       )

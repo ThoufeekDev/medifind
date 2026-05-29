@@ -45,7 +45,7 @@ export class LoginUserUseCase {
          
         return{
 
-            user:safeUser,
+          safeUser,
         }
      }
 }

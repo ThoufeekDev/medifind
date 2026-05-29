@@ -25,11 +25,14 @@ export default function HospitalRegisterPage() {
 
   const onSubmit = async (data: HospitalRegisterFormData) => {
     try {
+
       await registerUser({
         ...data,
         role:"ADMIN",
         turnstileToken,
       });
+
+
 
       navigate("/verify-otp", {
         state: {

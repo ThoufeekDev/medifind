@@ -17,7 +17,8 @@ export class CreateHospitalUseCase {
 
 
         if(exist){
-            throw new Error("Hospital already Exists")
+            throw new Error("Hospital already Exists");
+            
         }
 
         // create Hospital

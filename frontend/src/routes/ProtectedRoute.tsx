@@ -8,20 +8,20 @@ interface Props {
     React.ReactNode
 }
 
-export default function ProtectedRoute({children,}:Props){
-     const {isAuthenticated,isCheckingAuth} = useAuthStore();
+export default function ProtectedRoute({ children }: Props) {
+  const { isAuthenticated, isCheckingAuth,user } = useAuthStore();
 
+  if (isCheckingAuth) {
+    return <Loader />;
+  }
 
-     if(isCheckingAuth){
+  if (!isAuthenticated) {
+    return <Navigate to="/login/user" replace />;
+  }
 
-        return <Loader/>
-     }
-    
-     if(!isAuthenticated){
-        return (
-            <Navigate to="/login" replace/>
-        )
-     }
+  if(user?.role!=="USER"){
+      return <Navigate to="/admin/dashboard" replace/>
+  }
 
-     return children
+  return children;
 }

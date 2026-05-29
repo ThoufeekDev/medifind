@@ -8,6 +8,7 @@ import {
   verifyOtpSchema,
   type VerifyOtpFormData,
 } from "../validators/verify-otp.schema";
+import { getMyHospital } from "../../admin/services/hospital.service";
 
 export default function VerifyOtpPage() {
   const location = useLocation();
@@ -31,7 +32,24 @@ export default function VerifyOtpPage() {
     try {
      
        await verifyOtpAndLogin(data);
-       navigate("/")
+      
+       const currentUser = useAuthStore.getState().user;
+       
+       if(currentUser?.role === "ADMIN"){
+        const hospitalResponse = await getMyHospital();
+        if(hospitalResponse.hospital){
+           navigate('/admin/dashboard')
+        }else{
+          navigate('/admin/create-hospital')
+        }
+
+       }else {
+        console.log("Navigating to home page for regular user.");
+         navigate("/")
+       }
+
+       console.log('OTP Successfull')
+     
     } catch (error) {
       console.log(error);
     }
