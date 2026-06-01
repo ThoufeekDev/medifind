@@ -17,17 +17,33 @@ import { verifyUserOtpSchema } from "../validators/verifyOtp.validator";
 import { GetProfileUseCase } from "../../application/use-cases/GetProfileUseCase";
 
 
+// factories
+
+import {makeRegisterUserUseCase} from "../../../../shared/factories/auth/makeRegisterUserUseCase"
+import { makeLoginUserCase } from "../../../../shared/factories/auth/makeLoginUserCase";
+import { makeGetProfileUserUseCase } from "../../../../shared/factories/auth/makeGetProfileUserUseCase";
+
+
+// Error Handling
+import { UnauthorizedError } from "../../../../shared/exceptions/UnauthorizedError";
+
 
 export class AuthController {
     async register(req:Request,res:Response){
-        console.log("trigger")
+
         const validatedData = registerSchema.parse(req.body);
 
-        const userRepository = new PrismaUserRepository();
-                                        // dependency injection 
-        const registerUserUseCase = new RegisterUserUseCase(userRepository);
+    //     const userRepository = new PrismaUserRepository();
+    //                                     // dependency injection 
+    //     const registerUserUseCase = new RegisterUserUseCase(userRepository);
 
-       await registerUserUseCase.execute(validatedData)
+    //    await registerUserUseCase.execute(validatedData)
+
+
+    const useCase = makeRegisterUserUseCase();
+
+     await useCase.execute(validatedData);
+
         
         return res.status(201).json({
             success:true,
@@ -63,7 +79,8 @@ export class AuthController {
                 httpOnly:true,
                 secure:false,
                 sameSite:"lax",
-                maxAge:15 * 60 * 1000,
+                // maxAge:15 * 60 * 1000,
+                maxAge:60 * 1000
             }
          );
 
@@ -74,7 +91,8 @@ export class AuthController {
                 httpOnly:true,
                 secure:false,
                 sameSite:"lax",
-                maxAge:7 * 24 * 60 * 60 * 1000,
+                // maxAge:7 * 24 * 60 * 60 * 1000,
+                maxAge:60 * 2000
             }
          )
 
@@ -87,9 +105,14 @@ export class AuthController {
 
     async login(req:Request,res:Response){
         const validatedData = loginSchema.parse(req.body);
-        const userRepository = new PrismaUserRepository();
-                                     // dependancy injecttion
-        const loginUserUseCase = new LoginUserUseCase(userRepository )
+        // const userRepository = new PrismaUserRepository();
+        //                              // dependancy injecttion
+        // const loginUserUseCase = new LoginUserUseCase(userRepository )
+
+        // const user = await loginUserUseCase.execute(validatedData)
+
+
+        const loginUserUseCase = makeLoginUserCase();
 
         const user = await loginUserUseCase.execute(validatedData)
          
@@ -109,7 +132,8 @@ export class AuthController {
                 httpOnly:true,
                 secure:false,
                 sameSite:"lax",
-                maxAge:15 * 60 * 1000,
+                // maxAge:15 * 60 * 1000,
+                    maxAge:60 * 1000
             }
          );
 
@@ -120,11 +144,11 @@ export class AuthController {
                 httpOnly:true,
                 secure:false,
                 sameSite:"lax",
-                maxAge:7 * 24 * 60 * 60 * 1000,
+                // maxAge:7 * 24 * 60 * 60 * 1000,
+                    maxAge:60 * 2000
             }
          )
 
-         console.log("Login successful for user:", user);
 
          return res.status(200).json({
             success:true,
@@ -141,12 +165,14 @@ export class AuthController {
             req.cookies.refreshToken;
 
             if(!refreshToken){
-                res.status(401).json({
-                    success:false,
-                    message:"Refresh token missing"
-                })
 
-                return;
+                throw new UnauthorizedError("Refresh token missing");
+                // res.status(401).json({
+                //     success:false,
+                //     message:"Refresh token missing"
+                // })
+
+                // return;
             }
 
             const refreshTokenUseCase = new RefreshTokenUseCase();
@@ -196,10 +222,11 @@ export class AuthController {
     async profile(req:AuthenticatedRequest,res:Response):Promise<void>{
   
         const userId = req.userId;
-        const userRepository = new PrismaUserRepository();
-        const getProfileUserUseCase = new GetProfileUseCase(userRepository);
- 
-        const user = await getProfileUserUseCase.execute(userId!)
+        // const userRepository = new PrismaUserRepository();
+        // const getProfileUserUseCase = new GetProfileUseCase(userRepository);
+            const getProfileUserUseCase = makeGetProfileUserUseCase();
+            
+            const user = await getProfileUserUseCase.execute(userId!)
         
         console.log("Fetched user profile:", user);
          res.status(200).json({

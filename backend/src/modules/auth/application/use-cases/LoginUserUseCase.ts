@@ -4,14 +4,15 @@ import { LoginUserDTO } from "../dtos/LoginUserDTO";
 import { comparePassword } from "../../../../shared/utils/comparePassword";
 
 
-
+// Error Handling
+import {NotFoundError} from "../../../../shared/exceptions/NotFoundError";
+import { UnauthorizedError } from "../../../../shared/exceptions/UnauthorizedError";
+import { ForbiddenError } from "../../../../shared/exceptions/ForbiddenError";
 export class LoginUserUseCase {
      
      constructor(private userRepository:IUserRepository ){}
 
      async execute(data:LoginUserDTO){
-
-     
          
          const user = await this.userRepository.findByEmail(
             data.email
@@ -19,7 +20,7 @@ export class LoginUserUseCase {
    
 
          if(!user){
-            throw new Error("Invalid credentials")
+            throw new NotFoundError("Invalid credentials")
          }
 
          const isPasswordValid = 
@@ -29,11 +30,11 @@ export class LoginUserUseCase {
         )
 
         if(!isPasswordValid){
-            throw new Error("Invalid credentials")
+            throw new UnauthorizedError("Invalid credentials")
         }
        
         if(!user.isVerified){
-            throw new Error(
+            throw new ForbiddenError(
                 "Please verify your email"
             )
         }

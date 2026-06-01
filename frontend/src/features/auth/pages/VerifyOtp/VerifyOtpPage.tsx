@@ -1,14 +1,14 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocation } from "react-router-dom";
-import "../../../styles/verifyOtp.css"; // Importing the clean OTP styles
+import './verifyOtp.css'
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../store/auth.store";
+import { useAuthStore } from "../../store/auth.store";
 import {
   verifyOtpSchema,
   type VerifyOtpFormData,
-} from "../validators/verify-otp.schema";
-import { getMyHospital } from "../../admin/services/hospital.service";
+} from "../../validators/verify-otp.schema";
+import { getMyHospital } from "../../../admin/services/hospital.service";
 
 export default function VerifyOtpPage() {
   const location = useLocation();

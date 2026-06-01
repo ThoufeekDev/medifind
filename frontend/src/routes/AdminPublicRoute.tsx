@@ -7,14 +7,18 @@ interface Props {
 }
 
 export default function AdminPublicRoute({ children }: Props) {
-  const { user, isAuthenticated, isCheckingAuth } = useAuthStore();
+  const { user, isAuthenticated, isCheckingAuth} = useAuthStore();
 
   if (isCheckingAuth) {
     return <Loader />;
   }
-
+  console.log("AdminPublicRoute", {
+    isAuthenticated,
+    role: user?.role,
+  });
   if (isAuthenticated && user?.role === "ADMIN") {
-    return <Navigate to="/admin/dashboard" replace />;
+      console.log("Redirecting to dashboard");
+    return <Navigate to="/admin" replace />;
   }
 
   return children;

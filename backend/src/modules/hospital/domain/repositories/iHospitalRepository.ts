@@ -1,6 +1,6 @@
 import { Hospital } from "../entities/Hospital";
 
-import type { CreateHospitalDTO } from "../../dtos/create-hospital.dto";
+import type { CreateHospitalDTO } from "../../application/dtos/create-hospital.dto";
 
 export interface IHospitalRepository {
     create(data:CreateHospitalDTO,adminId:string):Promise<Hospital>;

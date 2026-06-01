@@ -9,6 +9,9 @@ import { otpQueue } from "../../../../shared/queues/otp.queue";
 // utils 
 import { hashPassword } from "../../../../shared/utils/hashPassword";
 
+
+import {ConflictError} from "../../../../shared/exceptions/ConflictError"
+
 // user signup(register) useCase
 export class RegisterUserUseCase{
     // dependancy injection
@@ -19,9 +22,9 @@ export class RegisterUserUseCase{
             data.email
         );
        
-        console.log("data given by frontend",data)
+     
         if(existingUser){
-            throw new Error("User already exists");
+            throw new ConflictError("User already exists");
         }
 
         const hashpassword = await hashPassword(data.password);
@@ -42,7 +45,19 @@ export class RegisterUserUseCase{
         await otpQueue.add("send-otp-email",{
             email:user.email,
             otp,
-        })
+        },
+        {
+            attempts:3,
+            backoff:{
+                type:"exponential",
+                delay:3000,
+            },
+            removeOnComplete:1000,
+            removeOnFail:1000,
+        }
+    
+    
+    )
 
         const {password,...safeUser} = user
         return {

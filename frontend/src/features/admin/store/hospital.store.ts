@@ -10,7 +10,7 @@ import type { Hospital } from "../types/hospital.type";
 interface HospitalStore {
     hospital:Hospital|null;
     loading:boolean;
-    fetchHospital:()=>Promise<void>;
+    fetchHospital:()=>Promise<Hospital | null>;
     createHospitalAction:(data:CreateHospitalDTO)=>Promise<void>;
 }
 
@@ -20,10 +20,13 @@ export const useHospitalStore = create<HospitalStore>((set)=>({
 
     fetchHospital:async()=>{
         set({loading:true});
-
+        
         try {
+            console.log("Fetching hospital data...");
             const response = await getMyHospital();
+            console.log("Fetched hospital data:", response);
             set({hospital:response.hospital})
+            return response.hospital;
         } finally {
             set({loading:false})
         }

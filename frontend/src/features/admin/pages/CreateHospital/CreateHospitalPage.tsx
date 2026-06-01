@@ -2,13 +2,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useHospitalStore } from "../store/hospital.store";
-import "../../../styles/CreateHospitalPage.css"
+import { useHospitalStore } from "../../store/hospital.store";
+import "./createHospitalPage.css"
 
 import {
   createHospitalSchema,
   type CreateHospitalFormData
-} from "../validators/createHospital.Schema";
+} from "../../validators/createHospital.Schema";
 
 export default function CreateHospitalPage() {
   const navigate = useNavigate();

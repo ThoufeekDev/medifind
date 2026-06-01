@@ -3,23 +3,6 @@ import {env} from "../../config/env";
 const resend = new Resend(env.RESEND_API_KEY);
 
 
-// export const sendOtpEmail = async(email:string,otp:string)=>{
-//         await resend.emails.send({
-//             from:"thoufeek.dev@gmail.com",
-//             to:email,
-//             subject:"Verify your email",
-//             html:`
-            
-//             <h1> Your OTP </h1>
-//             <p>${otp}</p>
-            
-//             `
-//         })
-
-//         console.log("email verification completed")
-//     }
-
-
 export const sendOtpEmail = async (
   email: string,
   otp: string

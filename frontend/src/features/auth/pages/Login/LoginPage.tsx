@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuthStore } from "../store/auth.store";
-import "../../../styles/login.css";
+import { useAuthStore } from "../../store/auth.store";
+import './login.css'
 import {
   loginSchema,
   type LoginFormData,
-} from "../validators/login.schema";
+} from "../../validators/login.schema";
 
 export default function LoginPage() {
   const { login } = useAuthStore();

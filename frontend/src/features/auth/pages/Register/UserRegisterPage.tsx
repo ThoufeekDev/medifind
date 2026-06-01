@@ -1,15 +1,15 @@
 import { useForm } from "react-hook-form";
 // zodREsolver connects Ract Hook form with zod
 import { zodResolver } from "@hookform/resolvers/zod";
-import "../../../styles/register.css"
-import { registerUser } from "../services/auth.service";
+import './userRegister.css'
+import { registerUser } from "../../services/auth.service";
 import {Turnstile} from "react-turnstile";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import {
   registerSchema,
   type RegisterFormData,
-} from "../validators/register.schema";
+} from "../../validators/register.schema";
 import { useNavigate } from "react-router-dom";
 export default function UserRegisterPage() {
   const [turnstileToken,setTurnstileToken] = useState('');

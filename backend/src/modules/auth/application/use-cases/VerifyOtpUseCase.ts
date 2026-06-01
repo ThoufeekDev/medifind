@@ -3,6 +3,11 @@ import { IUserRepository } from "../../domain/repositories/IUserRepository";
 
 import { verifyOtpDTO } from "../dtos/VerifyOtpDTO";
 
+// Error handler
+import { UnauthorizedError } from "../../../../shared/exceptions/UnauthorizedError";
+import {BadRequestError} from "../../../../shared/exceptions/BadRequestError"
+import { NotFoundError } from "../../../../shared/exceptions/NotFoundError";
+
 
 
 export class VerifyOtpUseCase {
@@ -12,17 +17,17 @@ export class VerifyOtpUseCase {
     async execute(data:verifyOtpDTO){
         const storedOtp = await redis.get(`otp:${data.email}`);
         if(!storedOtp){
-            throw new Error("OTP Expired");
+            throw new BadRequestError("OTP Expired");
         }
 
         if(storedOtp!==data.otp){
-            throw new Error("Invalid OTP");
+            throw new BadRequestError("Invalid OTP");
         }
 
         const user = await this.userRepository.findByEmail(data.email);
 
         if(!user){
-            throw new Error(
+            throw new NotFoundError(
                 "User not found"
             );
         }
@@ -32,7 +37,7 @@ export class VerifyOtpUseCase {
 
         const updatedUser = await this.userRepository.findByEmail(data.email);
         if(!updatedUser){
-            throw new Error("User not found")
+            throw new UnauthorizedError("User not found")
         }
 
         await redis.del(`otp:${data.email}`);

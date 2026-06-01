@@ -6,7 +6,7 @@ import type {
 
 import type { Hospital } from "../../domain/entities/Hospital";
 
-import type { CreateHospitalDTO } from "../../dtos/create-hospital.dto";
+import type { CreateHospitalDTO } from "../../application/dtos/create-hospital.dto";
 
 
 export class PrismaHospitalRepository implements IHospitalRepository {

@@ -3,7 +3,7 @@ import type {Hospital} from "../../domain/entities/Hospital";
 import { IHospitalRepository } from "../../domain/repositories/iHospitalRepository";
 
 
-import { CreateHospitalDTO } from "../../dtos/create-hospital.dto";
+import { CreateHospitalDTO } from "../dtos/create-hospital.dto";
 
 export class CreateHospitalUseCase {
 
