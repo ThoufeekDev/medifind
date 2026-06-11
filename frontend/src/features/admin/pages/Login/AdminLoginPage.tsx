@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../auth/store/auth.store";
-import { loginSchema, type LoginFormData } from "../../auth/validators/login.schema";
+import { useAuthStore } from "../../../auth/store/auth.store";
+import { loginSchema, type LoginFormData } from "../../../auth/validators/login.schema";
+import { getMyHospital } from "../../services/hospital.service";
 import { useState } from "react";
-import "../../../styles/adminLogin.css";
+import './adminLogin.css'
 
 export default function AdminLoginPage() {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
@@ -18,17 +19,29 @@ export default function AdminLoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       setAuthError("");
+
+
+      console.log("Attempting login with data:", data);
      
       await login(data);
+      navigate("/admin");
     //   console.log("test",useAuthStore.getState().user)
-      const currentUser = useAuthStore.getState().user;
-    
-      if (currentUser?.role !== "ADMIN") {
-        setAuthError("Access denied. Direct console authorizations require explicit administrative privileges.");
-        return;
-      }
+    //   const currentUser = useAuthStore.getState().user;
+    //  console.log("Current user after login:", currentUser);
+    //   if (currentUser?.role !== "ADMIN") {
+    //     setAuthError("Access denied. Direct console authorizations require explicit administrative privileges.");
+    //     return;
+    //   }
 
-      navigate("/dashboard");
+    //   console.log("Login successful, fetching hospital data...");
+
+    //   const hospitalResponse = await getMyHospital();
+    //   if(hospitalResponse.hospital){
+    //     console.log("Hospital found, navigating to dashboard", hospitalResponse.hospital)
+    //       navigate("/admin/dashboard")
+    //   }else{
+    //     navigate("/admin/create-hospital")
+    //   }
     } catch (error) {
       console.error("[AUTH_FAILURE]", error);
       setAuthError("The credentials provided do not match our administrative database profiles.");

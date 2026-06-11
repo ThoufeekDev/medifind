@@ -19,6 +19,8 @@ export class PrismaUserRepository implements IUserRepository{
                 email,
             }
         })
+
+        console.log("user from db",user)
         return user;
     }
 

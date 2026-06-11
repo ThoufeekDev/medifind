@@ -48,6 +48,7 @@ export const useAuthStore = create<AuthStore>((set,get)=>({
             set({
                 isLoading:true,
             });
+            console.log("Registering user with data:", data);
 
             await registerUser(data)
         } catch (error) {
@@ -66,10 +67,12 @@ export const useAuthStore = create<AuthStore>((set,get)=>({
          });
          await loginUser(data);
 
+
+
          const profile = await getProfile();
 
          set({
-            user:profile.data.user,
+            user:profile.user,
             isAuthenticated:true,
          })
        } finally {
@@ -93,6 +96,8 @@ export const useAuthStore = create<AuthStore>((set,get)=>({
 
      },
 
+    
+
      fetchProfile:async()=>{
         try {
             set({
@@ -100,8 +105,9 @@ export const useAuthStore = create<AuthStore>((set,get)=>({
             })
 
             const profile = await getProfile();
+  1
             set({
-                user:profile.data,
+                user:profile.user,
                 isAuthenticated:true,
             })
         } catch (error) {

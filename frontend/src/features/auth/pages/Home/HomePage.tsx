@@ -1,5 +1,3 @@
-import { useAuthStore } from "../store/auth.store";
-
 const HomePage = () => {
 
   return (

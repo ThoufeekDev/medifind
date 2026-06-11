@@ -1,14 +1,15 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocation } from "react-router-dom";
-import "../../../styles/verifyOtp.css"; // Importing the clean OTP styles
+import './verifyOtp.css'
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../store/auth.store";
+import { useAuthStore } from "../../store/auth.store";
 import {
   verifyOtpSchema,
   type VerifyOtpFormData,
-} from "../validators/verify-otp.schema";
-
+} from "../../validators/verify-otp.schema";
+import { getMyHospital } from "../../../admin/services/hospital.service";
+import { useHospitalStore } from "../../../admin/store/hospital.store";
 export default function VerifyOtpPage() {
   const location = useLocation();
   const email = location.state?.email || "";
@@ -31,7 +32,30 @@ export default function VerifyOtpPage() {
     try {
      
        await verifyOtpAndLogin(data);
-       navigate("/")
+      
+       const currentUser = useAuthStore.getState().user;
+        console.log("Current user after OTP verification:", currentUser);
+       if(currentUser?.role === "ADMIN"){
+          navigate('/admin')
+       }else {
+         navigate('/')
+       }
+       
+      //  if(currentUser?.role === "ADMIN"){
+      //     const hospital = await useHospitalStore.getState().fetchHospital();
+      //   if(hospital){
+      //      navigate('/admin/dashboard')
+      //   }else{
+      //     navigate('/admin/create-hospital')
+      //   }
+
+      //  }else {
+      //   console.log("Navigating to home page for regular user.");
+      //    navigate("/")
+      //  }
+
+       console.log('OTP Successfull')
+     
     } catch (error) {
       console.log(error);
     }

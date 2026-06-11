@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../../styles/gateWay.css"; // Pointing to your system variables styles file
+import './gateWay.css';
 
 export default function GatewayPage() {
   return (

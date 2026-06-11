@@ -7,5 +7,14 @@ export const env = {
     RESEND_API_KEY:process.env.RESEND_API_KEY,
     TURNSTILE_SITE_KEY:process.env.TURNSTILE_SITE_KEY,
     TURNSTILE_SECRET_KEY:process.env.TURNSTILE_SECRET_KEY,
+    REDIS_HOST:process.env.REDIS_HOST,
+    REDIS_PORT:process.env.REDIS_PORT,
+     CLOUDINARY_CLOUD_NAME:
+    process.env.CLOUDINARY_CLOUD_NAME!,
 
+  CLOUDINARY_API_KEY:
+    process.env.CLOUDINARY_API_KEY!,
+
+  CLOUDINARY_API_SECRET:
+    process.env.CLOUDINARY_API_SECRET!,
 }

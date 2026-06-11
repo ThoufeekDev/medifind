@@ -1,12 +1,9 @@
 import jwt from "jsonwebtoken";
 import {env} from "../../config/env"
 
+import {TokenPayload} from "../types/TokenPayload"
 
-interface GenerateAccessTokenParams {
-    userId:string;
-    role:string;
-}
-export const generateAccessToken = (payload:GenerateAccessTokenParams):string=>{
+export const generateAccessToken = (payload:TokenPayload):string=>{
    
     return jwt.sign(
         payload,

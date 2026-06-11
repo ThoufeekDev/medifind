@@ -17,7 +17,8 @@ export const verifyOtpPaylod = async (data:VerifyOtpDTO) =>{
 
 export const loginUser = async (data:LoginDTO) =>{
     const response = await api.post('/auth/login',data);
-    return response.data;
+    // console.log("Login response:", response.data.user);
+    return response.data.user;
 }
 
 export const logoutUser = async () =>{
@@ -27,6 +28,7 @@ export const logoutUser = async () =>{
 
 export const getProfile = async ()=>{
     const response = await api.get('/auth/profile');
+    console.log("Profile response:", response.data.user);
     return response.data;
 } 
 

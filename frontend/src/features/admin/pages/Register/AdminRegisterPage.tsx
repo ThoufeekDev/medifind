@@ -3,13 +3,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import { Turnstile } from "react-turnstile";
-import "../../../styles/HospitalRegister.css"
+import './AdminRegister.css'
 
-import { registerUser } from "../../auth/services/auth.service";
+import { registerUser } from "../../../auth/services/auth.service";
 import {
   hospitalRegisterSchema,
   type HospitalRegisterFormData,
-} from "../../admin/validators/hospitalRegister.dto";
+} from "../../validators/hospitalRegister.dto";
 
 export default function HospitalRegisterPage() {
   const [turnstileToken, setTurnstileToken] = useState("");
@@ -25,11 +25,14 @@ export default function HospitalRegisterPage() {
 
   const onSubmit = async (data: HospitalRegisterFormData) => {
     try {
+
       await registerUser({
         ...data,
         role:"ADMIN",
         turnstileToken,
       });
+
+
 
       navigate("/verify-otp", {
         state: {

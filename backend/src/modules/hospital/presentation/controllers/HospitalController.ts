@@ -7,6 +7,7 @@ import { AuthenticatedRequest } from "../../../../shared/types/AuthenticateReque
 import { CreateHospitalUseCase } from "../../application/use-cases/CreateHospitalUseCase";
 import { GetMyHospitalUseCase } from "../../application/use-cases/GetMyHospitalUseCase";
 import { success } from "zod";
+import { CloudinaryService } from "../../../../shared/services/cloudinary.service";
 
 
 export class HospitalController {
@@ -23,16 +24,25 @@ export class HospitalController {
                 })
             }
 
-            const hospitalData = req.body;
+            const hospitalData = {
+                ...req.body,
+                latitude:Number(req.body.latitude),
+                longitude:Number(req.body.longitude),
+            
+            }
+
+            const image = req.file;
+            
 
             const repository = new PrismaHospitalRepository();
-            const useCase = new CreateHospitalUseCase(repository);
+            const cloudinaryService = new CloudinaryService();
+            const useCase = new CreateHospitalUseCase(repository,cloudinaryService);
 
-            const hospital = await useCase.execute(hospitalData, adminId);
+            const hospitalInfo = await useCase.execute(hospitalData, adminId,image);
 
             return res.status(201).json({
                 success: true,
-                hospital,
+                hospitalInfo,
             })
         } catch (error) {
             return res.status(400).json({
@@ -72,4 +82,19 @@ export class HospitalController {
             })
         }
     }
+
+
+    // async createHospital(req:Request,res:Response){
+    //     const image = req.file;
+    //     let imageUrl = "";
+    //     const repository = new PrismaHospitalRepository();
+    //     const useCase = new CreateHospitalUseCase(repository);
+    //     const cloudinaryService = new CloudinaryService();
+
+    //     if(image){
+    //         imageUrl = await cloudinaryService.uploadImage(image.buffer,"medifind/hospitals");
+    //     }
+
+    //     const hospital = await useCase.execute({...req.body})
+    // }
 }
