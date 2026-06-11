@@ -3,6 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useHospitalStore } from "../../store/hospital.store";
+
+import ImageUpload from "../../../../shared/components/ImageUpload/ImageUpload";
+
+
 import "./createHospitalPage.css"
 
 import {
@@ -15,7 +19,8 @@ export default function CreateHospitalPage() {
   const [serverError, setServerError] = useState("");
   const createHospitalAction = useHospitalStore(state => state.createHospitalAction);
   const loading = useHospitalStore(state => state.loading);
-
+  
+  const [hospitalImage,setHospitalImage] = useState<File | null>(null);
   const {
     register,
     handleSubmit,
@@ -27,7 +32,31 @@ export default function CreateHospitalPage() {
   const onSubmit = async (data: CreateHospitalFormData) => {
     try {
       setServerError("");
-      await createHospitalAction(data);
+   const formData = new FormData();
+
+Object.entries(data).forEach(
+  ([key, value]) => {
+    formData.append(
+      key,
+      String(value)
+    );
+  }
+);
+
+console.log("hosptial image",hospitalImage)
+
+if (hospitalImage) {
+  formData.append(
+    "image",
+    hospitalImage
+  );
+}
+
+console.log('teigger 1',formData)
+
+const res = await createHospitalAction(formData);
+console.log('trigger 2')
+console.log('res',res)
       navigate("/admin/dashboard");
     } catch (error) {
       console.error(error);
@@ -221,6 +250,14 @@ export default function CreateHospitalPage() {
             />
             {errors.description && <p className="error-message">{errors.description.message}</p>}
           </div>
+
+            {/* HOSPITAL IMAGE */}
+  <div className="form-group">
+    <ImageUpload
+      label="Hospital Image"
+      onImageSelect={setHospitalImage}
+    />
+  </div>
 
           {/* ACTION SUBMISSION ENGINE PIN */}
           <button

@@ -12,7 +12,7 @@ export default function AdminRedirect(){
         const checkHospital = async()=>{
             try {
                 const response  = await fetchHospital();
-                console.log("Hospital check response:", response);
+                // console.log("Hospital check response:", response);
                 if(response!){
                     navigate("/admin/dashboard",{replace:true})
                 }else{

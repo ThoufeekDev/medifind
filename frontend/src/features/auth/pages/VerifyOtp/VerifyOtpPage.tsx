@@ -9,7 +9,7 @@ import {
   type VerifyOtpFormData,
 } from "../../validators/verify-otp.schema";
 import { getMyHospital } from "../../../admin/services/hospital.service";
-
+import { useHospitalStore } from "../../../admin/store/hospital.store";
 export default function VerifyOtpPage() {
   const location = useLocation();
   const email = location.state?.email || "";
@@ -34,19 +34,25 @@ export default function VerifyOtpPage() {
        await verifyOtpAndLogin(data);
       
        const currentUser = useAuthStore.getState().user;
-       
+        console.log("Current user after OTP verification:", currentUser);
        if(currentUser?.role === "ADMIN"){
-        const hospitalResponse = await getMyHospital();
-        if(hospitalResponse.hospital){
-           navigate('/admin/dashboard')
-        }else{
-          navigate('/admin/create-hospital')
-        }
-
+          navigate('/admin')
        }else {
-        console.log("Navigating to home page for regular user.");
-         navigate("/")
+         navigate('/')
        }
+       
+      //  if(currentUser?.role === "ADMIN"){
+      //     const hospital = await useHospitalStore.getState().fetchHospital();
+      //   if(hospital){
+      //      navigate('/admin/dashboard')
+      //   }else{
+      //     navigate('/admin/create-hospital')
+      //   }
+
+      //  }else {
+      //   console.log("Navigating to home page for regular user.");
+      //    navigate("/")
+      //  }
 
        console.log('OTP Successfull')
      

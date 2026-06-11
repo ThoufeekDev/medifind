@@ -12,10 +12,10 @@ export default function AdminPublicRoute({ children }: Props) {
   if (isCheckingAuth) {
     return <Loader />;
   }
-  console.log("AdminPublicRoute", {
-    isAuthenticated,
-    role: user?.role,
-  });
+  // console.log("AdminPublicRoute", {
+  //   isAuthenticated,
+  //   role: user?.role,
+  // });
   if (isAuthenticated && user?.role === "ADMIN") {
       console.log("Redirecting to dashboard");
     return <Navigate to="/admin" replace />;

@@ -16,6 +16,8 @@ export interface CreateHospitalDTO {
 
   zipcode:string;
 
+  image:File;
+
   latitude:number;
 
   longitude:number;

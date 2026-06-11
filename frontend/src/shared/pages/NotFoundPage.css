@@ -1,0 +1,279 @@
+:root {
+  --bg-main: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-light: #94a3b8;
+  --primary: #020617;
+  --primary-hover: #1e293b;
+  --border-btn: #e2e8f0;
+  
+  /* Runner Structural Colors */
+  --runner-color: #0f172a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.industry-error-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  background-color: var(--bg-main);
+}
+
+/* --- RUNNER BOX ANIMATION FRAME --- */
+.runner-sandbox {
+  position: relative;
+  width: 200px;
+  height: 120px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.runner {
+  position: absolute;
+  left: 75px;
+  bottom: 20px;
+  width: 50px;
+  height: 80px;
+  animation: bodyBounce 0.6s ease-in-out infinite alternate;
+}
+
+/* Character Skeleton Design */
+.runner div {
+  position: absolute;
+  background-color: var(--runner-color);
+  border-radius: 4px;
+}
+
+.runner .head {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  top: 0;
+  left: 22px;
+}
+
+.runner .torso {
+  width: 8px;
+  height: 32px;
+  top: 15px;
+  left: 22px;
+  transform: rotate(15deg);
+}
+
+/* Limbs Shared Kinematics */
+.runner .arm-front, .runner .arm-back, 
+.runner .leg-front, .runner .leg-back {
+  transform-origin: top center;
+}
+
+.runner .arm-front {
+  width: 6px;
+  height: 24px;
+  top: 18px;
+  left: 24px;
+  animation: armCycle 0.6s linear infinite;
+}
+
+.runner .arm-back {
+  width: 6px;
+  height: 24px;
+  top: 18px;
+  left: 24px;
+  opacity: 0.4;
+  animation: armCycle 0.6s linear infinite reverse;
+}
+
+.runner .leg-front {
+  width: 7px;
+  height: 30px;
+  top: 44px;
+  left: 20px;
+  animation: legCycle 0.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.runner .leg-back {
+  width: 7px;
+  height: 30px;
+  top: 44px;
+  left: 20px;
+  opacity: 0.4;
+  animation: legCycle 0.6s cubic-bezier(0.4, 0, 0.2, 1) infinite reverse;
+}
+
+/* Ground floor setup */
+.floor-line {
+  position: absolute;
+  bottom: 18px;
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  background-color: var(--border-btn);
+}
+
+/* Environment Speed Markers */
+.speed-line {
+  position: absolute;
+  height: 2px;
+  background-color: #e2e8f0;
+  border-radius: 2px;
+  animation: sweep 0.8s linear infinite;
+}
+
+.sl-1 { width: 30px; bottom: 35px; right: -40px; animation-delay: 0s; }
+.sl-2 { width: 45px; bottom: 55px; right: -40px; animation-delay: 0.2s; opacity: 0.6; }
+.sl-3 { width: 20px; bottom: 22px; right: -40px; animation-delay: 0.4s; }
+
+/* --- ANIMATION ARRAYS --- */
+@keyframes bodyBounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-6px); }
+}
+
+@keyframes armCycle {
+  0%, 100% { transform: rotate(40deg); }
+  50% { transform: rotate(-50deg); }
+}
+
+@keyframes legCycle {
+  0% { transform: rotate(55deg) scaleY(1); }
+  50% { transform: rotate(-45deg) scaleY(0.85); }
+  100% { transform: rotate(55deg) scaleY(1); }
+}
+
+@keyframes sweep {
+  0% { right: -50px; left: 210px; opacity: 1; }
+  100% { right: 210px; left: -50px; opacity: 0; }
+}
+
+/* --- CORE PAGE STYLING --- */
+.error-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 480px;
+  text-align: center;
+  animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.display-code {
+  font-size: clamp(5.5rem, 13vw, 8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.text-group {
+  margin-bottom: 36px;
+}
+
+.heading {
+  font-size: clamp(1.5rem, 4vw, 1.85rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.subtext {
+  font-size: 0.975rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  padding: 0 12px;
+}
+
+/* Interactive Actions */
+.action-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 0.925rem;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: var(--primary);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.1s ease-out;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 0.925rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-btn);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.1s ease-out;
+}
+
+.btn-secondary:hover {
+  color: var(--text-main);
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.error-footer {
+  position: absolute;
+  bottom: 24px;
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Standardization Breakpoint */
+@media (max-width: 480px) {
+  .action-group {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 12px;
+  }
+  
+  .btn-primary, .btn-secondary {
+    width: 100%;
+  }
+}

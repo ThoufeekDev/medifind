@@ -11,7 +11,7 @@ interface HospitalStore {
     hospital:Hospital|null;
     loading:boolean;
     fetchHospital:()=>Promise<Hospital | null>;
-    createHospitalAction:(data:CreateHospitalDTO)=>Promise<void>;
+    createHospitalAction:(data:FormData)=>Promise<void>;
 }
 
 export const useHospitalStore = create<HospitalStore>((set)=>({
@@ -22,9 +22,9 @@ export const useHospitalStore = create<HospitalStore>((set)=>({
         set({loading:true});
         
         try {
-            console.log("Fetching hospital data...");
+           
             const response = await getMyHospital();
-            console.log("Fetched hospital data:", response);
+           
             set({hospital:response.hospital})
             return response.hospital;
         } finally {
@@ -32,7 +32,7 @@ export const useHospitalStore = create<HospitalStore>((set)=>({
         }
     },
 
-    createHospitalAction:async(data)=>{
+    createHospitalAction:async(data:FormData)=>{
         set({loading:true});
 
         try {

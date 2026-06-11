@@ -12,8 +12,6 @@ export interface Hospital {
 
   description:string;
 
-  hospitalImage?:string;
-
   licenseNumber?:string;
 
   address:string;
@@ -21,6 +19,8 @@ export interface Hospital {
   city?:string;
 
   state?:string;
+
+  imageUrl?:string;
 
   country?:string;
 

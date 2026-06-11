@@ -13,10 +13,11 @@ export class PrismaHospitalRepository implements IHospitalRepository {
      
     
      async create(data: CreateHospitalDTO,adminId:string): Promise<Hospital> {
+     
           return prisma.hospital.create({
             data:{
                 ...data,
-                adminId,
+               adminId
             }
           })
      }

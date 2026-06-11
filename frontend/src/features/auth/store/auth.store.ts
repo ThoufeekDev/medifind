@@ -105,7 +105,7 @@ export const useAuthStore = create<AuthStore>((set,get)=>({
             })
 
             const profile = await getProfile();
-            console.log("Fetched user profile:", profile.user);
+  1
             set({
                 user:profile.user,
                 isAuthenticated:true,
