@@ -14,5 +14,5 @@ logs
 coverage
 
 .DS_Store
-
+*.zip
 .vsCode

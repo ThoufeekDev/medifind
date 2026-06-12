@@ -17,6 +17,10 @@ export class LoginUserUseCase {
          const user = await this.userRepository.findByEmail(
             data.email
          )
+
+
+        
+
    
 
          if(!user){
@@ -38,6 +42,14 @@ export class LoginUserUseCase {
                 "Please verify your email"
             )
         }
+
+        console.log("user.role is ",user.role,"data.role is ",data.role)
+
+        if(user.role!==data.role){
+             throw new UnauthorizedError("Invalid credentials")
+        }
+
+      
 
         const {
             password,

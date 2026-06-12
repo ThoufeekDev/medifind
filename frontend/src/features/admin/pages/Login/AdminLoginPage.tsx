@@ -3,9 +3,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../auth/store/auth.store";
 import { loginSchema, type LoginFormData } from "../../../auth/validators/login.schema";
-import { getMyHospital } from "../../services/hospital.service";
 import { useState } from "react";
-import './adminLogin.css'
+import { getErrorMessage } from "../../../../shared/utils/getErrorMessage";
+import './adminLogin.css';
 
 export default function AdminLoginPage() {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
@@ -15,36 +15,20 @@ export default function AdminLoginPage() {
   const [authError, setAuthError] = useState("");
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
+  const {isLoading} = useAuthStore();
 
   const onSubmit = async (data: LoginFormData) => {
     try {
       setAuthError("");
-
-
-      console.log("Attempting login with data:", data);
+    
      
-      await login(data);
+      await login({...data,role:"ADMIN"});
       navigate("/admin");
-    //   console.log("test",useAuthStore.getState().user)
-    //   const currentUser = useAuthStore.getState().user;
-    //  console.log("Current user after login:", currentUser);
-    //   if (currentUser?.role !== "ADMIN") {
-    //     setAuthError("Access denied. Direct console authorizations require explicit administrative privileges.");
-    //     return;
-    //   }
-
-    //   console.log("Login successful, fetching hospital data...");
-
-    //   const hospitalResponse = await getMyHospital();
-    //   if(hospitalResponse.hospital){
-    //     console.log("Hospital found, navigating to dashboard", hospitalResponse.hospital)
-    //       navigate("/admin/dashboard")
-    //   }else{
-    //     navigate("/admin/create-hospital")
-    //   }
-    } catch (error) {
-      console.error("[AUTH_FAILURE]", error);
-      setAuthError("The credentials provided do not match our administrative database profiles.");
+    } catch (error:any) {
+      console.error("[GATEWAY_AUTH_FAILURE]", error);
+      // const message = error?.response?.data?.message || "Something went wrong"
+      setAuthError(getErrorMessage(error))
+      
     }
   };
 
@@ -52,20 +36,19 @@ export default function AdminLoginPage() {
     <div className="admin-login-container">
       <main className="admin-login-card">
         
-        {/* Core Identity System Block */}
-        <header className="admin-header">
-          <div className="admin-badge" role="status">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        {/* Simplified User-like Header Identity Module */}
+        <header className="brand-header">
+          <div className="brand-logo" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             </svg>
-            Console Verification
+            MediFind
           </div>
-          <h1>System Gateway</h1>
-          <p>Provide secure credential mappings to establish administrative runtime access</p>
+          <h2>System Gateway</h2>
+          <p>Login to access your administrative workspace panel</p>
         </header>
 
-        {/* Semantic Level Warnings */}
+        {/* Action Failure Banner */}
         {authError && (
           <div className="alert-error" role="alert">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
@@ -79,15 +62,15 @@ export default function AdminLoginPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           
-          {/* Identity Control Node */}
+          {/* Email Form Group */}
           <div className="form-group">
-            <label htmlFor="adm-email">Corporate Email Link</label>
+            <label htmlFor="adm-email">Email Address</label>
             <div className="input-wrapper">
               <input
                 id="adm-email"
                 type="email"
                 autoComplete="email"
-                placeholder="root@medifind.com"
+                placeholder="admin@medifind.com"
                 aria-invalid={errors.email ? "true" : "false"}
                 {...register("email")}
               />
@@ -99,9 +82,9 @@ export default function AdminLoginPage() {
             )}
           </div>
 
-          {/* Secure Credential Node */}
+          {/* Password Form Group */}
           <div className="form-group">
-            <label htmlFor="adm-password">Access Token Secret</label>
+            <label htmlFor="adm-password">Password</label>
             <div className="input-wrapper">
               <input
                 id="adm-password"
@@ -119,9 +102,9 @@ export default function AdminLoginPage() {
             )}
           </div>
 
-          {/* Core Submission Processor Vector */}
-          <button type="submit" className="submit-btn">
-            Authorize Gateway Environment
+          {/* Primary Submit Control Button */}
+          <button type="submit" className="submit-btn" disabled={isLoading}>
+            {isLoading?"Logging in...":"Login"}
           </button>
           
         </form>

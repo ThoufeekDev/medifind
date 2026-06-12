@@ -5,7 +5,7 @@ export default function App(){
     const fetchProfile = useAuthStore((state)=>state.fetchProfile);
     useEffect(()=>{
         fetchProfile();
-    },[]);
+    },[fetchProfile]);
 
     return (
         <AppRoutes/>

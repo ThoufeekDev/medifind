@@ -3,7 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import { Turnstile } from "react-turnstile";
-import './AdminRegister.css'
+import { getErrorMessage } from "../../../../shared/utils/getErrorMessage";
+import './AdminRegister.css';
 
 import { registerUser } from "../../../auth/services/auth.service";
 import {
@@ -12,6 +13,7 @@ import {
 } from "../../validators/hospitalRegister.dto";
 
 export default function HospitalRegisterPage() {
+  const [authError, setAuthError] = useState("");
   const [turnstileToken, setTurnstileToken] = useState("");
   const navigate = useNavigate();
 
@@ -25,22 +27,23 @@ export default function HospitalRegisterPage() {
 
   const onSubmit = async (data: HospitalRegisterFormData) => {
     try {
+      setAuthError("");
 
       await registerUser({
         ...data,
-        role:"ADMIN",
+        role: "ADMIN",
         turnstileToken,
       });
-
-
 
       navigate("/verify-otp", {
         state: {
           email: data.email,
         }
       });
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      // const message = error?.response?.data?.message || "Registration failed. Please try again.";
+      setAuthError(getErrorMessage(error))
+      
     }
   };
 
@@ -60,6 +63,18 @@ export default function HospitalRegisterPage() {
           <p>Create your hospital admin account workspace</p>
         </header>
 
+        {/* Global Server Actions Response Error Banner (Strategic Positioning) */}
+        {authError && (
+          <div className="error-banner" role="alert">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true" style={{ flexShrink: 0 }}>
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>{authError}</span>
+          </div>
+        )}
+          
         {/* Form Architecture Wrapper */}
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
 
@@ -76,7 +91,7 @@ export default function HospitalRegisterPage() {
                 {...register("name")}
               />
             </div>
-            {errors.name && <p className="error-message">{errors.name.message}</p>}
+            {errors.name && <p className="error-message" id="name-error">{errors.name.message}</p>}
           </div>
 
           {/* EMAIL */}
@@ -92,7 +107,7 @@ export default function HospitalRegisterPage() {
                 {...register("email")}
               />
             </div>
-            {errors.email && <p className="error-message">{errors.email.message}</p>}
+            {errors.email && <p className="error-message" id="email-error">{errors.email.message}</p>}
           </div>
 
           {/* PASSWORD */}
@@ -108,7 +123,7 @@ export default function HospitalRegisterPage() {
                 {...register("password")}
               />
             </div>
-            {errors.password && <p className="error-message">{errors.password.message}</p>}
+            {errors.password && <p className="error-message" id="password-error">{errors.password.message}</p>}
           </div>
 
           {/* CONFIRM PASSWORD */}
@@ -125,7 +140,7 @@ export default function HospitalRegisterPage() {
               />
             </div>
             {errors.confirmPassword && (
-              <p className="error-message">{errors.confirmPassword.message}</p>
+              <p className="error-message" id="confirmPassword-error">{errors.confirmPassword.message}</p>
             )}
           </div>
 

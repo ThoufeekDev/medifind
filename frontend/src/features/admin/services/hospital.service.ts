@@ -1,5 +1,5 @@
 import api from "../../../api/axios";
-import type { CreateHospitalDTO } from "../dtos/createHospital.dto";
+
 import type { Hospital } from "../types/hospital.type";
 
 
@@ -10,7 +10,7 @@ export interface CreateHospitalResponse{
 
 export interface GetHospitalResponse {
     success:boolean,
-    hospital:Hospital,
+    hospital:Hospital | null,
 }
 
 

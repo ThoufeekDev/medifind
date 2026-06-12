@@ -1,12 +1,11 @@
 import { Request,Response } from "express";
 import { PrismaUserRepository } from "../../infrastructure/repositories/PrismaUserRepository";
-import { RegisterUserUseCase } from "../../application/use-cases/RegisterUserUseCase";
+
 import { registerSchema } from "../validators/register.validator";
 import { RefreshTokenUseCase } from "../../application/use-cases/RefreshTokenUseCase";
 import { AuthenticatedRequest } from "../../../../shared/types/AuthenticateRequest";
 
 import { loginSchema } from "../validators/login.validator";
-import { LoginUserUseCase } from "../../application/use-cases/LoginUserUseCase";
 
 import { generateAccessToken } from "../../../../shared/utils/generateAccessToken";
 import { generateRefreshToken } from "../../../../shared/utils/generateRefreshToken";
@@ -14,7 +13,6 @@ import { generateRefreshToken } from "../../../../shared/utils/generateRefreshTo
 
 import { VerifyOtpUseCase } from "../../application/use-cases/VerifyOtpUseCase";
 import { verifyUserOtpSchema } from "../validators/verifyOtp.validator";
-import { GetProfileUseCase } from "../../application/use-cases/GetProfileUseCase";
 
 
 // factories
@@ -79,8 +77,8 @@ export class AuthController {
                 httpOnly:true,
                 secure:false,
                 sameSite:"lax",
-                // maxAge:15 * 60 * 1000,
-                maxAge:60 * 1000
+                maxAge:15 * 60 * 1000,
+                // maxAge:60 * 1000
             }
          );
 
@@ -91,8 +89,8 @@ export class AuthController {
                 httpOnly:true,
                 secure:false,
                 sameSite:"lax",
-                // maxAge:7 * 24 * 60 * 60 * 1000,
-                maxAge:60 * 2000
+                maxAge:7 * 24 * 60 * 60 * 1000,
+                // maxAge:60 * 2000
             }
          )
 
@@ -105,13 +103,7 @@ export class AuthController {
 
     async login(req:Request,res:Response){
         const validatedData = loginSchema.parse(req.body);
-        // const userRepository = new PrismaUserRepository();
-        //                              // dependancy injecttion
-        // const loginUserUseCase = new LoginUserUseCase(userRepository )
-
-        // const user = await loginUserUseCase.execute(validatedData)
-
-
+ 
         const loginUserUseCase = makeLoginUserCase();
 
         const user = await loginUserUseCase.execute(validatedData)
@@ -132,8 +124,8 @@ export class AuthController {
                 httpOnly:true,
                 secure:false,
                 sameSite:"lax",
-                // maxAge:15 * 60 * 1000,
-                    maxAge:60 * 1000
+                maxAge:15 * 60 * 1000,
+                    // maxAge:60 * 1000
             }
          );
 
@@ -144,8 +136,8 @@ export class AuthController {
                 httpOnly:true,
                 secure:false,
                 sameSite:"lax",
-                // maxAge:7 * 24 * 60 * 60 * 1000,
-                    maxAge:60 * 2000
+                maxAge:7 * 24 * 60 * 60 * 1000,
+                    // maxAge:60 * 2000
             }
          )
 

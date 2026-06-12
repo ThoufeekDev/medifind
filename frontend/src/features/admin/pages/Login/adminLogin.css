@@ -1,89 +1,84 @@
 :root {
-  /* Design Tokens (Brand System) */
-  --adm-bg-main: #f8fafc;
-  --adm-bg-surface: #ffffff;
-  --adm-text-primary: #0f172a;
-  --adm-text-secondary: #475569;
-  --adm-text-muted: #94a3b8;
+  /* Design Tokens (Matching Standard User Auth System) */
+  --auth-bg-main: #f8fafc;
+  --auth-bg-surface: #ffffff;
+  --auth-text-primary: #0f172a;
+  --auth-text-secondary: #475569;
+  --auth-text-muted: #94a3b8;
   
-  --adm-color-brand: #0f172a;
-  --adm-color-brand-hover: #1e293b;
-  --adm-color-accent: #2563eb;
-  --adm-color-accent-glare: rgba(37, 99, 235, 0.1);
+  --auth-color-brand: #0f172a;
+  --auth-color-brand-hover: #1e293b;
+  --auth-color-accent: #06b6d4; /* MediFind Patient Cyan Accent */
+  --auth-color-accent-glare: rgba(6, 182, 212, 0.1);
   
-  --adm-status-error: #dc2626;
-  --adm-status-error-bg: #fef2f2;
-  --adm-status-error-border: #fca5a5;
+  --auth-status-error: #dc2626;
+  --auth-status-error-bg: #fef2f2;
+  --auth-status-error-border: #fca5a5;
   
-  --adm-radius-main: 12px;
-  --adm-radius-inner: 8px;
+  --auth-radius-main: 12px;
+  --auth-radius-inner: 8px;
   
-  --adm-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --adm-shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --auth-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --auth-shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
   
-  --adm-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --auth-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* System Container Base */
+/* Base Wrapper Grid */
 .admin-login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: var(--adm-bg-main);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--auth-bg-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   padding: 1.5rem;
   box-sizing: border-box;
 }
 
-/* Enterprise Layout Card Grid */
+/* Central Card Structure */
 .admin-login-card {
-  background: var(--adm-bg-surface);
+  background: var(--auth-bg-surface);
   padding: 3.5rem 3rem;
-  border-radius: var(--adm-radius-main);
+  border-radius: var(--auth-radius-main);
   border: 1px solid #e2e8f0;
-  box-shadow: var(--adm-shadow-card);
+  box-shadow: var(--auth-shadow-card);
   width: 100%;
   max-width: 460px;
   box-sizing: border-box;
 }
 
-/* Header Stack Typography */
-.admin-header {
+/* Header Context Group */
+.brand-header {
   text-align: center;
   margin-bottom: 2.5rem;
 }
 
-.admin-badge {
-  display: inline-flex;
+.brand-logo {
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  background: #f1f5f9;
-  color: var(--adm-text-secondary);
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 0.45rem 0.85rem;
-  border-radius: var(--adm-radius-inner);
-  margin-bottom: 1.25rem;
-  border: 1px solid #e2e8f0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--auth-text-primary);
+  margin-bottom: 1rem;
 }
 
-.admin-badge svg {
-  color: var(--adm-text-secondary);
+.brand-logo svg {
+  color: var(--auth-color-accent);
 }
 
-.admin-header h1 {
+.brand-header h2 {
   font-size: 1.875rem;
   font-weight: 700;
-  color: var(--adm-text-primary);
+  color: var(--auth-text-primary);
   margin: 0 0 0.5rem 0;
   letter-spacing: -0.025em;
 }
 
-.admin-header p {
-  color: var(--adm-text-secondary);
+.brand-header p {
+  color: var(--auth-text-secondary);
   font-size: 0.875rem;
   line-height: 1.5;
   margin: 0;
@@ -91,11 +86,11 @@
 
 /* Standardized Form Alerts */
 .alert-error {
-  background-color: var(--adm-status-error-bg);
-  border: 1px solid var(--adm-status-error-border);
-  color: var(--adm-status-error);
+  background-color: var(--auth-status-error-bg);
+  border: 1px solid var(--auth-status-error-border);
+  color: var(--auth-status-error);
   padding: 0.875rem 1rem;
-  border-radius: var(--adm-radius-inner);
+  border-radius: var(--auth-radius-inner);
   font-size: 0.875rem;
   margin-bottom: 1.75rem;
   text-align: left;
@@ -103,10 +98,9 @@
   align-items: center;
   gap: 0.625rem;
   font-weight: 500;
-  animation: admFadeIn var(--adm-transition-fast);
 }
 
-/* Form Controls & Semantic Elements */
+/* Inputs & Form Layouts */
 .form-group {
   margin-bottom: 1.5rem;
   text-align: left;
@@ -116,9 +110,8 @@
   display: block;
   font-size: 0.813rem;
   font-weight: 600;
-  color: var(--adm-text-secondary);
+  color: var(--auth-text-secondary);
   margin-bottom: 0.5rem;
-  letter-spacing: 0.01em;
 }
 
 .input-wrapper {
@@ -132,66 +125,57 @@
   padding: 0.875rem 1rem;
   font-size: 0.95rem;
   line-height: 1.25rem;
-  background: var(--adm-bg-surface);
+  background: var(--auth-bg-surface);
   border: 1px solid #cbd5e1;
-  border-radius: var(--adm-radius-inner);
-  color: var(--adm-text-primary);
+  border-radius: var(--auth-radius-inner);
+  color: var(--auth-text-primary);
   outline: none;
-  box-shadow: var(--adm-shadow-sm);
-  transition: border-color var(--adm-transition-fast), box-shadow var(--adm-transition-fast);
+  box-shadow: var(--auth-shadow-sm);
+  transition: border-color var(--auth-transition-fast), box-shadow var(--auth-transition-fast);
   box-sizing: border-box;
 }
 
 .input-wrapper input::placeholder {
-  color: var(--adm-text-muted);
+  color: var(--auth-text-muted);
 }
 
-/* Keyboard Accessibility/Focus Indicators */
 .input-wrapper input:focus {
-  border-color: var(--adm-color-accent);
-  box-shadow: 0 0 0 4px var(--adm-color-accent-glare);
+  border-color: var(--auth-color-accent);
+  box-shadow: 0 0 0 4px var(--auth-color-accent-glare);
 }
 
 .error-message {
-  color: var(--adm-status-error);
+  color: var(--auth-status-error);
   font-size: 0.75rem;
   font-weight: 500;
   margin: 0.45rem 0 0 0;
-  display: flex;
-  align-items: center;
 }
 
-/* Primary Execution Button */
+/* Core Form Commit Button */
 .submit-btn {
   width: 100%;
-  background: var(--adm-color-brand);
-  color: var(--adm-bg-surface);
+  background: var(--auth-color-brand);
+  color: var(--auth-bg-surface);
   border: 1px solid transparent;
   padding: 0.875rem;
-  border-radius: var(--adm-radius-inner);
+  border-radius: var(--auth-radius-inner);
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: var(--adm-shadow-sm);
-  transition: background-color var(--adm-transition-fast);
-  margin-top: 0.75rem;
+  box-shadow: var(--auth-shadow-sm);
+  transition: background-color var(--auth-transition-fast);
 }
 
 .submit-btn:hover {
-  background: var(--adm-color-brand-hover);
+  background: var(--auth-color-brand-hover);
 }
 
 .submit-btn:focus-visible {
-  outline: 2px solid var(--adm-color-accent);
+  outline: 2px solid var(--auth-color-accent);
   outline-offset: 2px;
 }
 
-@keyframes admFadeIn {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Clean Responsive Systems (Handles Tablets & Mobile Devices Fluidly) */
+/* Fluid Responsive Breakpoints */
 @media (max-width: 640px) {
   .admin-login-card {
     padding: 2.5rem 2rem;
@@ -200,7 +184,7 @@
 
 @media (max-width: 480px) {
   .admin-login-container {
-    background: var(--adm-bg-surface);
+    background: var(--auth-bg-surface);
     align-items: flex-start;
     padding-top: 3rem;
   }

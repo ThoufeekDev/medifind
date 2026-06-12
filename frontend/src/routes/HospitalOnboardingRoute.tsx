@@ -9,25 +9,22 @@ export default function HospitalOnboardingRoute({
   children: React.ReactNode;
 }) {
 
-  const { hospital, fetchHospital } = useHospitalStore();
+  const { hospital,loading,hasFetchedHospital, fetchHospital } = useHospitalStore();
 
-  const [checking, setChecking] =  useState(true);
 
   useEffect(() => {
 
-    const loadHospital = async () => {
-      await fetchHospital();
-      setChecking(false);
-    };
+     if(!hasFetchedHospital){
+           fetchHospital();
+     }
+     
 
-    loadHospital();
-
-  }, []);
+  },[hasFetchedHospital,fetchHospital]);
 
 
-  // console.log("Hospital in Onboarding Route:", hospital);
+ 
 
-  if (checking) {
+  if (loading) {
     return <Loader />;
   }
 

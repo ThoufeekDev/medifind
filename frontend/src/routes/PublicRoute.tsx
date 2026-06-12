@@ -18,7 +18,7 @@ export default function PublicRoute({children}:Props){
    if(isAuthenticated && user){
       if(user.role === "ADMIN"){
          return <Navigate to="/admin" replace/>
-      }2
+      }
       return (
          <Navigate to="/" replace/>
       )
