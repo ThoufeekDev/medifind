@@ -6,6 +6,7 @@ import { registerUser } from "../../services/auth.service";
 import {Turnstile} from "react-turnstile";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { getErrorMessage } from "../../../../shared/utils/getErrorMessage";
 import {
   registerSchema,
   type RegisterFormData,
@@ -13,6 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 export default function UserRegisterPage() {
   const [turnstileToken,setTurnstileToken] = useState('');
+  const [authError,setAuthError] = useState("");
   const {
     register,
     handleSubmit,
@@ -24,6 +26,7 @@ export default function UserRegisterPage() {
   const navigate = useNavigate();
   const onSubmit = async (data: RegisterFormData) => {
       try {
+        setAuthError("");
          await registerUser({
             ...data,
             role:"USER",
@@ -37,7 +40,7 @@ export default function UserRegisterPage() {
            }
          })
       }catch(error){
-          console.error(error);
+          setAuthError(getErrorMessage(error))
       }
   };
 

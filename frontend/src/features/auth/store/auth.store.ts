@@ -12,6 +12,7 @@ import type { LoginDTO } from "../dtos/login.dto";
 import type {User} from "../types/auth.types"
 import type { RegisterDTO } from "../dtos/register.dto";
 import type { VerifyOtpDTO } from "../dtos/verify-otp.dto";
+import { useHospitalStore } from "../../admin/store/hospital.store";
 
 
 
@@ -48,11 +49,12 @@ export const useAuthStore = create<AuthStore>((set,get)=>({
             set({
                 isLoading:true,
             });
-            console.log("Registering user with data:", data);
+           
 
             await registerUser(data)
         } catch (error) {
-            console.error(error)
+            console.error("error is ",error);
+            throw error;
         } finally {
             set({
                 isLoading:false
@@ -75,6 +77,9 @@ export const useAuthStore = create<AuthStore>((set,get)=>({
             user:profile.user,
             isAuthenticated:true,
          })
+       }catch(error){
+        console.error(error);
+        throw error;
        } finally {
          set({
             isLoading:false,
@@ -86,12 +91,14 @@ export const useAuthStore = create<AuthStore>((set,get)=>({
 
         try {
             await logoutUser();
+            useHospitalStore.getState().resetHospital();
             set({
                 user:null,
                 isAuthenticated:false,
             })
         } catch (error) {
-            console.error(error)
+            console.error(error);
+            throw error;
         }
 
      },
@@ -105,7 +112,7 @@ export const useAuthStore = create<AuthStore>((set,get)=>({
             })
 
             const profile = await getProfile();
-  1
+  
             set({
                 user:profile.user,
                 isAuthenticated:true,

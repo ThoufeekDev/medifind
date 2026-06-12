@@ -2,15 +2,18 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/auth.store";
-import './login.css'
+import { useState } from "react";
+import {getErrorMessage} from "../../../../shared/utils/getErrorMessage"
+import './login.css';
 import {
   loginSchema,
   type LoginFormData,
 } from "../../validators/login.schema";
 
 export default function LoginPage() {
-  const { login } = useAuthStore();
+  const { login,isLoading } = useAuthStore();
   const navigate = useNavigate();
+  const [authError, setAuthError] = useState("");
 
   const {
     register,
@@ -22,11 +25,13 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      console.log("Attempting to log in with data:", data);
-      await login(data);
+      setAuthError("");
+      await login({...data,role:"USER"});
       navigate('/', { replace: true });
-    } catch (error) {
+    } catch (error: any) {
       console.error("[AUTH_FAILURE]", error);
+      // const message = error?.response?.data?.message || "Login failed. Please verify your entries.";
+      setAuthError(getErrorMessage(error))
     }
   };
 
@@ -45,6 +50,18 @@ export default function LoginPage() {
           <h2>Welcome Back</h2>
           <p>Login to access your account dashboard</p>
         </header>
+
+        {/* Global API Actions Response Error Banner (Repositioned above inputs) */}
+        {authError && (
+          <div className="error-banner" role="alert">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true" style={{ flexShrink: 0 }}>
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>{authError}</span>
+          </div>
+        )}
 
         {/* Form Processing Node */}
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -93,8 +110,8 @@ export default function LoginPage() {
           </div>
 
           {/* Form Trigger Control */}
-          <button type="submit" className="submit-btn">
-            Login
+          <button type="submit" className="submit-btn" disabled={isLoading}>
+            {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
 
