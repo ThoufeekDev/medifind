@@ -5,6 +5,8 @@ import hospitalRoute from "./modules/hospital/presentation/routes/hospital.route
 
 import specializationRoute from "../src/modules/specialization/presentation/routes/specialization.routes"
 
+import doctorRoute from "../src/modules/doctor/presentation/routes/doctor.routes"
+
 import cors from "cors"
 import { errorHandler } from './shared/middleware/errrorHandler';
 const app = express();
@@ -24,6 +26,10 @@ app.use('/hospital',hospitalRoute)
 
 //SpecializationRoute
 app.use('/specializations',specializationRoute);
+
+
+//DoctorsRoute
+app.use('/doctors',doctorRoute)
 
 
 

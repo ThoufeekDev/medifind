@@ -1,5 +1,5 @@
 import {Request,Response} from "express";
-import { makeGetAllSpecializationUseCase } from "../../infrastructure/factories/makeGetAllSpecializationsUseCase";
+import { makeGetAllSpecializationUseCase } from "../../../hospital/infrastructure/factories/makeGetAllSpecializationsUseCase";
 import { successResponse } from "../../../../shared/utils/response";
 
 
