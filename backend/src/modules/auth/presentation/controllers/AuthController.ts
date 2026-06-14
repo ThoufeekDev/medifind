@@ -17,9 +17,9 @@ import { verifyUserOtpSchema } from "../validators/verifyOtp.validator";
 
 // factories
 
-import {makeRegisterUserUseCase} from "../../../../shared/factories/auth/makeRegisterUserUseCase"
-import { makeLoginUserCase } from "../../../../shared/factories/auth/makeLoginUserCase";
-import { makeGetProfileUserUseCase } from "../../../../shared/factories/auth/makeGetProfileUserUseCase";
+import {makeRegisterUserUseCase} from "../../infrastructure/factories/makeRegisterUserUseCase"
+import { makeLoginUserCase } from "../../infrastructure/factories/makeLoginUserCase";
+import { makeGetProfileUserUseCase } from "../../infrastructure/factories/makeGetProfileUserUseCase";
 
 
 // Error Handling
