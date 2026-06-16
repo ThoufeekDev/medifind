@@ -40,6 +40,10 @@ const AdminDashboardPage = lazy(
   () => import("../features/admin/pages/Dashboard/AdminDashboardPage")
 );
 
+const DoctorPage = lazy(
+  () => import("../features/admin/pages/Doctor/DoctorsPage")
+);
+
 const NotFoundPage = lazy(
   () => import("../shared/pages/NotFoundPage")
 );
@@ -156,13 +160,24 @@ export default function AppRoutes() {
               path="/admin/dashboard"
               element={<AdminDashboardPage />}
             />
+
+                 <Route
+            path="/admin/doctors"
+            element={<DoctorPage/>}
+            />
+            
           </Route>
+
+       
+
 
           {/* 404 */}
           <Route
             path="*"
             element={<NotFoundPage />}
           />
+
+     
         </Routes>
       </Suspense>
     </BrowserRouter>

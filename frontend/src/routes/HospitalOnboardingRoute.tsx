@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
 import { useHospitalStore } from "../features/admin/store/hospital.store";

@@ -17,9 +17,9 @@ import { verifyUserOtpSchema } from "../validators/verifyOtp.validator";
 
 // factories
 
-import {makeRegisterUserUseCase} from "../../../../shared/factories/auth/makeRegisterUserUseCase"
-import { makeLoginUserCase } from "../../../../shared/factories/auth/makeLoginUserCase";
-import { makeGetProfileUserUseCase } from "../../../../shared/factories/auth/makeGetProfileUserUseCase";
+import {makeRegisterUserUseCase} from "../../infrastructure/factories/makeRegisterUserUseCase"
+import { makeLoginUserCase } from "../../infrastructure/factories/makeLoginUserCase";
+import { makeGetProfileUserUseCase } from "../../infrastructure/factories/makeGetProfileUserUseCase";
 
 
 // Error Handling
@@ -78,7 +78,7 @@ export class AuthController {
                 secure:false,
                 sameSite:"lax",
                 maxAge:15 * 60 * 1000,
-                // maxAge:60 * 1000
+              
             }
          );
 
@@ -90,7 +90,7 @@ export class AuthController {
                 secure:false,
                 sameSite:"lax",
                 maxAge:7 * 24 * 60 * 60 * 1000,
-                // maxAge:60 * 2000
+              
             }
          )
 
@@ -125,7 +125,7 @@ export class AuthController {
                 secure:false,
                 sameSite:"lax",
                 maxAge:15 * 60 * 1000,
-                    // maxAge:60 * 1000
+                 
             }
          );
 
@@ -137,7 +137,7 @@ export class AuthController {
                 secure:false,
                 sameSite:"lax",
                 maxAge:7 * 24 * 60 * 60 * 1000,
-                    // maxAge:60 * 2000
+                
             }
          )
 
