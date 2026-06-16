@@ -1,3 +1,4 @@
+import { ConflictError } from "../../../../shared/exceptions/ConflictError";
 import { NotFoundError } from "../../../../shared/exceptions/NotFoundError";
 import { IHospitalRepository } from "../../../hospital/domain/repositories/iHospitalRepository";
 import { ISpecializationRepository } from "../../../specialization/domain/repositories/ISpecializationRepository";
@@ -14,6 +15,12 @@ export class CreateDoctorUseCase {
 
     async create(adminId:string,data:CreateDoctorDTO){
         const hospital = await this.hospitalRepository.findByAdminId(adminId);
+
+        const existDoctor = await this.doctorRepository.existsByEmail(data.email);
+
+        if(existDoctor){
+            throw new ConflictError("Doctor already exists");
+        }
 
         if(!hospital){
             throw new NotFoundError("Hospital not found");

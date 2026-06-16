@@ -2,7 +2,7 @@ import { Response,Request } from "express";
 import { AuthenticatedRequest } from "../../../../shared/types/AuthenticateRequest";
 import { createDoctorSchema } from "../validators/createDoctor.schema";
 import { makeCreateDoctorUseCase } from "../../infrastructure/factories/makeCreateDoctorUseCase";
-
+import { makeGetDoctorUseCase } from "../../infrastructure/factories/makeGetDoctorUseCase";
 import { successResponse } from "../../../../shared/utils/response";
 export class doctorController  {
    
@@ -22,6 +22,19 @@ export class doctorController  {
         doctor
     )
       
+  }
+
+  async getAll(req:AuthenticatedRequest,res:Response){
+    const getDoctorRespository = makeGetDoctorUseCase();
+
+    const doctor = await getDoctorRespository.execute(req.userId!);
+
+    return successResponse(
+      res,
+      200,
+      "Doctor fetched Successfully",
+      doctor,
+    )
   }
 
 }

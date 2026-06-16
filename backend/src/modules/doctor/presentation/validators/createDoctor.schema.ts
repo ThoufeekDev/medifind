@@ -3,6 +3,10 @@ import { z } from "zod";
 export const createDoctorSchema = z.object({
   name: z.string().min(2),
 
+  email: z.email(),
+
+  phone: z.string().min(10),
+
   qualification: z.string().min(2),
 
   experience: z.number().min(0),

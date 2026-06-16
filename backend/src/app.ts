@@ -29,7 +29,7 @@ app.use('/specializations',specializationRoute);
 
 
 //DoctorsRoute
-app.use('/doctors',doctorRoute)
+app.use('/doctors',doctorRoute);
 
 
 
