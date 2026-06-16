@@ -25,9 +25,18 @@ export class doctorController  {
   }
 
   async getAll(req:AuthenticatedRequest,res:Response){
+    const filters = {
+    
+       specialization:req.query.specialization as string,
+       onDuty:req.query.onDuty===undefined?undefined:req.query.onDuty==="true",
+       sort:req.query.sort as string,
+    
+    }
+
+    console.log('filters',filters)
     const getDoctorRespository = makeGetDoctorUseCase();
 
-    const doctor = await getDoctorRespository.execute(req.userId!);
+    const doctor = await getDoctorRespository.execute(req.userId!,filters);
 
     return successResponse(
       res,

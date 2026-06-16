@@ -14,4 +14,6 @@ export interface Doctor {
   averageRating: number;
 
   isActive: boolean;
+
+  onDuty:boolean;
 }

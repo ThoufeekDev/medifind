@@ -7,6 +7,7 @@ export interface Doctor {
   experience: number;
   imageUrl: string | null;
   consultationFee: number;
+  onDuty:boolean;
   hospitalId: string;
   specializationId: string;
   createdAt: Date;

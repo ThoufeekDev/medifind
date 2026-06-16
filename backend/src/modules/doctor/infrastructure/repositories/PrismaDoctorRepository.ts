@@ -1,6 +1,7 @@
 import prisma from "../../../../config/database";
 import { CreateDoctorDTO } from "../../application/dtos/CreateDoctorDTO";
 import { DoctorListItemDTO } from "../../application/dtos/DotctorListItemDTO";
+import { GetDoctorsDTO } from "../../application/dtos/GetDoctorsDTO";
 import {Doctor} from "../../domain/entities/Doctor";
 import { IDoctorRepository } from "../../domain/repositories/IDoctorRepository";
 
@@ -23,18 +24,30 @@ export class PrismaDoctorRepository implements IDoctorRepository{
          return !!doctor
     }
 
-    async findByHospitalId(hospitalId: string): Promise<DoctorListItemDTO[]> {
+    async findByHospitalId(hospitalId: string,filters:GetDoctorsDTO): Promise<DoctorListItemDTO[]> {
          const doctor = await  prisma.doctor.findMany({
             where:{
                 hospitalId,
                 isActive:true,
+                ...(filters.onDuty!==undefined && {
+                    onDuty:filters.onDuty,
+                }),
+                ...(filters.specialization && {
+                    specialization:{
+                        name:filters.specialization,
+                    }
+                })
             },
             include:{
                 specialization:true,
             },
-            orderBy:{
-                createdAt:"desc"
-            }
+            orderBy:
+                filters.sort === "experience-desc"
+                ? {experience:"desc"}
+                :filters.sort==="experience-asc"
+                ?{experience:"asc"}
+                :{createdAt:"desc"},
+    
          })
 
          return doctor.map((doctor)=>({
@@ -47,6 +60,7 @@ export class PrismaDoctorRepository implements IDoctorRepository{
             reviewCount:0,
             averageRating:0,
             isActive:doctor.isActive,
+            onDuty:doctor.onDuty,
 
          }))
     }
