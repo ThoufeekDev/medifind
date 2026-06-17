@@ -1,5 +1,5 @@
 export interface DoctorFilters {
-    specialization?:string;
+    specializations?:string[];
     onDuty?:boolean;
     sort?:string;
 }

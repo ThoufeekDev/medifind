@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import type {CreateHospitalDTO} from "../dtos/createHospital.dto"
+
 import {
     createHospital,
     getMyHospital
@@ -30,7 +30,7 @@ export const useHospitalStore = create<HospitalStore>((set,get)=>({
         
         try {
 
-            console.log("Calling Hospital API")
+            
            
             const response = await getMyHospital();
            
