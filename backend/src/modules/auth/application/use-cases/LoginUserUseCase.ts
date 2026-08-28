@@ -3,6 +3,7 @@ import { IUserRepository } from "../../domain/repositories/IUserRepository";
 import { LoginUserDTO } from "../dtos/requests/LoginUserDTO";
 import { comparePassword } from "../../../../shared/utils/comparePassword";
 
+import { UserMapper } from "../mappers/UserMapper";
 
 // Error Handling
 import {NotFoundError} from "../../../../shared/exceptions/NotFoundError";
@@ -13,11 +14,13 @@ export class LoginUserUseCase {
      constructor(private userRepository:IUserRepository ){}
 
      async execute(data:LoginUserDTO){
+
+        console.log('trigger')
          
          const user = await this.userRepository.findByEmail(
             data.email
          )
-           console.log(user,'user')
+         
          if(!user){
             throw new NotFoundError("Invalid credentials")
          }
@@ -41,19 +44,21 @@ export class LoginUserUseCase {
         if(user.role!==data.role){
              throw new UnauthorizedError("Invalid credentials")
         }
-        console.log('heloo');
+   
         
 
-        const {
-            password,
-            ...safeUser
-        } = user;
+        // const {
+        //     password,
+        //     ...safeUser
+        // } = user;
 
-        console.log('safeuser',safeUser)
+        const userResponse = UserMapper.toResponseDTO(user);
+
+       
          
         return{
 
-          safeUser,
+          user:userResponse,
         }
      }
 }

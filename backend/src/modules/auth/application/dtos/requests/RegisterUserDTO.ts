@@ -1,7 +1,9 @@
+import { Role } from "@prisma/client"
+
 export interface RegisterUserDTO{
     name:string
     email:string
     password:string,
-    role:"USER" | "ADMIN",
+    role:Role,
     turnstileToken:string
 }

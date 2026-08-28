@@ -1,6 +1,7 @@
 import { NotFoundError } from "../../../../shared/exceptions/NotFoundError";
 import { AuthResponse } from "../../domain/entities/User";
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { UserMapper } from "../mappers/UserMapper";
 
 
 
@@ -12,10 +13,10 @@ export class GetProfileUseCase {
 
          if(!user) throw new NotFoundError("Invalid credentials");
 
-         const {password,...safeUser} = user;
+        const userResponse = UserMapper.toResponseDTO(user);
 
          return {
-            user:safeUser
+            user:userResponse
         }
      }
 }

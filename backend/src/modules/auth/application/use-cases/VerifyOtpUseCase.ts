@@ -7,6 +7,7 @@ import { verifyOtpDTO } from "../dtos/requests/VerifyOtpDTO";
 import { UnauthorizedError } from "../../../../shared/exceptions/UnauthorizedError";
 import {BadRequestError} from "../../../../shared/exceptions/BadRequestError"
 import { NotFoundError } from "../../../../shared/exceptions/NotFoundError";
+import { UserMapper } from "../mappers/UserMapper";
 
 
 
@@ -42,10 +43,13 @@ export class VerifyOtpUseCase {
 
         await redis.del(`otp:${data.email}`);
 
-        const {password,...safeUser} = updatedUser
+        // const {password,...safeUser} = updatedUser
+
+        const userResponse = UserMapper.toResponseDTO(updatedUser);
+
 
         return {
-            user:safeUser,
+            user:userResponse,
         }
     }
 }

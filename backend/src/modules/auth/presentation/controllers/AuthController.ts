@@ -31,13 +31,6 @@ export class AuthController {
 
         const validatedData = registerSchema.parse(req.body);
 
-    //     const userRepository = new PrismaUserRepository();
-    //                                     // dependency injection 
-    //     const registerUserUseCase = new RegisterUserUseCase(userRepository);
-
-    //    await registerUserUseCase.execute(validatedData)
-
-
     const useCase = makeRegisterUserUseCase();
 
      await useCase.execute(validatedData);
@@ -46,9 +39,6 @@ export class AuthController {
         return res.status(201).json({
             success:true,
             message:"OTP send to email",
-            // data:{
-            //     user:result.user
-            // }
         })
     }
 
@@ -106,16 +96,18 @@ export class AuthController {
            console.log('data')
         const loginUserUseCase = makeLoginUserCase();
         console.log("trgiiger")
-        const user = await loginUserUseCase.execute(validatedData)
+        const result = await loginUserUseCase.execute(validatedData)
          
-        console.log("user found",user)
+
          
          const accessToken = generateAccessToken({
-            userId:user.safeUser.id,role:user.safeUser.role
+            userId:result.user.id,
+            role:result.user.role
 
         });
         const refreshToken = generateRefreshToken({
-            userId:user.safeUser.id,role:user.safeUser.role
+            userId:result.user.id,
+            role:result.user.role
         });
  
         
@@ -146,7 +138,7 @@ export class AuthController {
 
          return res.status(200).json({
             success:true,
-             user:user.safeUser
+             user:result.user
             
          })
     }
@@ -216,8 +208,7 @@ export class AuthController {
     async profile(req:AuthenticatedRequest,res:Response):Promise<void>{
   
         const userId = req.userId;
-        // const userRepository = new PrismaUserRepository();
-        // const getProfileUserUseCase = new GetProfileUseCase(userRepository);
+    
             const getProfileUserUseCase = makeGetProfileUserUseCase();
             
             const user = await getProfileUserUseCase.execute(userId!)
