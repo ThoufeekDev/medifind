@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client"
+import { Role } from "../../../../../shared/enums/Role"
 
 export interface RegisterUserDTO{
     name:string

@@ -211,12 +211,12 @@ export class AuthController {
     
             const getProfileUserUseCase = makeGetProfileUserUseCase();
             
-            const user = await getProfileUserUseCase.execute(userId!)
+            const result = await getProfileUserUseCase.execute(userId!)
         
-        console.log("Fetched user profile:", user);
+      
          res.status(200).json({
             success:true,
-            user:user.user
+            user:result.user
          })
     }
 }

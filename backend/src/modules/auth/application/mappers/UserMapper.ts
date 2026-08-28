@@ -4,12 +4,13 @@ import { UserResponseDTO } from "../dtos/response/UserResponseDTO";
 
 export class UserMapper {
     static toResponseDTO(user:User):UserResponseDTO {
-        return new UserResponseDTO(
-            user.id,
-            user.name,
-            user.email,
-            user.role,
-            user.isVerified,
-        )
+        return {
+           id:user.id,
+           name:user.name,
+            email:user.email,
+            role:user.role,
+            isVerified:user.isVerified,
+        }
+        
     }
 }

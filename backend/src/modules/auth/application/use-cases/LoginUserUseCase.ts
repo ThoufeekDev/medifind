@@ -9,13 +9,13 @@ import { UserMapper } from "../mappers/UserMapper";
 import {NotFoundError} from "../../../../shared/exceptions/NotFoundError";
 import { UnauthorizedError } from "../../../../shared/exceptions/UnauthorizedError";
 import { ForbiddenError } from "../../../../shared/exceptions/ForbiddenError";
+import { LoginResponseDTO } from "../dtos/response/LoginResponseDTO";
 export class LoginUserUseCase {
      
      constructor(private userRepository:IUserRepository ){}
 
-     async execute(data:LoginUserDTO){
+     async execute(data:LoginUserDTO):Promise<LoginResponseDTO>{
 
-        console.log('trigger')
          
          const user = await this.userRepository.findByEmail(
             data.email
