@@ -103,10 +103,12 @@ export class AuthController {
 
     async login(req:Request,res:Response){
         const validatedData = loginSchema.parse(req.body);
- 
+           console.log('data')
         const loginUserUseCase = makeLoginUserCase();
-
+        console.log("trgiiger")
         const user = await loginUserUseCase.execute(validatedData)
+         
+        console.log("user found",user)
          
          const accessToken = generateAccessToken({
             userId:user.safeUser.id,role:user.safeUser.role

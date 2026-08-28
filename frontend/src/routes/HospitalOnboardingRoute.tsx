@@ -24,9 +24,9 @@ export default function HospitalOnboardingRoute({
 
  
 
-  if (loading) {
-    return <Loader />;
-  }
+if (!hasFetchedHospital || loading) {
+  return <Loader />;
+}
 
   if (!hospital) {
     return (

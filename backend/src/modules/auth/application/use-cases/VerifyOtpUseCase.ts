@@ -1,7 +1,7 @@
 import {redis} from "../../../../shared/config/redis";
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
 
-import { verifyOtpDTO } from "../dtos/VerifyOtpDTO";
+import { verifyOtpDTO } from "../dtos/requests/VerifyOtpDTO";
 
 // Error handler
 import { UnauthorizedError } from "../../../../shared/exceptions/UnauthorizedError";

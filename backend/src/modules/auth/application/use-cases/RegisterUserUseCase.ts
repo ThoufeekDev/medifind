@@ -1,5 +1,5 @@
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
-import { RegisterUserDTO } from "../dtos/RegisterUserDTO";
+import { RegisterUserDTO } from "../dtos/requests/RegisterUserDTO";
 import {Role} from "@prisma/client"
 import {AuthResponse} from "../../domain/entities/User"
 

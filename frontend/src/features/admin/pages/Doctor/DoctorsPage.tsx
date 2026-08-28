@@ -6,9 +6,11 @@ import InlineLoader from "../../../../components/common/InlineLoader";
 import type { Doctor } from "../../types/doctor.type";
 import { useSearchParams } from "react-router-dom";
 import type { Specialization } from "../../types/specialization.types";
-import "./DoctorsPage.css";
+
 import { getSpecialization } from "../../services/getSpecialization.service";
 import CreateDoctorModal from "../../components/Doctor/CreateDoctorModal";
+
+import "./DoctorsPage.css";
 
 
 export default function DoctorsPage() {
@@ -239,7 +241,7 @@ if (initialLoading) {
           <div className="control-divider"></div>
 
           <div className="toggle-section">
-            <span className="control-label">Status Filter</span>
+            <span className="control-label">Sort By</span>
             <label className="toggle-switch-container">
               <input
                 type="checkbox"
@@ -248,7 +250,7 @@ if (initialLoading) {
                 className="toggle-input"
               />
               <span className="toggle-slider"></span>
-              <span className="toggle-label-text">On Duty Only</span>
+              <span className="toggle-label-text">On Duty</span>
             </label>
           </div>
         </div>
