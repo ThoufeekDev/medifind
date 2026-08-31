@@ -15,6 +15,7 @@ import {ConflictError} from "../../../../shared/exceptions/ConflictError"
 
 // user signup(register) useCase
 export class RegisterUserUseCase{
+    
     // dependancy injection
     constructor(private userRepository:IUserRepository){}
 

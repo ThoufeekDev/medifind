@@ -3,18 +3,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/auth.store";
 import { useState } from "react";
-import {getErrorMessage} from "../../../../shared/utils/getErrorMessage"
+import { getErrorMessage } from "../../../../shared/utils/getErrorMessage"
 import './login.css';
 import {
   loginSchema,
   type LoginFormData,
 } from "../../validators/login.schema";
+
+// Components
 import Button from "../../../../shared/components/Button/Button";
 import Input from "../../../../shared/components/Input/Input";
-import AuthBrandHeader  from "../../components/AuthBrandHeader";
+import AuthBrandHeader from "../../components/AuthBrandHeader";
 import SocialLoginButtons from "../../components/SocialLoginButtons";
 import AuthDivider from "../../components/AuthDivider";
 import AuthErrorBanner from "../../components/AuthErrorBanner";
+
+
 export default function LoginPage() {
   const { login, isLoading } = useAuthStore();
   const navigate = useNavigate();

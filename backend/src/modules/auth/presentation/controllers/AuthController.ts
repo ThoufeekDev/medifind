@@ -20,7 +20,7 @@ import { verifyUserOtpSchema } from "../validators/verifyOtp.validator";
 import {makeRegisterUserUseCase} from "../../infrastructure/factories/makeRegisterUserUseCase"
 import { makeLoginUserCase } from "../../infrastructure/factories/makeLoginUserCase";
 import { makeGetProfileUserUseCase } from "../../infrastructure/factories/makeGetProfileUserUseCase";
-
+import {makeVerifyOTPUseCase} from "../../infrastructure/factories/makeVerifyOtpUseCase"
 
 // Error Handling
 import { UnauthorizedError } from "../../../../shared/exceptions/UnauthorizedError";
@@ -45,8 +45,9 @@ export class AuthController {
     async verifyOtp(req:Request,res:Response){
         const validatedData = verifyUserOtpSchema.parse(req.body);
 
-        const userRepository = new PrismaUserRepository();
-        const verifyOtpUseCase = new VerifyOtpUseCase(userRepository);
+        // const userRepository = new PrismaUserRepository();
+        // const verifyOtpUseCase = new VerifyOtpUseCase(userRepository);
+        const verifyOtpUseCase = makeVerifyOTPUseCase();
 
         const result = await verifyOtpUseCase.execute(validatedData);
 
@@ -93,9 +94,9 @@ export class AuthController {
 
     async login(req:Request,res:Response){
         const validatedData = loginSchema.parse(req.body);
-           console.log('data')
+      
         const loginUserUseCase = makeLoginUserCase();
-        console.log("trgiiger")
+      
         const result = await loginUserUseCase.execute(validatedData)
          
 
@@ -153,12 +154,6 @@ export class AuthController {
             if(!refreshToken){
 
                 throw new UnauthorizedError("Refresh token missing");
-                // res.status(401).json({
-                //     success:false,
-                //     message:"Refresh token missing"
-                // })
-
-                // return;
             }
 
             const refreshTokenUseCase = new RefreshTokenUseCase();
