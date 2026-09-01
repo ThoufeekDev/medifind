@@ -19,6 +19,7 @@ export class User {
         public dateOfBirth: Date | null,
         public readonly createdAt: Date,
         public updatedAt: Date,
+        
     ) {}
 }
 

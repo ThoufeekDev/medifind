@@ -1,136 +1,180 @@
+import React, { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocation } from "react-router-dom";
-import './verifyOtp.css'
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/auth.store";
+import OtpTimer from "../../components/OtpTimer";
+import AuthErrorBanner from "../../components/AuthErrorBanner";
+import AuthBrandHeader from "../../components/AuthBrandHeader";
 import {
   verifyOtpSchema,
   type VerifyOtpFormData,
 } from "../../validators/verify-otp.schema";
-import { getMyHospital } from "../../../admin/services/hospital.service";
-import { useHospitalStore } from "../../../admin/store/hospital.store";
+import "./verifyOtp.css";
+
+const OTP_LENGTH = 6;
+
 export default function VerifyOtpPage() {
+  const [otpDigits, setOtpDigits] = useState<string[]>(Array(OTP_LENGTH).fill(""));
+  const [otpError, setOtpError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const location = useLocation();
+  const navigate = useNavigate();
+
   const email = location.state?.email || "";
+  const otpExpireIn = location.state?.otpExpireIn || "";
+
+  const verifyOtpAndLogin = useAuthStore((state) => state.verifyOtpAndLogin);
 
   const {
-    register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<VerifyOtpFormData>({
     resolver: zodResolver(verifyOtpSchema),
-    defaultValues: {
-      email,
-    },
+    defaultValues: { email, otp: "" },
   });
 
-  const navigate = useNavigate();
-  const verifyOtpAndLogin = useAuthStore((state=>state.verifyOtpAndLogin))
+  // Sync segmented digits to form value
+  useEffect(() => {
+    const combinedOtp = otpDigits.join("");
+    setValue("otp", combinedOtp, { shouldValidate: combinedOtp.length === OTP_LENGTH });
+  }, [otpDigits, setValue]);
+
+  const handleDigitChange = (value: string, index: number) => {
+    const cleanVal = value.replace(/\D/g, "");
+    const newDigits = [...otpDigits];
+
+    if (!cleanVal) {
+      newDigits[index] = "";
+      setOtpDigits(newDigits);
+      return;
+    }
+
+    newDigits[index] = cleanVal[cleanVal.length - 1];
+    setOtpDigits(newDigits);
+    setOtpError("");
+
+    if (index < OTP_LENGTH - 1) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, OTP_LENGTH);
+    if (!pastedData) return;
+
+    const newDigits = Array(OTP_LENGTH).fill("");
+    for (let i = 0; i < pastedData.length; i++) {
+      newDigits[i] = pastedData[i];
+    }
+    setOtpDigits(newDigits);
+
+    const targetFocus = Math.min(pastedData.length, OTP_LENGTH - 1);
+    inputRefs.current[targetFocus]?.focus();
+  };
 
   const onSubmit = async (data: VerifyOtpFormData) => {
     try {
-     
-       await verifyOtpAndLogin(data);
-      
-       const currentUser = useAuthStore.getState().user;
-        console.log("Current user after OTP verification:", currentUser);
-       if(currentUser?.role === "ADMIN"){
-          navigate('/admin')
-       }else {
-         navigate('/')
-       }
-       
-      //  if(currentUser?.role === "ADMIN"){
-      //     const hospital = await useHospitalStore.getState().fetchHospital();
-      //   if(hospital){
-      //      navigate('/admin/dashboard')
-      //   }else{
-      //     navigate('/admin/create-hospital')
-      //   }
+      setOtpError("");
+      setIsSubmitting(true);
+      await verifyOtpAndLogin(data);
 
-      //  }else {
-      //   console.log("Navigating to home page for regular user.");
-      //    navigate("/")
-      //  }
+      const currentUser = useAuthStore.getState().user;
+      if (!currentUser) return;
 
-       console.log('OTP Successfull')
-     
-    } catch (error) {
-      console.log(error);
+      if (currentUser.role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+    } catch (error: any) {
+      setOtpError(error.response?.data?.message || "Invalid or expired verification code.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="otp-container">
+      <div className="otp-background-glow" />
+
       <div className="otp-card">
-        
-        {/* Brand Header */}
-        <div className="brand-header">
-          <div className="brand-logo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            </svg>
-            MediFind
-          </div>
-          <h2>Verify OTP</h2>
-          <p>
-            We've sent a verification code to <br />
-            <span className="email-highlight">{email || "your email"}</span>
-          </p>
-        </div>
+        {/* Reusable Brand Header Component */}
+        <AuthBrandHeader
+          title="Verify your account"
+          description={`We've sent a 6-digit verification code to ${email || "your email"}`}
+        />
+
+        {/* Reusable Error Banner Component */}
+        {otpError && <AuthErrorBanner message={otpError} />}
 
         {/* Verification Form */}
         <form onSubmit={handleSubmit(onSubmit)}>
-          
-          {/* Hidden or Read-only Email Field (Kept functional for form state) */}
-          {(!email || errors.email) && (
-            <div className="form-group">
-              <label htmlFor="email">Email Address</label>
-              <div className="input-wrapper">
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  {...register("email")}
-                />
-              </div>
-              {errors.email && <p className="error-message">{errors.email.message}</p>}
-            </div>
-          )}
-
-          {/* OTP Code Field */}
           <div className="form-group">
-            <label htmlFor="otp">Verification Code</label>
-            <div className="input-wrapper">
-              <input
-                id="otp"
-                type="text"
-                className="otp-input"
-                placeholder="0 0 0 0 0 0"
-                maxLength={6} // Adjust if your OTP length differs
-                autoComplete="one-time-code"
-                inputMode="numeric"
-                {...register("otp")}
-              />
+            <label className="otp-label" htmlFor="otp-0">
+              Security Code
+            </label>
+
+            {/* 6-Digit Segmented Box Inputs */}
+            <div className="otp-box-grid" onPaste={handlePaste}>
+              {otpDigits.map((digit, idx) => (
+                <input
+                  key={idx}
+                  id={`otp-${idx}`}
+                  ref={(el) => {
+                    inputRefs.current[idx] = el;
+                  }}
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={1}
+                  value={digit}
+                  disabled={isSubmitting}
+                  onChange={(e) => handleDigitChange(e.target.value, idx)}
+                  onKeyDown={(e) => handleKeyDown(e, idx)}
+                  className={`otp-digit-box ${digit ? "filled" : ""} ${
+                    errors.otp || otpError ? "error" : ""
+                  }`}
+                  autoFocus={idx === 0}
+                  aria-label={`Digit ${idx + 1}`}
+                />
+              ))}
             </div>
-            {errors.otp && <p className="error-message">{errors.otp.message}</p>}
+
+            {errors.otp && <p className="field-error">{errors.otp.message}</p>}
           </div>
 
-          {/* Submit Action Button */}
-          <button type="submit" className="submit-btn">
-            Verify Code
+          <div className="timer-wrapper">
+            <OtpTimer expiresAt={otpExpireIn} />
+          </div>
+
+          <button
+            type="submit"
+            className="submit-btn"
+            disabled={isSubmitting || otpDigits.join("").length !== OTP_LENGTH}
+          >
+            {isSubmitting ? <span className="btn-spinner" /> : "Verify & Continue"}
           </button>
         </form>
 
-        {/* Footer Link */}
-        <p className="resend-text">
-          Didn't receive the code?{" "}
-          <button type="button" className="resend-link">
-            Resend Code
-          </button>
-        </p>
-
+        <div className="resend-wrapper">
+          <p className="resend-text">
+            Didn't receive the email?{" "}
+            <button type="button" className="resend-btn">
+              Resend Code
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );

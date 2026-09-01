@@ -40,7 +40,7 @@ export default function UserRegisterPage() {
     try {
       setAuthError("");
 
-      await registerUser({
+      const response = await registerUser({
         ...data,
         role: "USER",
         turnstileToken,
@@ -49,6 +49,7 @@ export default function UserRegisterPage() {
       navigate("/verify-otp", {
         state: {
           email: data.email,
+          otpExpireIn:response.data.otpExpireIn
         },
       });
     } catch (error) {

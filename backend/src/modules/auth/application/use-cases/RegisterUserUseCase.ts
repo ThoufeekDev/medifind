@@ -10,8 +10,9 @@ import { otpQueue } from "../../../../shared/queues/otp.queue";
 // utils 
 import { hashPassword } from "../../../../shared/utils/hashPassword";
 
-import { UserMapper } from "../mappers/UserMapper";
 import {ConflictError} from "../../../../shared/exceptions/ConflictError"
+import { UserRegisterMapper } from "../mappers/UserRegisterMapper";
+import { UserResponserRegisterDTO } from "../dtos/response/UserResponseRegisterDTO";
 
 // user signup(register) useCase
 export class RegisterUserUseCase{
@@ -19,7 +20,7 @@ export class RegisterUserUseCase{
     // dependancy injection
     constructor(private userRepository:IUserRepository){}
 
-    async execute(data:RegisterUserDTO):Promise<UserResponseDTO>{
+    async execute(data:RegisterUserDTO):Promise<UserResponserRegisterDTO>{
         const existingUser = await this.userRepository.findByEmail(
             data.email
         );
@@ -41,9 +42,10 @@ export class RegisterUserUseCase{
         })
 
         const otp = generateOtp();
+        const OTP_EXPIRY_SECONDS = 300
 
-        await redis.set(`otp:${user.email}`,otp,"EX",300);
-
+        await redis.set(`otp:${user.email}`,otp,"EX",OTP_EXPIRY_SECONDS);
+         const otpExpireAt = Date.now() + OTP_EXPIRY_SECONDS *1000
         await otpQueue.add("send-otp-email",{
             email:user.email,
             otp,
@@ -61,7 +63,7 @@ export class RegisterUserUseCase{
     
     )
 
-       const userResponse = UserMapper.toResponseDTO(user);
+       const userResponse = UserRegisterMapper.toResponseDTO(user,otpExpireAt);
 
 
         return userResponse

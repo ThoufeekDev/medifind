@@ -141,6 +141,7 @@ export const useAuthStore = create<AuthStore>((set,get)=>({
             
          } catch (error) {
             console.error(error);
+            throw error
          }finally{
             set({
                 isLoading:false

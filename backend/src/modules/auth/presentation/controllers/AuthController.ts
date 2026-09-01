@@ -24,6 +24,7 @@ import {makeVerifyOTPUseCase} from "../../infrastructure/factories/makeVerifyOtp
 
 // Error Handling
 import { UnauthorizedError } from "../../../../shared/exceptions/UnauthorizedError";
+import { UserResponserRegisterDTO } from "../../application/dtos/response/UserResponseRegisterDTO";
 
 
 export class AuthController {
@@ -33,12 +34,21 @@ export class AuthController {
 
     const useCase = makeRegisterUserUseCase();
 
-     await useCase.execute(validatedData);
-
+    const response =  await useCase.execute(validatedData);
+       
+    console.log("this is response after register ",response)
         
         return res.status(201).json({
             success:true,
             message:"OTP send to email",
+            data:{
+                id:response.id,
+                name:response.name,
+                email:response.email,
+                role:response.role,
+                isVerified:response.isVerified,
+                otpExpireIn:response.otpExpireIn
+            }
         })
     }
 

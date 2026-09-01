@@ -22,7 +22,7 @@ export class VerifyOtpUseCase {
         }
 
         if(storedOtp!==data.otp){
-            throw new BadRequestError("Invalid OTP");
+            throw new BadRequestError("Invalid OTP. Please try again.");
         }
 
         const user = await this.userRepository.findByEmail(data.email);
@@ -46,7 +46,9 @@ export class VerifyOtpUseCase {
         // const {password,...safeUser} = updatedUser
 
         const userResponse = UserMapper.toResponseDTO(updatedUser);
+         
 
+        
 
         return {
             user:userResponse,
