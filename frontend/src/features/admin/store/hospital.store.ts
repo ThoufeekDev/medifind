@@ -1,5 +1,5 @@
-import {create} from "zustand";
-import type {CreateHospitalDTO} from "../dtos/createHospital.dto"
+import { create } from "zustand";
+
 import {
     createHospital,
     getMyHospital
@@ -8,65 +8,65 @@ import type { Hospital } from "../types/hospital.type";
 
 
 interface HospitalStore {
-    hospital:Hospital|null;
-    loading:boolean;
-    hasFetchedHospital:boolean;
-    fetchHospital:()=>Promise<Hospital | null>;
-    createHospitalAction:(data:FormData)=>Promise<void>;
+    hospital: Hospital | null;
+    loading: boolean;
+    hasFetchedHospital: boolean;
+    fetchHospital: () => Promise<Hospital | null>;
+    createHospitalAction: (data: FormData) => Promise<void>;
 
-    resetHospital:()=>void;
+    resetHospital: () => void;
 }
 
-export const useHospitalStore = create<HospitalStore>((set,get)=>({
-    hospital:null,
-    loading:false,
-    hasFetchedHospital:false,
+export const useHospitalStore = create<HospitalStore>((set, get) => ({
+    hospital: null,
+    loading: false,
+    hasFetchedHospital: false,
 
-    fetchHospital:async()=>{
-        if(get().hasFetchedHospital){
+    fetchHospital: async () => {
+        if (get().hasFetchedHospital) {
             return get().hospital;
         }
-        set({loading:true});
-        
+        set({ loading: true });
+
         try {
 
-            console.log("Calling Hospital API")
-           
+
+
             const response = await getMyHospital();
-           
+
             set({
-                hospital:response.hospital,
-                hasFetchedHospital:true,
+                hospital: response.hospital,
+                hasFetchedHospital: true,
             })
             return response.hospital;
-        }catch(error){
+        } catch (error) {
             set({
-                hospital:null,
-                hasFetchedHospital:false,
+                hospital: null,
+                hasFetchedHospital: true,
             })
             return null;
         } finally {
-            set({loading:false})
+            set({ loading: false })
         }
     },
 
-    createHospitalAction:async(data:FormData)=>{
-        set({loading:true});
+    createHospitalAction: async (data: FormData) => {
+        set({ loading: true });
 
         try {
             const response = await createHospital(data);
             set({
                 hospital: response,
-                hasFetchedHospital:true,
+                hasFetchedHospital: true,
             })
         } finally {
-            set({loading:false})
+            set({ loading: false })
         }
     },
 
-    resetHospital:()=>
+    resetHospital: () =>
         set({
-            hospital:null,
-            hasFetchedHospital:false,
+            hospital: null,
+            hasFetchedHospital: false,
         })
 }))

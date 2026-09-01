@@ -6,6 +6,7 @@ export interface Doctor {
   qualification: string;
   experience: number;
   imageUrl: string | null;
+  gender:"MALE" | "FEMALE";
   consultationFee: number;
   onDuty:boolean;
   hospitalId: string;

@@ -1,12 +1,13 @@
 import {redis} from "../../../../shared/config/redis";
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
 
-import { verifyOtpDTO } from "../dtos/VerifyOtpDTO";
+import { verifyOtpDTO } from "../dtos/requests/VerifyOtpDTO";
 
 // Error handler
 import { UnauthorizedError } from "../../../../shared/exceptions/UnauthorizedError";
 import {BadRequestError} from "../../../../shared/exceptions/BadRequestError"
 import { NotFoundError } from "../../../../shared/exceptions/NotFoundError";
+import { UserMapper } from "../mappers/UserMapper";
 
 
 
@@ -21,7 +22,7 @@ export class VerifyOtpUseCase {
         }
 
         if(storedOtp!==data.otp){
-            throw new BadRequestError("Invalid OTP");
+            throw new BadRequestError("Invalid OTP. Please try again.");
         }
 
         const user = await this.userRepository.findByEmail(data.email);
@@ -42,10 +43,15 @@ export class VerifyOtpUseCase {
 
         await redis.del(`otp:${data.email}`);
 
-        const {password,...safeUser} = updatedUser
+        // const {password,...safeUser} = updatedUser
+
+        const userResponse = UserMapper.toResponseDTO(updatedUser);
+         
+
+        
 
         return {
-            user:safeUser,
+            user:userResponse,
         }
     }
 }

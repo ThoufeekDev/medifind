@@ -8,9 +8,12 @@ import { otpRateLimit } from "../../../../shared/middleware/rateLimit.middleware
 
  const authController = new AuthController();
 
+ /**
+  * !register need otpRatelimit - temp removed
+  */
 
 // Register & Logout routes
-router.post("/register",otpRateLimit,authController.register);
+router.post("/register",authController.register);
 router.post('/verify-otp',authController.verifyOtp);
 
 // Logout Route

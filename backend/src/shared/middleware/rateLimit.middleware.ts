@@ -1,6 +1,6 @@
 import { Request,Response,NextFunction } from "express";
 import {redis} from "../config/redis";
-import { success } from "zod";
+
 
 export const otpRateLimit = async(req:Request,res:Response,next:NextFunction) =>{
     const email = req.body.email;

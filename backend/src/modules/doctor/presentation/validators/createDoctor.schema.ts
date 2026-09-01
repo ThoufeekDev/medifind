@@ -9,9 +9,11 @@ export const createDoctorSchema = z.object({
 
   qualification: z.string().min(2),
 
-  experience: z.number().min(0),
+  experience: z.coerce.number().min(0),
 
-  consultationFee: z.number().min(0),
+  gender:z.enum(["MALE","FEMALE"]),
+
+  consultationFee: z.coerce.number().min(0),
 
   specializationId: z.uuid(),
 

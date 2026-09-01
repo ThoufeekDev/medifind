@@ -25,28 +25,37 @@ export class PrismaDoctorRepository implements IDoctorRepository{
     }
 
     async findByHospitalId(hospitalId: string,filters:GetDoctorsDTO): Promise<DoctorListItemDTO[]> {
+        
+        const orderBy:any[] = [];
+
+        if(filters.onDuty){
+            orderBy.push({
+                onDuty:"desc",
+            })
+        }
+
+        if(filters.sort==="experience-desc"){
+            orderBy.push({
+                experience:"desc"
+            })
+        }else{
+            orderBy.push({createdAt:"desc"})
+        }
          const doctor = await  prisma.doctor.findMany({
             where:{
                 hospitalId,
                 isActive:true,
-                ...(filters.onDuty!==undefined && {
-                    onDuty:filters.onDuty,
-                }),
+    
                 ...(filters.specialization && {
                     specialization:{
-                        name:filters.specialization,
+                        name:{in:filters.specialization},
                     }
                 })
             },
             include:{
                 specialization:true,
             },
-            orderBy:
-                filters.sort === "experience-desc"
-                ? {experience:"desc"}
-                :filters.sort==="experience-asc"
-                ?{experience:"asc"}
-                :{createdAt:"desc"},
+            orderBy,
     
          })
 

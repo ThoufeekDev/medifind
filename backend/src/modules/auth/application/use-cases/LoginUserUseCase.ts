@@ -1,28 +1,26 @@
 
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
-import { LoginUserDTO } from "../dtos/LoginUserDTO";
+import { LoginUserDTO } from "../dtos/requests/LoginUserDTO";
 import { comparePassword } from "../../../../shared/utils/comparePassword";
 
+import { UserMapper } from "../mappers/UserMapper";
 
 // Error Handling
 import {NotFoundError} from "../../../../shared/exceptions/NotFoundError";
 import { UnauthorizedError } from "../../../../shared/exceptions/UnauthorizedError";
 import { ForbiddenError } from "../../../../shared/exceptions/ForbiddenError";
+import { LoginResponseDTO } from "../dtos/response/LoginResponseDTO";
 export class LoginUserUseCase {
      
      constructor(private userRepository:IUserRepository ){}
 
-     async execute(data:LoginUserDTO){
+     async execute(data:LoginUserDTO):Promise<LoginResponseDTO>{
+
          
          const user = await this.userRepository.findByEmail(
             data.email
          )
-
-
-        
-
-   
-
+         
          if(!user){
             throw new NotFoundError("Invalid credentials")
          }
@@ -43,22 +41,24 @@ export class LoginUserUseCase {
             )
         }
 
-        console.log("user.role is ",user.role,"data.role is ",data.role)
-
         if(user.role!==data.role){
              throw new UnauthorizedError("Invalid credentials")
         }
+   
+        
 
-      
+        // const {
+        //     password,
+        //     ...safeUser
+        // } = user;
 
-        const {
-            password,
-            ...safeUser
-        } = user;
+        const userResponse = UserMapper.toResponseDTO(user);
+
+       
          
         return{
 
-          safeUser,
+          user:userResponse,
         }
      }
 }

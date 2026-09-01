@@ -1,5 +1,4 @@
-import {User} from "../entities/User";
-import { CreateUserData } from "../entities/User";
+import {User,CreateUserData} from "../entities/User";
 
 export interface IUserRepository{
     create(user:CreateUserData):Promise<User>;
@@ -10,11 +9,4 @@ export interface IUserRepository{
 
     findById(id:string):Promise<User | null>
 }
-
-// export interface CreateUserData {
-//     name:string;
-//     email:string;
-//     password:string;
-//     role?:Role,
-// }
 

@@ -20,10 +20,11 @@ import { verifyUserOtpSchema } from "../validators/verifyOtp.validator";
 import {makeRegisterUserUseCase} from "../../infrastructure/factories/makeRegisterUserUseCase"
 import { makeLoginUserCase } from "../../infrastructure/factories/makeLoginUserCase";
 import { makeGetProfileUserUseCase } from "../../infrastructure/factories/makeGetProfileUserUseCase";
-
+import {makeVerifyOTPUseCase} from "../../infrastructure/factories/makeVerifyOtpUseCase"
 
 // Error Handling
 import { UnauthorizedError } from "../../../../shared/exceptions/UnauthorizedError";
+import { UserResponserRegisterDTO } from "../../application/dtos/response/UserResponseRegisterDTO";
 
 
 export class AuthController {
@@ -31,32 +32,32 @@ export class AuthController {
 
         const validatedData = registerSchema.parse(req.body);
 
-    //     const userRepository = new PrismaUserRepository();
-    //                                     // dependency injection 
-    //     const registerUserUseCase = new RegisterUserUseCase(userRepository);
-
-    //    await registerUserUseCase.execute(validatedData)
-
-
     const useCase = makeRegisterUserUseCase();
 
-     await useCase.execute(validatedData);
-
+    const response =  await useCase.execute(validatedData);
+       
+    console.log("this is response after register ",response)
         
         return res.status(201).json({
             success:true,
             message:"OTP send to email",
-            // data:{
-            //     user:result.user
-            // }
+            data:{
+                id:response.id,
+                name:response.name,
+                email:response.email,
+                role:response.role,
+                isVerified:response.isVerified,
+                otpExpireIn:response.otpExpireIn
+            }
         })
     }
 
     async verifyOtp(req:Request,res:Response){
         const validatedData = verifyUserOtpSchema.parse(req.body);
 
-        const userRepository = new PrismaUserRepository();
-        const verifyOtpUseCase = new VerifyOtpUseCase(userRepository);
+        // const userRepository = new PrismaUserRepository();
+        // const verifyOtpUseCase = new VerifyOtpUseCase(userRepository);
+        const verifyOtpUseCase = makeVerifyOTPUseCase();
 
         const result = await verifyOtpUseCase.execute(validatedData);
 
@@ -103,17 +104,21 @@ export class AuthController {
 
     async login(req:Request,res:Response){
         const validatedData = loginSchema.parse(req.body);
- 
+      
         const loginUserUseCase = makeLoginUserCase();
+      
+        const result = await loginUserUseCase.execute(validatedData)
+         
 
-        const user = await loginUserUseCase.execute(validatedData)
          
          const accessToken = generateAccessToken({
-            userId:user.safeUser.id,role:user.safeUser.role
+            userId:result.user.id,
+            role:result.user.role
 
         });
         const refreshToken = generateRefreshToken({
-            userId:user.safeUser.id,role:user.safeUser.role
+            userId:result.user.id,
+            role:result.user.role
         });
  
         
@@ -144,7 +149,7 @@ export class AuthController {
 
          return res.status(200).json({
             success:true,
-             user:user.safeUser
+             user:result.user
             
          })
     }
@@ -159,12 +164,6 @@ export class AuthController {
             if(!refreshToken){
 
                 throw new UnauthorizedError("Refresh token missing");
-                // res.status(401).json({
-                //     success:false,
-                //     message:"Refresh token missing"
-                // })
-
-                // return;
             }
 
             const refreshTokenUseCase = new RefreshTokenUseCase();
@@ -214,16 +213,15 @@ export class AuthController {
     async profile(req:AuthenticatedRequest,res:Response):Promise<void>{
   
         const userId = req.userId;
-        // const userRepository = new PrismaUserRepository();
-        // const getProfileUserUseCase = new GetProfileUseCase(userRepository);
+    
             const getProfileUserUseCase = makeGetProfileUserUseCase();
             
-            const user = await getProfileUserUseCase.execute(userId!)
+            const result = await getProfileUserUseCase.execute(userId!)
         
-        console.log("Fetched user profile:", user);
+      
          res.status(200).json({
             success:true,
-            user:user.user
+            user:result.user
          })
     }
 }
