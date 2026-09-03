@@ -9,7 +9,7 @@
     "start": "node dist/server.js",
     "test": "vitest",
     "test:run": "vitest run",
-    "test-c":"vitest run --coverage"
+    "test-c": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",

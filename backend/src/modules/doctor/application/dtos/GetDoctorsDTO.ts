@@ -1,5 +1,5 @@
 export interface GetDoctorsDTO {
-    specialization?:string[];
-    onDuty?:boolean,
-    sort?:string;
+  specialization?: string[];
+  onDuty?: boolean;
+  sort?: string;
 }

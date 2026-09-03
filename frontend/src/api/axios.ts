@@ -1,14 +1,10 @@
-import axios from "axios";
+import axios from 'axios';
 
 const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 
-  baseURL:
-  import.meta.env
-  .VITE_API_BASE_URL,
-
-  withCredentials:true,
+  withCredentials: true,
 });
-
 
 // ========================================
 // REFRESH TOKEN LOCK
@@ -16,132 +12,83 @@ const api = axios.create({
 
 let isRefreshing = false;
 
-
 // ========================================
 // FAILED REQUEST QUEUE TYPE
 // ========================================
 
 type FailedQueueItem = {
-
   resolve: () => void;
 
-  reject: (
-    reason?: unknown
-  ) => void;
+  reject: (reason?: unknown) => void;
 };
-
 
 // ========================================
 // FAILED REQUEST QUEUE
 // ========================================
 
-let failedQueue:
-FailedQueueItem[] = [];
-
+let failedQueue: FailedQueueItem[] = [];
 
 // ========================================
 // PROCESS WAITING REQUESTS
 // ========================================
 
-const processQueue = (
-  error: unknown = null
-)=>{
-
-  failedQueue.forEach(
-
-    (promise)=>{
-
-      if(error){
-
-        promise.reject(error);
-
-      } else {
-
-        promise.resolve();
-      }
+const processQueue = (error: unknown = null) => {
+  failedQueue.forEach((promise) => {
+    if (error) {
+      promise.reject(error);
+    } else {
+      promise.resolve();
     }
-  );
+  });
 
   failedQueue = [];
 };
-
 
 // ========================================
 // RESPONSE INTERCEPTOR
 // ========================================
 
 api.interceptors.response.use(
-
   // SUCCESS RESPONSE
 
-  (response)=>response,
-
+  (response) => response,
 
   // ERROR RESPONSE
 
-  async(error)=>{
-
-    const originalRequest =
-    error.config as typeof error.config & {
-
+  async (error) => {
+    const originalRequest = error.config as typeof error.config & {
       _retry?: boolean;
     };
-
 
     // ====================================
     // ACCESS TOKEN EXPIRED
     // ====================================
 
-    if(
-
-      error.response?.status === 401
-
-      &&
-
-      !originalRequest._retry
-
-      &&
-
-      originalRequest.url !==
-      "/auth/refresh-token"
-
-    ){
-
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      originalRequest.url !== '/auth/refresh-token'
+    ) {
       // ==================================
       // PREVENT INFINITE RETRY LOOP
       // ==================================
 
       originalRequest._retry = true;
 
-
       // ==================================
       // IF REFRESH ALREADY RUNNING
       // ==================================
 
-      if(isRefreshing){
-
-        return new Promise<void>(
-
-          (
+      if (isRefreshing) {
+        return new Promise<void>((resolve, reject) => {
+          failedQueue.push({
             resolve,
-            reject
-          )=>{
-
-            failedQueue.push({
-
-              resolve,
-              reject,
-            });
-          }
-
-        ).then(()=>{
-
-          return api(
-            originalRequest
-          );
+            reject,
+          });
+        }).then(() => {
+          return api(originalRequest);
         });
       }
-
 
       // ==================================
       // START REFRESH PROCESS
@@ -150,15 +97,11 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-
         // ================================
         // REQUEST NEW ACCESS TOKEN
         // ================================
 
-        await api.post(
-          "/auth/refresh-token"
-        );
-
+        await api.post('/auth/refresh-token');
 
         // ================================
         // RETRY WAITING REQUESTS
@@ -166,41 +109,28 @@ api.interceptors.response.use(
 
         processQueue();
 
-
         // ================================
         // RETRY ORIGINAL REQUEST
         // ================================
 
-        return api(
-          originalRequest
-        );
-
+        return api(originalRequest);
       } catch (refreshError) {
-
         // ================================
         // REJECT WAITING REQUESTS
         // ================================
 
-        processQueue(
-          refreshError
-        );
+        processQueue(refreshError);
 
-        console.log(
-          "Refresh token expired"
-        );
+        console.log('Refresh token expired');
 
-        return Promise.reject(
-          refreshError
-        );
-
+        return Promise.reject(refreshError);
       } finally {
-
         isRefreshing = false;
       }
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

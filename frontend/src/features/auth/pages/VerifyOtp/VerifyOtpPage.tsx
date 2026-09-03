@@ -1,30 +1,27 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../store/auth.store";
-import OtpTimer from "../../components/OtpTimer";
-import AuthErrorBanner from "../../components/AuthErrorBanner";
-import AuthBrandHeader from "../../components/AuthBrandHeader";
-import {
-  verifyOtpSchema,
-  type VerifyOtpFormData,
-} from "../../validators/verify-otp.schema";
-import "./verifyOtp.css";
+import React, { useState, useRef, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/auth.store';
+import OtpTimer from '../../components/OtpTimer';
+import AuthErrorBanner from '../../components/AuthErrorBanner';
+import AuthBrandHeader from '../../components/AuthBrandHeader';
+import { verifyOtpSchema, type VerifyOtpFormData } from '../../validators/verify-otp.schema';
+import './verifyOtp.css';
 
 const OTP_LENGTH = 6;
 
 export default function VerifyOtpPage() {
-  const [otpDigits, setOtpDigits] = useState<string[]>(Array(OTP_LENGTH).fill(""));
-  const [otpError, setOtpError] = useState("");
+  const [otpDigits, setOtpDigits] = useState<string[]>(Array(OTP_LENGTH).fill(''));
+  const [otpError, setOtpError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const email = location.state?.email || "";
-  const otpExpireIn = location.state?.otpExpireIn || "";
+  const email = location.state?.email || '';
+  const otpExpireIn = location.state?.otpExpireIn || '';
 
   const verifyOtpAndLogin = useAuthStore((state) => state.verifyOtpAndLogin);
 
@@ -34,28 +31,28 @@ export default function VerifyOtpPage() {
     formState: { errors },
   } = useForm<VerifyOtpFormData>({
     resolver: zodResolver(verifyOtpSchema),
-    defaultValues: { email, otp: "" },
+    defaultValues: { email, otp: '' },
   });
 
   // Sync segmented digits to form value
   useEffect(() => {
-    const combinedOtp = otpDigits.join("");
-    setValue("otp", combinedOtp, { shouldValidate: combinedOtp.length === OTP_LENGTH });
+    const combinedOtp = otpDigits.join('');
+    setValue('otp', combinedOtp, { shouldValidate: combinedOtp.length === OTP_LENGTH });
   }, [otpDigits, setValue]);
 
   const handleDigitChange = (value: string, index: number) => {
-    const cleanVal = value.replace(/\D/g, "");
+    const cleanVal = value.replace(/\D/g, '');
     const newDigits = [...otpDigits];
 
     if (!cleanVal) {
-      newDigits[index] = "";
+      newDigits[index] = '';
       setOtpDigits(newDigits);
       return;
     }
 
     newDigits[index] = cleanVal[cleanVal.length - 1];
     setOtpDigits(newDigits);
-    setOtpError("");
+    setOtpError('');
 
     if (index < OTP_LENGTH - 1) {
       inputRefs.current[index + 1]?.focus();
@@ -63,17 +60,17 @@ export default function VerifyOtpPage() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
-    if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
+    if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
   };
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
-    const pastedData = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, OTP_LENGTH);
+    const pastedData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, OTP_LENGTH);
     if (!pastedData) return;
 
-    const newDigits = Array(OTP_LENGTH).fill("");
+    const newDigits = Array(OTP_LENGTH).fill('');
     for (let i = 0; i < pastedData.length; i++) {
       newDigits[i] = pastedData[i];
     }
@@ -85,20 +82,20 @@ export default function VerifyOtpPage() {
 
   const onSubmit = async (data: VerifyOtpFormData) => {
     try {
-      setOtpError("");
+      setOtpError('');
       setIsSubmitting(true);
       await verifyOtpAndLogin(data);
 
       const currentUser = useAuthStore.getState().user;
       if (!currentUser) return;
 
-      if (currentUser.role === "ADMIN") {
-        navigate("/admin");
+      if (currentUser.role === 'ADMIN') {
+        navigate('/admin');
       } else {
-        navigate("/");
+        navigate('/');
       }
     } catch (error: any) {
-      setOtpError(error.response?.data?.message || "Invalid or expired verification code.");
+      setOtpError(error.response?.data?.message || 'Invalid or expired verification code.');
     } finally {
       setIsSubmitting(false);
     }
@@ -112,7 +109,7 @@ export default function VerifyOtpPage() {
         {/* Reusable Brand Header Component */}
         <AuthBrandHeader
           title="Verify your account"
-          description={`We've sent a 6-digit verification code to ${email || "your email"}`}
+          description={`We've sent a 6-digit verification code to ${email || 'your email'}`}
         />
 
         {/* Reusable Error Banner Component */}
@@ -142,8 +139,8 @@ export default function VerifyOtpPage() {
                   disabled={isSubmitting}
                   onChange={(e) => handleDigitChange(e.target.value, idx)}
                   onKeyDown={(e) => handleKeyDown(e, idx)}
-                  className={`otp-digit-box ${digit ? "filled" : ""} ${
-                    errors.otp || otpError ? "error" : ""
+                  className={`otp-digit-box ${digit ? 'filled' : ''} ${
+                    errors.otp || otpError ? 'error' : ''
                   }`}
                   autoFocus={idx === 0}
                   aria-label={`Digit ${idx + 1}`}
@@ -161,15 +158,15 @@ export default function VerifyOtpPage() {
           <button
             type="submit"
             className="submit-btn"
-            disabled={isSubmitting || otpDigits.join("").length !== OTP_LENGTH}
+            disabled={isSubmitting || otpDigits.join('').length !== OTP_LENGTH}
           >
-            {isSubmitting ? <span className="btn-spinner" /> : "Verify & Continue"}
+            {isSubmitting ? <span className="btn-spinner" /> : 'Verify & Continue'}
           </button>
         </form>
 
         <div className="resend-wrapper">
           <p className="resend-text">
-            Didn't receive the email?{" "}
+            Didn't receive the email?{' '}
             <button type="button" className="resend-btn">
               Resend Code
             </button>

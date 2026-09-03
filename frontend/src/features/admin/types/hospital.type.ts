@@ -1,38 +1,37 @@
 export interface Hospital {
+  id: string;
 
-  id:string;
+  adminId: string;
 
-  adminId:string;
+  name: string;
 
-  name:string;
+  email?: string;
 
-  email?:string;
+  phone?: string;
 
-  phone?:string;
+  description: string;
 
-  description:string;
+  licenseNumber?: string;
 
-  licenseNumber?:string;
+  address: string;
 
-  address:string;
+  city?: string;
 
-  city?:string;
+  state?: string;
 
-  state?:string;
+  imageUrl?: string;
 
-  imageUrl?:string;
+  country?: string;
 
-  country?:string;
+  zipcode?: string;
 
-  zipcode?:string;
+  latitude: number;
 
-  latitude:number;
+  longitude: number;
 
-  longitude:number;
+  isVerified: boolean;
 
-  isVerified:boolean;
+  createdAt: string;
 
-  createdAt:string;
-
-  updatedAt:string;
+  updatedAt: string;
 }

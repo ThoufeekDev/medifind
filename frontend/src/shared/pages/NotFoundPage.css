@@ -6,7 +6,7 @@
   --primary: #020617;
   --primary-hover: #1e293b;
   --border-btn: #e2e8f0;
-  
+
   /* Runner Structural Colors */
   --runner-color: #0f172a;
 }
@@ -17,10 +17,11 @@
   box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
   width: 100%;
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
   -webkit-font-smoothing: antialiased;
@@ -81,8 +82,10 @@ body, html {
 }
 
 /* Limbs Shared Kinematics */
-.runner .arm-front, .runner .arm-back, 
-.runner .leg-front, .runner .leg-back {
+.runner .arm-front,
+.runner .arm-back,
+.runner .leg-front,
+.runner .leg-back {
   transform-origin: top center;
 }
 
@@ -139,30 +142,69 @@ body, html {
   animation: sweep 0.8s linear infinite;
 }
 
-.sl-1 { width: 30px; bottom: 35px; right: -40px; animation-delay: 0s; }
-.sl-2 { width: 45px; bottom: 55px; right: -40px; animation-delay: 0.2s; opacity: 0.6; }
-.sl-3 { width: 20px; bottom: 22px; right: -40px; animation-delay: 0.4s; }
+.sl-1 {
+  width: 30px;
+  bottom: 35px;
+  right: -40px;
+  animation-delay: 0s;
+}
+.sl-2 {
+  width: 45px;
+  bottom: 55px;
+  right: -40px;
+  animation-delay: 0.2s;
+  opacity: 0.6;
+}
+.sl-3 {
+  width: 20px;
+  bottom: 22px;
+  right: -40px;
+  animation-delay: 0.4s;
+}
 
 /* --- ANIMATION ARRAYS --- */
 @keyframes bodyBounce {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-6px); }
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-6px);
+  }
 }
 
 @keyframes armCycle {
-  0%, 100% { transform: rotate(40deg); }
-  50% { transform: rotate(-50deg); }
+  0%,
+  100% {
+    transform: rotate(40deg);
+  }
+  50% {
+    transform: rotate(-50deg);
+  }
 }
 
 @keyframes legCycle {
-  0% { transform: rotate(55deg) scaleY(1); }
-  50% { transform: rotate(-45deg) scaleY(0.85); }
-  100% { transform: rotate(55deg) scaleY(1); }
+  0% {
+    transform: rotate(55deg) scaleY(1);
+  }
+  50% {
+    transform: rotate(-45deg) scaleY(0.85);
+  }
+  100% {
+    transform: rotate(55deg) scaleY(1);
+  }
 }
 
 @keyframes sweep {
-  0% { right: -50px; left: 210px; opacity: 1; }
-  100% { right: 210px; left: -50px; opacity: 0; }
+  0% {
+    right: -50px;
+    left: 210px;
+    opacity: 1;
+  }
+  100% {
+    right: 210px;
+    left: -50px;
+    opacity: 0;
+  }
 }
 
 /* --- CORE PAGE STYLING --- */
@@ -224,7 +266,9 @@ body, html {
   border-radius: 8px;
   text-decoration: none;
   transition: all 0.1s ease-out;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(15, 23, 42, 0.05);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(15, 23, 42, 0.05);
 }
 
 .btn-primary:hover {
@@ -261,8 +305,14 @@ body, html {
 }
 
 @keyframes slideUpFade {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Mobile Standardization Breakpoint */
@@ -272,8 +322,9 @@ body, html {
     width: 100%;
     padding: 0 12px;
   }
-  
-  .btn-primary, .btn-secondary {
+
+  .btn-primary,
+  .btn-secondary {
     width: 100%;
   }
 }

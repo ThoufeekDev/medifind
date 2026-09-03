@@ -15,5 +15,5 @@ export interface Doctor {
 
   isActive: boolean;
 
-  onDuty:boolean;
+  onDuty: boolean;
 }

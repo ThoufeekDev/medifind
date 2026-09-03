@@ -1,64 +1,47 @@
+import { IUserRepository } from '../../domain/repositories/IUserRepository';
+import { LoginUserDTO } from '../dtos/requests/LoginUserDTO';
+import { comparePassword } from '../../../../shared/utils/comparePassword';
 
-import { IUserRepository } from "../../domain/repositories/IUserRepository";
-import { LoginUserDTO } from "../dtos/requests/LoginUserDTO";
-import { comparePassword } from "../../../../shared/utils/comparePassword";
-
-import { UserMapper } from "../mappers/UserMapper";
+import { UserMapper } from '../mappers/UserMapper';
 
 // Error Handling
-import {NotFoundError} from "../../../../shared/exceptions/NotFoundError";
-import { UnauthorizedError } from "../../../../shared/exceptions/UnauthorizedError";
-import { ForbiddenError } from "../../../../shared/exceptions/ForbiddenError";
-import { LoginResponseDTO } from "../dtos/response/LoginResponseDTO";
+import { NotFoundError } from '../../../../shared/exceptions/NotFoundError';
+import { UnauthorizedError } from '../../../../shared/exceptions/UnauthorizedError';
+import { ForbiddenError } from '../../../../shared/exceptions/ForbiddenError';
+import { LoginResponseDTO } from '../dtos/response/LoginResponseDTO';
 export class LoginUserUseCase {
-     
-     constructor(private userRepository:IUserRepository ){}
+  constructor(private userRepository: IUserRepository) {}
 
-     async execute(data:LoginUserDTO):Promise<LoginResponseDTO>{
+  async execute(data: LoginUserDTO): Promise<LoginResponseDTO> {
+    const user = await this.userRepository.findByEmail(data.email);
 
-         
-         const user = await this.userRepository.findByEmail(
-            data.email
-         )
-         
-         if(!user){
-            throw new NotFoundError("Invalid credentials")
-         }
+    if (!user) {
+      throw new NotFoundError('Invalid credentials');
+    }
 
-         const isPasswordValid = 
-         await comparePassword(
-            data.password,
-            user.password
-        )
+    const isPasswordValid = await comparePassword(data.password, user.password);
 
-        if(!isPasswordValid){
-            throw new UnauthorizedError("Invalid credentials")
-        }
-       
-        if(!user.isVerified){
-            throw new ForbiddenError(
-                "Please verify your email"
-            )
-        }
+    if (!isPasswordValid) {
+      throw new UnauthorizedError('Invalid credentials');
+    }
 
-        if(user.role!==data.role){
-             throw new UnauthorizedError("Invalid credentials")
-        }
-   
-        
+    if (!user.isVerified) {
+      throw new ForbiddenError('Please verify your email');
+    }
 
-        // const {
-        //     password,
-        //     ...safeUser
-        // } = user;
+    if (user.role !== data.role) {
+      throw new UnauthorizedError('Invalid credentials');
+    }
 
-        const userResponse = UserMapper.toResponseDTO(user);
+    // const {
+    //     password,
+    //     ...safeUser
+    // } = user;
 
-       
-         
-        return{
+    const userResponse = UserMapper.toResponseDTO(user);
 
-          user:userResponse,
-        }
-     }
+    return {
+      user: userResponse,
+    };
+  }
 }

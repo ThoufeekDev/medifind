@@ -1,15 +1,14 @@
-import { PrismaDoctorRepository } from "../repositories/PrismaDoctorRepository";
-import { CloudinaryService } from "../../../../shared/services/cloudinary.service";
-import { CreateDoctorUseCase } from "../../application/use-cases/CreateDoctorUseCase";
-import { PrismaHospitalRepository } from "../../../hospital/infrastructure/repositories/PrismaHospitalRepository";
-import { PrismaSpecializationRespository } from "../../../specialization/infrastructure/repositories/PrismaSpecializationRepository";
+import { PrismaDoctorRepository } from '../repositories/PrismaDoctorRepository';
+import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
+import { CreateDoctorUseCase } from '../../application/use-cases/CreateDoctorUseCase';
+import { PrismaHospitalRepository } from '../../../hospital/infrastructure/repositories/PrismaHospitalRepository';
+import { PrismaSpecializationRespository } from '../../../specialization/infrastructure/repositories/PrismaSpecializationRepository';
 
-export const makeCreateDoctorUseCase = ()=>{
-    
-    return new CreateDoctorUseCase(
-        new PrismaDoctorRepository(),
-        new PrismaHospitalRepository(),
-        new PrismaSpecializationRespository(),
-        new CloudinaryService()
-    )
-}
+export const makeCreateDoctorUseCase = () => {
+  return new CreateDoctorUseCase(
+    new PrismaDoctorRepository(),
+    new PrismaHospitalRepository(),
+    new PrismaSpecializationRespository(),
+    new CloudinaryService(),
+  );
+};

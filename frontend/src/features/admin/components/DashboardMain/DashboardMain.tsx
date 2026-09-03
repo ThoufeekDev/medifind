@@ -1,7 +1,12 @@
 import React, { useMemo } from 'react';
-import * as mock from '../../../../data/mockData'
-import type { StatCard, QueueItem, DeptUtilization, Appointment } from '../../types/dashboard.types'
-import '../../../admin/pages/Dashboard/dashboard.css'
+import * as mock from '../../../../data/mockData';
+import type {
+  StatCard,
+  QueueItem,
+  DeptUtilization,
+  Appointment,
+} from '../../types/dashboard.types';
+import '../../../admin/pages/Dashboard/dashboard.css';
 
 const DashboardView: React.FC = () => {
   const stats = useMemo<StatCard[]>(() => mock.STATS_CARDS, []);
@@ -53,16 +58,21 @@ const DashboardView: React.FC = () => {
             </div>
             <span className="counter-pill">{queue.length} Waiting</span>
           </div>
-          
+
           <div className="queue-scroller">
             {queue.map((item) => (
               <div key={item.id} className="queue-row">
                 <div className="patient-avatar">
-                  {item.name.split(' ').map(n => n[0]).join('')}
+                  {item.name
+                    .split(' ')
+                    .map((n) => n[0])
+                    .join('')}
                 </div>
                 <div className="queue-details">
                   <h4>{item.name}</h4>
-                  <p>{item.dept} <span className="bullet-sep">•</span> {item.doctor}</p>
+                  <p>
+                    {item.dept} <span className="bullet-sep">•</span> {item.doctor}
+                  </p>
                 </div>
                 <div className="queue-meta">
                   <span className="queue-id">{item.id}</span>
@@ -71,7 +81,9 @@ const DashboardView: React.FC = () => {
               </div>
             ))}
           </div>
-          <button className="btn-footer">Manage Full Queue <span>→</span></button>
+          <button className="btn-footer">
+            Manage Full Queue <span>→</span>
+          </button>
         </section>
 
         {/* Department Utilization */}
@@ -82,7 +94,7 @@ const DashboardView: React.FC = () => {
               <p className="card-subtitle">Active resource allocation by unit</p>
             </div>
           </div>
-          
+
           <div className="utilization-stack">
             {utilization.map((dept, idx) => (
               <div key={idx} className="util-row">
@@ -91,8 +103,8 @@ const DashboardView: React.FC = () => {
                   <span className="dept-percentage">{dept.percentage}%</span>
                 </div>
                 <div className="progress-track">
-                  <div 
-                    className={`progress-fill is-${dept.status || 'normal'}`} 
+                  <div
+                    className={`progress-fill is-${dept.status || 'normal'}`}
                     style={{ width: `${dept.percentage}%` }}
                   ></div>
                 </div>
@@ -127,7 +139,9 @@ const DashboardView: React.FC = () => {
                     <td>{app.doctor}</td>
                     <td className="text-muted">{app.time}</td>
                     <td>
-                      <span className={`pill-status status-${app.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                      <span
+                        className={`pill-status status-${app.status.toLowerCase().replace(/\s+/g, '-')}`}
+                      >
                         {app.status}
                       </span>
                     </td>

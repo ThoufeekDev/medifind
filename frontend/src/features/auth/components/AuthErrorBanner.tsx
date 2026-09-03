@@ -1,4 +1,4 @@
-import "./AuthErrorBanner.css"
+import './AuthErrorBanner.css';
 interface AuthErrorBannerProps {
   message: string;
 }

@@ -1,17 +1,13 @@
-import { useEffect, useState } from "react";
-interface OtpTimerProps{
-    expiresAt:number
+import { useEffect, useState } from 'react';
+interface OtpTimerProps {
+  expiresAt: number;
 }
-function OtpTimer({ expiresAt }:OtpTimerProps) {
-  
+function OtpTimer({ expiresAt }: OtpTimerProps) {
   const [remaining, setRemaining] = useState(0);
 
   useEffect(() => {
     const calculateRemaining = () => {
-      const seconds = Math.max(
-        0,
-        Math.ceil((expiresAt - Date.now()) / 1000)
-      );
+      const seconds = Math.max(0, Math.ceil((expiresAt - Date.now()) / 1000));
 
       setRemaining(seconds);
     };
@@ -30,9 +26,7 @@ function OtpTimer({ expiresAt }:OtpTimerProps) {
     <div>
       {remaining > 0 ? (
         <span>
-          OTP expires in{" "}
-          {String(minutes).padStart(2, "0")}:
-          {String(seconds).padStart(2, "0")}
+          OTP expires in {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
         </span>
       ) : (
         <span>OTP expired</span>

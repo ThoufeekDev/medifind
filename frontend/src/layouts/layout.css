@@ -1,199 +1,143 @@
-/* Layout Shell Design Token Registry */
+/* =========================================================
+   MediFind Admin Layout
+========================================================= */
+
 :root {
-  --header-h: 64px; /* Slimmer header height for an elegant typography layout */
   --bg-shell: #f8fafc;
-  --bg-header: rgba(255, 255, 255, 0.85); /* Glassmorphism base */
-  
-  --shell-border: #e2e8f0;
-  --shell-text-main: #0f172a;
-  --shell-text-muted: #64748b;
-  
-  /* Brand Constants */
-  --shell-accent: #2563eb;
-  --shell-accent-hover: #1d4ed8;
-  --shell-danger: #ef4444;
-  
-  /* Shared Architecture Specs */
-  --shell-bezier: cubic-bezier(0.4, 0, 0.2, 1);
-  --shell-transition: all 0.2s var(--shell-bezier);
-  --shell-shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+
+  --shell-border: #e5e7eb;
+
+  --shell-text-main: #111827;
+
+  --shell-transition:
+    0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Master Structure Layout Parent */
+
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
+
 .layout-container {
-  display: flex;
+  width: 100%;
+
   min-height: 100vh;
-  width: 100vw;
-  background-color: var(--bg-shell);
+  min-height: 100dvh;
+
+  display: flex;
+
+  background: var(--bg-shell);
+
   overflow-x: hidden;
 }
 
-/* Primary Main View Area Workspace */
+
+/* =========================================================
+   MAIN CONTENT AREA
+========================================================= */
+
 .layout-main {
   flex: 1;
+
+  min-width: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+
   display: flex;
   flex-direction: column;
-  min-width: 0; /* Important container overflow bug guard */
+
   position: relative;
-}
 
-/* High-End Fixed/Sticky Header Shell */
-.main-header {
-  height: var(--header-h);
-  background: var(--bg-header);
-  border-bottom: 1px solid var(--shell-border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 32px;
-  position: sticky;
-  top: 0;
-  z-index: 90;
-  /* Blurred glassmorphism backdrop overlay filtering */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-/* Content Groups Structs */
-.header-left, 
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-/* Minimal Action Tool Buttons */
-.icon-btn {
-  cursor: pointer;
-  background: transparent;
-  border: 1px solid transparent;
-  font-size: 18px;
-  position: relative;
-  padding: 8px;
-  border-radius: 8px;
-  color: var(--shell-text-muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: var(--shell-transition);
-}
-
-.icon-btn:hover {
-  background: #f1f5f9;
-  color: var(--shell-text-main);
-}
-
-.icon-btn:focus-visible {
-  outline: 2px solid var(--shell-accent);
-  outline-offset: 2px;
-}
-
-/* High-Visibility Notification Badge Counter */
-.badge-dot {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 8px;
-  height: 8px;
-  background: var(--shell-danger);
-  border: 2px solid white; /* Adds isolation whitespace ring */
-  border-radius: 50%;
-}
-
-/* Responsive Tablet Mobile Action Toggle Trigger */
-.mobile-toggle-btn {
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  display: none;
-  font-size: 20px;
-  padding: 6px;
-  border-radius: 6px;
-  color: var(--shell-text-main);
-  transition: var(--shell-transition);
-}
-
-.mobile-toggle-btn:hover {
-  background: #f1f5f9;
-}
-
-/* Primary Executive Action Button CTA */
-.btn-primary-shell {
-  cursor: pointer;
-  background: var(--shell-accent);
-  color: white;
-  border: 1px solid transparent;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  box-shadow: var(--shell-shadow-sm);
-  transition: var(--shell-transition);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.btn-primary-shell:hover {
-  background: var(--shell-accent-hover);
-  transform: translateY(-1px);
-}
-
-.btn-primary-shell:active {
-  transform: translateY(0);
-}
-
-/* Dynamic Core Sub-Canvas Wrapper */
-.main-content {
-  padding: 32px;
-  flex: 1;
-  overflow-y: auto;
   box-sizing: border-box;
 }
 
-/* Custom Styled Architectural Scrollbars for Webkit engines */
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.main-content {
+  flex: 1;
+
+  width: 100%;
+
+  padding: 32px;
+
+  box-sizing: border-box;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
 .main-content::-webkit-scrollbar {
   width: 8px;
 }
+
+
 .main-content::-webkit-scrollbar-track {
   background: transparent;
 }
+
+
 .main-content::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #d1d5db;
+
   border-radius: 100px;
 }
+
+
 .main-content::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #9ca3af;
 }
 
-/* Responsive Hardware Adaptive Viewports Rules */
+
+/* Firefox */
+
+.main-content {
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    #d1d5db
+    transparent;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media (max-width: 992px) {
-  .mobile-toggle-btn { 
-    display: flex; 
-    align-items: center;
-    justify-content: center;
+
+  .layout-container {
+    min-height: 100dvh;
   }
-  
-  .main-header {
-    padding: 0 20px;
+
+
+  .layout-main {
+    width: 100%;
+
+    min-height: 100dvh;
+  }
+
+
+  .main-content {
+    padding: 24px;
   }
 }
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
 
 @media (max-width: 576px) {
-  .main-header { 
-    padding: 0 16px; 
-  }
-  
+
   .main-content {
     padding: 20px 16px;
-  }
-  
-  /* Hide text-heavy layout actions on tiny viewports */
-  .btn-primary-shell span {
-    display: none;
-  }
-  .btn-primary-shell {
-    padding: 8px;
-    border-radius: 50%;
   }
 }

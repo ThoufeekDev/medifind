@@ -1,5 +1,5 @@
-import { Role } from  "@prisma/client"
+import { Role } from '@prisma/client';
 export interface TokenPayload {
-    userId:string,
-    role:Role
+  userId: string;
+  role: Role;
 }

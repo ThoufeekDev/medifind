@@ -8,4 +8,3 @@ export interface User {
   role: string;
   isVerified: boolean;
 }
-

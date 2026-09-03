@@ -1,11 +1,11 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const createDoctorSchema = z.object({
   name: z.string().min(3),
   email: z.email(),
   phone: z.string().min(10),
 
-  gender: z.enum(["MALE", "FEMALE"]),
+  gender: z.enum(['MALE', 'FEMALE']),
 
   qualification: z.string().min(2),
 
@@ -20,5 +20,4 @@ export const createDoctorSchema = z.object({
   image: z.any().optional(),
 });
 
-export type CreateDoctorFormData =
-  z.infer<typeof createDoctorSchema>;
+export type CreateDoctorFormData = z.infer<typeof createDoctorSchema>;

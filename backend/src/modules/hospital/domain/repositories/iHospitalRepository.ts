@@ -1,11 +1,11 @@
-import { Hospital } from "../entities/Hospital";
+import { Hospital } from '../entities/Hospital';
 
-import type { CreateHospitalDTO } from "../../application/dtos/create-hospital.dto";
+import type { CreateHospitalDTO } from '../../application/dtos/create-hospital.dto';
 
 export interface IHospitalRepository {
-    create(data:CreateHospitalDTO,adminId:string):Promise<Hospital>;
- 
-    findByAdminId(adminId:string):Promise<Hospital | null>;
-    // it checks if admin already owns hospital
-    existsByAdminId(adminId:string):Promise<Boolean>
+  create(data: CreateHospitalDTO, adminId: string): Promise<Hospital>;
+
+  findByAdminId(adminId: string): Promise<Hospital | null>;
+  // it checks if admin already owns hospital
+  existsByAdminId(adminId: string): Promise<Boolean>;
 }

@@ -1,28 +1,24 @@
-import { Navigate } from "react-router-dom";
-import { useAuthStore } from "../features/auth/store/auth.store";
-import Loader from "../components/common/Loader";
+import { Navigate } from 'react-router-dom';
+import { useAuthStore } from '../features/auth/store/auth.store';
+import Loader from '../components/common/Loader';
 
-
-interface Props{
-    children:React.ReactNode,
+interface Props {
+  children: React.ReactNode;
 }
 
-export default function PublicRoute({children}:Props){
-   const {isAuthenticated,isCheckingAuth,user} = useAuthStore();
+export default function PublicRoute({ children }: Props) {
+  const { isAuthenticated, isCheckingAuth, user } = useAuthStore();
 
-   if(isCheckingAuth){
-       return <Loader/>
-   }
+  if (isCheckingAuth) {
+    return <Loader />;
+  }
 
+  if (isAuthenticated && user) {
+    if (user.role === 'ADMIN') {
+      return <Navigate to="/admin" replace />;
+    }
+    return <Navigate to="/" replace />;
+  }
 
-   if(isAuthenticated && user){
-      if(user.role === "ADMIN"){
-         return <Navigate to="/admin" replace/>
-      }
-      return (
-         <Navigate to="/" replace/>
-      )
-   }
-
-   return children;
+  return children;
 }

@@ -1,20 +1,18 @@
 export interface DoctorListItemDTO {
-    id:string;
-    name:string;
+  id: string;
+  name: string;
 
-    imageUrl:string | null;
+  imageUrl: string | null;
 
-    specialization:string;
+  specialization: string;
 
-    experience:number;
+  experience: number;
 
-    consultationFee:number;
+  consultationFee: number;
 
-    reviewCount:number;
+  reviewCount: number;
 
-    averageRating:number;
+  averageRating: number;
 
-    isActive:boolean;
-
-    
+  isActive: boolean;
 }

@@ -8,9 +8,5 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "exclude": [
-    "prisma/seed.ts",
-    "vitest.config.ts",
-    "test"
-  ]
+  "exclude": ["prisma/seed.ts", "vitest.config.ts", "test"]
 }

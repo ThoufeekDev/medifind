@@ -1,37 +1,24 @@
-const createImage = (
-  url: string
-): Promise<HTMLImageElement> =>
+const createImage = (url: string): Promise<HTMLImageElement> =>
   new Promise((resolve, reject) => {
     const image = new Image();
 
-    image.addEventListener("load", () =>
-      resolve(image)
-    );
+    image.addEventListener('load', () => resolve(image));
 
-    image.addEventListener("error", reject);
+    image.addEventListener('error', reject);
 
     image.src = url;
   });
 
-export default async function getCroppedImg(
-  imageSrc: string,
-  pixelCrop: any
-): Promise<File> {
+export default async function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<File> {
+  const image = await createImage(imageSrc);
 
-  const image =
-    await createImage(imageSrc);
+  const canvas = document.createElement('canvas');
 
-  const canvas =
-    document.createElement("canvas");
+  const ctx = canvas.getContext('2d');
 
-  const ctx =
-    canvas.getContext("2d");
+  canvas.width = pixelCrop.width;
 
-  canvas.width =
-    pixelCrop.width;
-
-  canvas.height =
-    pixelCrop.height;
+  canvas.height = pixelCrop.height;
 
   ctx?.drawImage(
     image,
@@ -42,22 +29,16 @@ export default async function getCroppedImg(
     0,
     0,
     pixelCrop.width,
-    pixelCrop.height
+    pixelCrop.height,
   );
 
   return new Promise((resolve) => {
     canvas.toBlob((blob) => {
-
-      const file = new File(
-        [blob!],
-        "cropped-image.jpg",
-        {
-          type: "image/jpeg",
-        }
-      );
+      const file = new File([blob!], 'cropped-image.jpg', {
+        type: 'image/jpeg',
+      });
 
       resolve(file);
-
-    }, "image/jpeg");
+    }, 'image/jpeg');
   });
 }
