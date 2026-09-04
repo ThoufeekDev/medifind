@@ -1,6 +1,6 @@
 import { Worker } from 'bullmq';
 
-import { redis } from '../config/redis';
+import { redis } from '../redis_config/redis';
 import { sendOtpEmail } from '../services/email.service';
 
 export const otpWorker = new Worker(

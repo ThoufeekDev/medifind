@@ -73,7 +73,8 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       const profile = await getProfile();
 
       set({
-        user: profile.user,
+        //user:profile.user
+        user: profile,
         isAuthenticated: true,
       });
     } catch (error) {
@@ -95,7 +96,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       await googleLogin(credential);
       const profile = await getProfile();
       set({
-        user: profile.user,
+        user: profile,
         isAuthenticated:true
       })
     } catch (error) {
@@ -146,7 +147,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       const profile = await getProfile();
 
       set({
-        user: profile.user,
+        user: profile,
         isAuthenticated: true,
       });
     } catch (error) {

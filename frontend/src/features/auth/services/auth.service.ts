@@ -7,18 +7,20 @@ import type { VerifyOtpDTO } from '../dtos/verify-otp.dto';
 
 export const registerUser = async (data: RegisterDTO) => {
   const response = await api.post('/auth/register', data);
-  return response.data;
+
+  return response.data.data
 };
 
 export const verifyOtpPaylod = async (data: VerifyOtpDTO) => {
   const response = await api.post('/auth/verify-otp', data);
-  return response.data;
+  return response.data.data;
 };
 
 export const loginUser = async (data: LoginDTO) => {
   const response = await api.post('/auth/login', data);
-
-  return response.data.user;
+  console.log('login response',response.data.data)
+  return response.data.data;
+  // return response.data.user
 };
 
 export const logoutUser = async () => {
@@ -29,17 +31,17 @@ export const logoutUser = async () => {
 export const getProfile = async () => {
   const response = await api.get('/auth/profile');
 
-  return response.data;
+  // return response.data;
+  return response.data.data;
 };
 
 export const refreshAccessToken = async () => {
-  const response = await api.post('/auth/refresh-token');
-  return response.data;
+await api.post('/auth/refresh-token');
+  
 };
 
 
 export const resendOtp = async (data: ResendOtp) => {
-  console.log("tigger 2",data)
   const response = await api.post('/auth/resend-otp',data);
   console.log("resend otp response is ",response)
   return response.data;
@@ -49,5 +51,5 @@ export const resendOtp = async (data: ResendOtp) => {
 export const googleLogin = async (credential:string) => {
   const response = await api.post('/auth/google',{credential})
   console.log(response.data)
-  return response.data;
+  return response.data.data;
 }

@@ -1,38 +1,33 @@
 import { Request, Response } from 'express';
-import { PrismaUserRepository } from '../../infrastructure/repositories/PrismaUserRepository';
+import { OAuth2Client } from 'google-auth-library';
 
+// Validators
 import { registerSchema } from '../validators/register.validator';
-import { RefreshTokenUseCase } from '../../application/use-cases/RefreshTokenUseCase';
-import { AuthenticatedRequest } from '../../../../shared/types/AuthenticateRequest';
-
 import { loginSchema } from '../validators/login.validator';
-
-// import { generateAccessToken } from '../../../../shared/utils/generateAccessToken';
-// import { generateRefreshToken } from '../../../../shared/utils/generateRefreshToken';
-// import { VerifyOtpUseCase } from '../../application/use-cases/VerifyOtpUseCase';
-// import { UserResponserRegisterDTO } from '../../application/dtos/response/UserResponseRegisterDTO';
 import { verifyUserOtpSchema } from '../validators/verifyOtp.validator';
 
-// factories
+// Application
+import { RefreshTokenUseCase } from '../../application/use-cases/RefreshTokenUseCase';
 
+// Infrastructure - Factories
 import { makeRegisterUserUseCase } from '../../infrastructure/factories/makeRegisterUserUseCase';
 import { makeLoginUserCase } from '../../infrastructure/factories/makeLoginUserCase';
 import { makeGetProfileUserUseCase } from '../../infrastructure/factories/makeGetProfileUserUseCase';
 import { makeVerifyOTPUseCase } from '../../infrastructure/factories/makeVerifyOtpUseCase';
-
-// Error Handling
-import { UnauthorizedError } from '../../../../shared/exceptions/UnauthorizedError';
-
 import { makeResendOtpUseCase } from '../../infrastructure/factories/makeResendOtpUseCase';
-
-
-import { OAuth2Client } from 'google-auth-library';
 import { makeGoogleLoginUseCase } from '../../infrastructure/factories/makeGoogleLoginUseCase';
 
+// Shared - Errors
+import { BadRequestError } from '../../../../shared/exceptions/BadRequestError';
+import { UnauthorizedError } from '../../../../shared/exceptions/UnauthorizedError';
 
+// Shared - HTTP Utilities
+import { successResponse } from '../../../../shared/utils/response';
 import { setAccessTokenCookie, setAuthCookies } from '../../../../shared/utils/authCookies';
 
-{makeGoogleLoginUseCase}
+// Shared - Types
+import { AuthenticatedRequest } from '../../../../shared/types/AuthenticateRequest';
+
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export class AuthController {
@@ -43,83 +38,29 @@ export class AuthController {
 
     const response = await useCase.execute(validatedData);
 
-    return res.status(201).json({
-      success: true,
-      message: 'OTP send to email',
-      data: {
-        id: response.id,
-        name: response.name,
-        email: response.email,
-        role: response.role,
-        isVerified: response.isVerified,
-        otpExpireIn: response.otpExpireIn,
-      },
-    });
+    successResponse(res, 201, true, 'OTP sent to email', response);
   }
 
   async verifyOtp(req: Request, res: Response) {
     const validatedData = verifyUserOtpSchema.parse(req.body);
 
-    // const userRepository = new PrismaUserRepository();
-    // const verifyOtpUseCase = new VerifyOtpUseCase(userRepository);
     const verifyOtpUseCase = makeVerifyOTPUseCase();
 
     const result = await verifyOtpUseCase.execute(validatedData);
 
+    setAuthCookies(res, result.user.id, result.user.role);
 
-    setAuthCookies(res,result.user.id,result.user.role)
-
-    // const accessToken = generateAccessToken({
-    //   userId: result.user.id,
-    //   role: result.user.role,
-    // });
-
-    // const refreshToken = generateRefreshToken({
-    //   userId: result.user.id,
-    //   role: result.user.role,
-    // });
-
-    // res.cookie('accessToken', accessToken, {
-    //   httpOnly: true,
-    //   secure: false,
-    //   sameSite: 'lax',
-    //   maxAge: 15 * 60 * 1000,
-    // });
-
-    // res.cookie('refreshToken', refreshToken, {
-    //   httpOnly: true,
-    //   secure: false,
-    //   sameSite: 'lax',
-    //   maxAge: 7 * 24 * 60 * 60 * 1000,
-    // });
-
-    return res.status(201).json({
-      success: true,
-      data: result,
-    });
+    successResponse(res, 201, true, 'OTP Verify successfuly', result);
   }
 
   async resendOTP(req: Request, res: Response) {
-    try {
-      console.log('trigger1 ', req.body);
-      const { email } = req.body;
+    const { email } = req.body;
 
-      console.log('trigger resend', email);
+    const resendUserCase = makeResendOtpUseCase();
 
-      console.log('email is ', email);
+    const result = await resendUserCase.execute({ email });
 
-      const resendUserCase = makeResendOtpUseCase();
-
-      const result = await resendUserCase.execute({ email });
-
-      return res.status(200).json({
-        success: true,
-        message: 'OTP resent succesfully',
-        data: result,
-      });
-    } catch (error) {
-      console.log('error occured while rending otp', error);
-    }
+    successResponse(res, 200, true, 'OTP resent succesfully', result);
   }
 
   async login(req: Request, res: Response) {
@@ -130,154 +71,53 @@ export class AuthController {
     const result = await loginUserUseCase.execute(validatedData);
 
     setAuthCookies(res, result.user.id, result.user.role);
-    
-    // const accessToken = generateAccessToken({
-    //   userId: result.user.id,
-    //   role: result.user.role,
-    // });
-    // const refreshToken = generateRefreshToken({
-    //   userId: result.user.id,
-    //   role: result.user.role,
-    // });
 
-    // res.cookie('accessToken', accessToken, {
-    //   httpOnly: true,
-    //   secure: false,
-    //   sameSite: 'lax',
-    //   maxAge: 15 * 60 * 1000,
-    // });
-
-    // res.cookie('refreshToken', refreshToken, {
-    //   httpOnly: true,
-    //   secure: false,
-    //   sameSite: 'lax',
-    //   maxAge: 7 * 24 * 60 * 60 * 1000,
-    // });
-
-    return res.status(200).json({
-      success: true,
-      user: result.user,
-    });
+    return successResponse(res, 200, true, 'Login succesful', result.user);
   }
 
   async googleLogin(req: Request, res: Response) {
-    try {
-      const { credential } = req.body;
-
-      console.log('Google credential received:', !!credential);
-
-      if (!credential) {
-        return res.status(400).json({
-          success: false,
-          message: 'Google credential is required',
-        });
-      }
-
-      const ticket = await googleClient.verifyIdToken({
-        idToken: credential,
-        audience: process.env.GOOGLE_CLIENT_ID,
-      });
-
-      const payload = ticket.getPayload();
-
-      const googleLoginUseCase = makeGoogleLoginUseCase();
-
-      const user = await googleLoginUseCase.execute({
-        googleId: payload!.sub!,
-        email: payload!.email!,
-        name: payload!.name!,
-        profileImage:payload!.picture ?? null,
-      })
-
-      console.log('this is the google user',user)
+    const { credential } = req.body;
 
 
-       setAuthCookies(res, user.id, user.role);
-
-      // const accessToken = generateAccessToken({
-      //   userId: user.id,
-      //   role: user.role,
-      // });
-
-      // const refreshToken = generateRefreshToken({
-      //   userId: user.id,
-      //   role: user.role,
-      // });
-
-      // res.cookie('accessToken', accessToken, {
-      //   httpOnly: true,
-      //   secure: false,
-      //   sameSite: 'lax',
-      //   maxAge: 15 * 60 * 1000,
-      // });
-
-      // res.cookie('refreshToken', refreshToken, {
-      //   httpOnly: true,
-      //   secure: false,
-      //   sameSite: 'lax',
-      //   maxAge: 7 * 24 * 60 * 60 * 1000,
-      // });
-
-  
-
-      return res.status(200).json({
-        success: true,
-        user,
-      });
-
-      // return res.status(200).json({
-      //   success: true,
-      //   message: 'Google credential verified',
-      //   user: {
-      //     googleId: payload?.sub,
-      //     email: payload?.email,
-      //     name: payload?.name,
-      //     picture: payload?.picture,
-      //   },
-      // });
-    } catch (error) {
-      console.error('Google verification failed:', error);
-
-      return res.status(401).json({
-        success: false,
-        message: 'Invalid Google credential',
-      });
+    if (!credential) {
+      throw new BadRequestError('Google credential is required');
     }
+
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    const googleLoginUseCase = makeGoogleLoginUseCase();
+
+    const user = await googleLoginUseCase.execute({
+      googleId: payload!.sub!,
+      email: payload!.email!,
+      name: payload!.name!,
+      profileImage: payload!.picture ?? null,
+    });
+
+    setAuthCookies(res, user.id, user.role);
+
+    successResponse(res, 200, true, 'Google succesfully Logined', user);
   }
 
   async refreshToken(req: Request, res: Response): Promise<void> {
-    try {
-      const refreshToken = req.cookies.refreshToken;
+    const refreshToken = req.cookies.refreshToken;
 
-      if (!refreshToken) {
-        throw new UnauthorizedError('Refresh token missing');
-      }
-
-      const refreshTokenUseCase = new RefreshTokenUseCase();
-
-      const { accessToken } = await refreshTokenUseCase.execute(refreshToken);
-
-      // res.cookie('accessToken', accessToken, {
-      //   httpOnly: true,
-      //   secure: false,
-      //   sameSite: 'lax',
-      //   maxAge: 15 * 60 * 1000,
-      // });
-
-      setAccessTokenCookie(res, accessToken);
-
-      res.status(200).json({
-        success: true,
-        message: 'Access token refreshed',
-      });
-    } catch (error) {
-      res.status(401).json({
-        success: false,
-        message: 'Invalid refresh token',
-      });
-
-      return;
+    if (!refreshToken) {
+      throw new UnauthorizedError('Refresh token missing');
     }
+
+    const refreshTokenUseCase = new RefreshTokenUseCase();
+
+    const { accessToken } = await refreshTokenUseCase.execute(refreshToken);
+
+    setAccessTokenCookie(res, accessToken);
+
+    successResponse(res, 200, true, 'Access token refreshed');
   }
 
   // logout method
@@ -286,10 +126,7 @@ export class AuthController {
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');
 
-    res.status(200).json({
-      success: true,
-      message: 'Logged out successfully',
-    });
+    successResponse(res, 200, true, 'Logged out successfully');
   }
 
   // profile
@@ -301,9 +138,50 @@ export class AuthController {
 
     const result = await getProfileUserUseCase.execute(userId!);
 
-    res.status(200).json({
-      success: true,
-      user: result.user,
-    });
+    successResponse(res, 200, true, 'Get Profile succes', result.user);
   }
 }
+
+// async googleLogin(req: Request, res: Response) {
+//   try {
+//     const { credential } = req.body;
+
+//     // console.log('Google credential received:', !!credential);
+
+//     if (!credential) {
+//       // return res.status(400).json({
+//       //   success: false,
+//       //   message: 'Google credential is required',
+//       // });
+
+//       throw new BadRequestError('Google credential is required');
+//     }
+
+//     const ticket = await googleClient.verifyIdToken({
+//       idToken: credential,
+//       audience: process.env.GOOGLE_CLIENT_ID,
+//     });
+
+//     const payload = ticket.getPayload();
+
+//     const googleLoginUseCase = makeGoogleLoginUseCase();
+
+//     const user = await googleLoginUseCase.execute({
+//       googleId: payload!.sub!,
+//       email: payload!.email!,
+//       name: payload!.name!,
+//       profileImage: payload!.picture ?? null,
+//     });
+
+//     setAuthCookies(res, user.id, user.role);
+
+//     successResponse(res, 200, true, 'Google succesfully Logined', user);
+//   } catch (error) {
+//     console.error('Google verification failed:', error);
+
+//     return res.status(401).json({
+//       success: false,
+//       message: 'Invalid Google credential',
+//     });
+//   }
+// }

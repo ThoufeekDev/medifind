@@ -11,9 +11,10 @@
 
 ✔ Implement OTP Expiration / Timeout @started(26-09-01 11:21) @done(26-09-01 13:49) @lasted(2h28m54s)
 ✔ Implement Resend OTP @done(26-09-04 04:41)
-☐ Implement Google OAuth
+✔ Implement Google OAuth @done(26-09-05 00:13)
 ✘ Implement Apple OAuth @cancelled(26-09-01 03:03)
 ✘ Apple OAuth — Cancelled
+☐ Implement forgot password on Login Page
 
 
 ## User Application
