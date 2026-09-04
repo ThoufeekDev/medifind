@@ -44,7 +44,8 @@ export class PrismaUserRepository implements IUserRepository {
     id: string;
     name: string;
     email: string;
-    password: string;
+    googleId: string | null;
+    password: string | null;
     role: PrismaRole;
     isVerified: boolean;
     phone: string | null;
@@ -58,6 +59,7 @@ export class PrismaUserRepository implements IUserRepository {
       user.id,
       user.name,
       user.email,
+      user.googleId,
       user.password,
       this.toDomainRole(user.role),
       user.isVerified,
@@ -91,6 +93,30 @@ export class PrismaUserRepository implements IUserRepository {
     if (!user) {
       return null;
     }
+
+    return this.toDomainEntity(user);
+  }
+
+  async findByGoogleId(googleId: string): Promise<User | null> {
+      
+    const user = await prisma.user.findUnique({
+      where: {
+        googleId,
+      }
+    })
+
+    if (!user) return null;
+
+    return this.toDomainEntity(user);
+  }
+
+  async linkGoogleAccount(userId: string, googleId: string): Promise<User> {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        googleId
+      }
+    })
 
     return this.toDomainEntity(user);
   }

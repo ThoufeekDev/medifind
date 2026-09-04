@@ -7,10 +7,10 @@ import { AuthenticatedRequest } from '../../../../shared/types/AuthenticateReque
 
 import { loginSchema } from '../validators/login.validator';
 
-import { generateAccessToken } from '../../../../shared/utils/generateAccessToken';
-import { generateRefreshToken } from '../../../../shared/utils/generateRefreshToken';
-
-import { VerifyOtpUseCase } from '../../application/use-cases/VerifyOtpUseCase';
+// import { generateAccessToken } from '../../../../shared/utils/generateAccessToken';
+// import { generateRefreshToken } from '../../../../shared/utils/generateRefreshToken';
+// import { VerifyOtpUseCase } from '../../application/use-cases/VerifyOtpUseCase';
+// import { UserResponserRegisterDTO } from '../../application/dtos/response/UserResponseRegisterDTO';
 import { verifyUserOtpSchema } from '../validators/verifyOtp.validator';
 
 // factories
@@ -22,9 +22,18 @@ import { makeVerifyOTPUseCase } from '../../infrastructure/factories/makeVerifyO
 
 // Error Handling
 import { UnauthorizedError } from '../../../../shared/exceptions/UnauthorizedError';
-import { UserResponserRegisterDTO } from '../../application/dtos/response/UserResponseRegisterDTO';
+
 import { makeResendOtpUseCase } from '../../infrastructure/factories/makeResendOtpUseCase';
-import { success } from 'zod';
+
+
+import { OAuth2Client } from 'google-auth-library';
+import { makeGoogleLoginUseCase } from '../../infrastructure/factories/makeGoogleLoginUseCase';
+
+
+import { setAccessTokenCookie, setAuthCookies } from '../../../../shared/utils/authCookies';
+
+{makeGoogleLoginUseCase}
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export class AuthController {
   async register(req: Request, res: Response) {
@@ -57,29 +66,32 @@ export class AuthController {
 
     const result = await verifyOtpUseCase.execute(validatedData);
 
-    const accessToken = generateAccessToken({
-      userId: result.user.id,
-      role: result.user.role,
-    });
 
-    const refreshToken = generateRefreshToken({
-      userId: result.user.id,
-      role: result.user.role,
-    });
+    setAuthCookies(res,result.user.id,result.user.role)
 
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-      maxAge: 15 * 60 * 1000,
-    });
+    // const accessToken = generateAccessToken({
+    //   userId: result.user.id,
+    //   role: result.user.role,
+    // });
 
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    // const refreshToken = generateRefreshToken({
+    //   userId: result.user.id,
+    //   role: result.user.role,
+    // });
+
+    // res.cookie('accessToken', accessToken, {
+    //   httpOnly: true,
+    //   secure: false,
+    //   sameSite: 'lax',
+    //   maxAge: 15 * 60 * 1000,
+    // });
+
+    // res.cookie('refreshToken', refreshToken, {
+    //   httpOnly: true,
+    //   secure: false,
+    //   sameSite: 'lax',
+    //   maxAge: 7 * 24 * 60 * 60 * 1000,
+    // });
 
     return res.status(201).json({
       success: true,
@@ -89,14 +101,12 @@ export class AuthController {
 
   async resendOTP(req: Request, res: Response) {
     try {
+      console.log('trigger1 ', req.body);
+      const { email } = req.body;
 
-      console.log('trigger1 ',req.body)
-      const  {email}  = req.body;
+      console.log('trigger resend', email);
 
-      console.log('trigger resend',email);
-      
-
-      console.log('email is ',email)
+      console.log('email is ', email);
 
       const resendUserCase = makeResendOtpUseCase();
 
@@ -108,7 +118,7 @@ export class AuthController {
         data: result,
       });
     } catch (error) {
-      console.log('error occured while rending otp',error);
+      console.log('error occured while rending otp', error);
     }
   }
 
@@ -119,33 +129,120 @@ export class AuthController {
 
     const result = await loginUserUseCase.execute(validatedData);
 
-    const accessToken = generateAccessToken({
-      userId: result.user.id,
-      role: result.user.role,
-    });
-    const refreshToken = generateRefreshToken({
-      userId: result.user.id,
-      role: result.user.role,
-    });
+    setAuthCookies(res, result.user.id, result.user.role);
+    
+    // const accessToken = generateAccessToken({
+    //   userId: result.user.id,
+    //   role: result.user.role,
+    // });
+    // const refreshToken = generateRefreshToken({
+    //   userId: result.user.id,
+    //   role: result.user.role,
+    // });
 
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-      maxAge: 15 * 60 * 1000,
-    });
+    // res.cookie('accessToken', accessToken, {
+    //   httpOnly: true,
+    //   secure: false,
+    //   sameSite: 'lax',
+    //   maxAge: 15 * 60 * 1000,
+    // });
 
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    // res.cookie('refreshToken', refreshToken, {
+    //   httpOnly: true,
+    //   secure: false,
+    //   sameSite: 'lax',
+    //   maxAge: 7 * 24 * 60 * 60 * 1000,
+    // });
 
     return res.status(200).json({
       success: true,
       user: result.user,
     });
+  }
+
+  async googleLogin(req: Request, res: Response) {
+    try {
+      const { credential } = req.body;
+
+      console.log('Google credential received:', !!credential);
+
+      if (!credential) {
+        return res.status(400).json({
+          success: false,
+          message: 'Google credential is required',
+        });
+      }
+
+      const ticket = await googleClient.verifyIdToken({
+        idToken: credential,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+
+      const payload = ticket.getPayload();
+
+      const googleLoginUseCase = makeGoogleLoginUseCase();
+
+      const user = await googleLoginUseCase.execute({
+        googleId: payload!.sub!,
+        email: payload!.email!,
+        name: payload!.name!,
+        profileImage:payload!.picture ?? null,
+      })
+
+      console.log('this is the google user',user)
+
+
+       setAuthCookies(res, user.id, user.role);
+
+      // const accessToken = generateAccessToken({
+      //   userId: user.id,
+      //   role: user.role,
+      // });
+
+      // const refreshToken = generateRefreshToken({
+      //   userId: user.id,
+      //   role: user.role,
+      // });
+
+      // res.cookie('accessToken', accessToken, {
+      //   httpOnly: true,
+      //   secure: false,
+      //   sameSite: 'lax',
+      //   maxAge: 15 * 60 * 1000,
+      // });
+
+      // res.cookie('refreshToken', refreshToken, {
+      //   httpOnly: true,
+      //   secure: false,
+      //   sameSite: 'lax',
+      //   maxAge: 7 * 24 * 60 * 60 * 1000,
+      // });
+
+  
+
+      return res.status(200).json({
+        success: true,
+        user,
+      });
+
+      // return res.status(200).json({
+      //   success: true,
+      //   message: 'Google credential verified',
+      //   user: {
+      //     googleId: payload?.sub,
+      //     email: payload?.email,
+      //     name: payload?.name,
+      //     picture: payload?.picture,
+      //   },
+      // });
+    } catch (error) {
+      console.error('Google verification failed:', error);
+
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid Google credential',
+      });
+    }
   }
 
   async refreshToken(req: Request, res: Response): Promise<void> {
@@ -160,12 +257,14 @@ export class AuthController {
 
       const { accessToken } = await refreshTokenUseCase.execute(refreshToken);
 
-      res.cookie('accessToken', accessToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: 'lax',
-        maxAge: 15 * 60 * 1000,
-      });
+      // res.cookie('accessToken', accessToken, {
+      //   httpOnly: true,
+      //   secure: false,
+      //   sameSite: 'lax',
+      //   maxAge: 15 * 60 * 1000,
+      // });
+
+      setAccessTokenCookie(res, accessToken);
 
       res.status(200).json({
         success: true,

@@ -15,6 +15,7 @@ import SocialLoginButtons from '../../components/SocialLoginButtons';
 import AuthDivider from '../../components/AuthDivider';
 import AuthErrorBanner from '../../components/AuthErrorBanner';
 
+
 export default function LoginPage() {
   const { login, isLoading } = useAuthStore();
   const navigate = useNavigate();

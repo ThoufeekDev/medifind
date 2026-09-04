@@ -7,7 +7,8 @@ export class User {
     public readonly id: string,
     public name: string,
     public readonly email: string,
-    public readonly password: string,
+    public readonly googleId:string | null,
+    public readonly password: string | null,
     public role: Role,
     public isVerified: boolean,
     public phone: string | null,
@@ -22,7 +23,8 @@ export class User {
 export interface CreateUserData {
   name: string;
   email: string;
-  password: string;
+  password: string | null;
+  googleId?: string | null;
   role: Role;
   isVerified: boolean;
 }

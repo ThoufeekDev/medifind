@@ -19,6 +19,10 @@ export class LoginUserUseCase {
       throw new NotFoundError('Invalid credentials');
     }
 
+    if (!user.password) {
+      throw new UnauthorizedError('Invalid credentials');
+    }
+
     const isPasswordValid = await comparePassword(data.password, user.password);
 
     if (!isPasswordValid) {

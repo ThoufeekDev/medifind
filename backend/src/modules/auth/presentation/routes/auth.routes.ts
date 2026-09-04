@@ -21,6 +21,7 @@ router.post('/verify-otp', authController.verifyOtp);
 // Logout Route
 router.post('/login', authController.login);
 router.post('/logout', authController.logout);
+router.post('/google', authController.googleLogin);
 
 // refreshing Token
 router.post('/refresh-token', authController.refreshToken);

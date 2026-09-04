@@ -6,7 +6,8 @@ import {
   getProfile,
   registerUser,
   verifyOtpPaylod,
-  resendOtp
+  resendOtp,
+  googleLogin
 } from '../services/auth.service';
 
 import type { LoginDTO } from '../dtos/login.dto';
@@ -34,7 +35,9 @@ interface AuthStore {
 
   verifyOtpAndLogin: (data: VerifyOtpDTO) => Promise<void>;
 
-  resendOtp: (data:ResendOtp) => Promise<ResendOtpResponse>;
+  resendOtp: (data: ResendOtp) => Promise<ResendOtpResponse>;
+  
+  googleLogin: (credential:string)=> Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
@@ -80,6 +83,28 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       set({
         isLoading: false,
       });
+    }
+  },
+
+  googleLogin: async (credential) => {
+    try {
+      set({
+        isLoading:true,
+      })
+
+      await googleLogin(credential);
+      const profile = await getProfile();
+      set({
+        user: profile.user,
+        isAuthenticated:true
+      })
+    } catch (error) {
+          console.error(error);
+          throw error;
+    } finally {
+          set({
+            isLoading: false,
+          });
     }
   },
 

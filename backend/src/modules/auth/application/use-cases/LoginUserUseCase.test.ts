@@ -27,6 +27,8 @@ describe('LoginUserUseCase', () => {
       create: vi.fn(),
       verifyUser: vi.fn(),
       findById: vi.fn(),
+      findByGoogleId: vi.fn(),
+      linkGoogleAccount:vi.fn()
     };
   });
 
@@ -50,6 +52,7 @@ describe('LoginUserUseCase', () => {
       'user-id-123',
       'John',
       'john@example.com',
+       "googleId",
       'hashed-password',
       Role.USER,
       true,
@@ -81,6 +84,7 @@ describe('LoginUserUseCase', () => {
       'user-id-123',
       'John',
       'john@example.com',
+      "googleId",
       'hashed-password',
       Role.USER,
       false,
@@ -111,6 +115,7 @@ describe('LoginUserUseCase', () => {
       'user-id-123',
       'John',
       'john@example.com',
+      'googleId',
       'hashed-password',
       Role.USER,
       true,
@@ -140,6 +145,7 @@ describe('LoginUserUseCase', () => {
       'user-id-123',
       'John',
       'john@example.com',
+      'googleId',
       'hashed-password',
       Role.USER,
       true,

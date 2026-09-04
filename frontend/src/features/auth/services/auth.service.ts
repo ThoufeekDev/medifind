@@ -44,3 +44,10 @@ export const resendOtp = async (data: ResendOtp) => {
   console.log("resend otp response is ",response)
   return response.data;
 }
+
+
+export const googleLogin = async (credential:string) => {
+  const response = await api.post('/auth/google',{credential})
+  console.log(response.data)
+  return response.data;
+}
