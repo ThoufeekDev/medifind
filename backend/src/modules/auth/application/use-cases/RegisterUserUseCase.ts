@@ -5,7 +5,7 @@ import { RegisterUserDTO } from '../dtos/requests/RegisterUserDTO';
 import { UserResponseDTO } from '../dtos/response/UserResponseDTO';
 
 import { generateOtp } from '../../../../shared/utils/generateOtp';
-import { redis } from '../../../../shared/config/redis';
+import { redis } from '../../../../shared/redis_config/redis';
 import { otpQueue } from '../../../../shared/queues/otp.queue';
 // utils
 import { hashPassword } from '../../../../shared/utils/hashPassword';
@@ -37,7 +37,7 @@ export class RegisterUserUseCase {
     });
 
     const otp = generateOtp();
-    const OTP_EXPIRY_SECONDS = 300;
+    const OTP_EXPIRY_SECONDS = 50;
 
     await redis.set(`otp:${user.email}`, otp, 'EX', OTP_EXPIRY_SECONDS);
     const otpExpireAt = Date.now() + OTP_EXPIRY_SECONDS * 1000;

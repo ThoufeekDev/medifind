@@ -20,7 +20,7 @@ export class doctorController {
 
     console.log('doctor is ', doctor);
 
-    return successResponse(res, 201, 'Doctor created successfully', doctor);
+    return successResponse(res, 201,true,'Doctor created successfully', doctor);
   }
 
   async getAll(req: AuthenticatedRequest, res: Response) {
@@ -34,6 +34,6 @@ export class doctorController {
 
     const doctor = await getDoctorRespository.execute(req.userId!, filters);
 
-    return successResponse(res, 200, 'Doctor fetched Successfully', doctor);
+    return successResponse(res, 200,true,'Doctor fetched Successfully', doctor);
   }
 }

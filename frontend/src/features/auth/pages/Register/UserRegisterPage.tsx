@@ -42,10 +42,12 @@ export default function UserRegisterPage() {
         turnstileToken,
       });
 
+    
+
       navigate('/verify-otp', {
         state: {
           email: data.email,
-          otpExpireIn: response.data.otpExpireIn,
+          otpExpireIn: response.otpExpireIn,
         },
       });
     } catch (error) {

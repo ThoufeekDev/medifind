@@ -1,4 +1,4 @@
-import { redis } from '../../../../shared/config/redis';
+import { redis } from '../../../../shared/redis_config/redis';
 import { IUserRepository } from '../../domain/repositories/IUserRepository';
 
 import { verifyOtpDTO } from '../dtos/requests/VerifyOtpDTO';

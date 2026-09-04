@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { makeGetAllSpecializationUseCase } from '../../../hospital/infrastructure/factories/makeGetAllSpecializationsUseCase';
-import { successResponse } from '../../../../shared/utils/response';
+import  {successResponse}  from '../../../../shared/utils/response';
 
 export class SpecializationController {
   async getAll(req: Request, res: Response) {
@@ -8,6 +8,6 @@ export class SpecializationController {
 
     const specializations = await useCase.execute();
 
-    return successResponse(res, 200, 'Specializations fetched successfully', specializations);
+    return successResponse(res, 200, true,'Specializations fetched successfully', specializations);
   }
 }

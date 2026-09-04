@@ -3,6 +3,7 @@ import { Response } from 'express';
 export const successResponse = <T>(
   res: Response,
   statusCode: number,
+  success:boolean,
   message: string,
   data?: T,
 ) => {
@@ -12,3 +13,5 @@ export const successResponse = <T>(
     data,
   });
 };
+
+
