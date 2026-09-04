@@ -1,100 +1,189 @@
+/* ==========================================================================
+   MediFind Hospital System - Admin Register Stylesheet
+   Design System: Industry-Level Healthcare Classic Standard UI
+   ========================================================================== */
+
 :root {
-  /* Design System Tokens */
-  --hosp-bg-canvas: #f8fafc;
+  /* Brand System Color Palette */
+  --hosp-bg-page: #f8fafc;
+  --hosp-bg-gradient: radial-gradient(circle at 50% 0%, rgba(2, 132, 199, 0.08) 0%, rgba(6, 182, 212, 0.03) 40%, rgba(248, 250, 252, 1) 100%);
   --hosp-bg-card: #ffffff;
-  --hosp-text-title: #0f172a;
-  --hosp-text-body: #475569;
-  --hosp-text-muted: #94a3b8;
+  --hosp-bg-input: #f8fafc;
+  
+  --hosp-text-headline: #0f172a;
+  --hosp-text-body: #334155;
+  --hosp-text-muted: #64748b;
+  --hosp-text-subtle: #94a3b8;
 
-  --hosp-brand: #0f172a;
+  --hosp-brand-primary: #0f172a;
   --hosp-brand-hover: #1e293b;
-  --hosp-accent-blue: #2563eb;
-  --hosp-accent-glow: rgba(37, 99, 235, 0.08);
+  --hosp-accent-blue: #0284c7;
+  --hosp-accent-cyan: #06b6d4;
+  --hosp-accent-gradient: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  --hosp-accent-glow: rgba(2, 132, 199, 0.16);
 
-  --hosp-error-red: #dc2626;
+  --hosp-border-light: #e2e8f0;
+  --hosp-border-input: #cbd5e1;
+  --hosp-border-focus: #0284c7;
 
-  --hosp-radius-card: 12px;
-  --hosp-radius-field: 8px;
+  --hosp-status-error-bg: #fef2f2;
+  --hosp-status-error-border: #fca5a5;
+  --hosp-status-error-text: #dc2626;
 
-  --hosp-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --hosp-shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --hosp-radius-card: 20px;
+  --hosp-radius-input: 10px;
+  --hosp-radius-button: 10px;
 
-  --hosp-transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --hosp-shadow-card: 0 20px 40px -15px rgba(15, 23, 42, 0.07), 0 0 1px rgba(15, 23, 42, 0.12);
+  --hosp-shadow-button: 0 4px 14px rgba(15, 23, 42, 0.12);
+  --hosp-shadow-button-hover: 0 6px 20px rgba(2, 132, 199, 0.28);
+
+  --hosp-transition-standard: 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Base Wrapper Canvas */
+/* ==========================================================================
+   Page Wrapper & Placement
+   ========================================================================== */
+
 .register-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: var(--hosp-bg-canvas);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  padding: 2.5rem 1.5rem;
+  min-height: 100dvh;
+  background-color: var(--hosp-bg-page);
+  background-image: var(--hosp-bg-gradient);
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  padding: 2.5rem 1.25rem;
   box-sizing: border-box;
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Central Identity Card */
+/* Ambient Backdrop Glow */
+.register-container::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(2, 132, 199, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ==========================================================================
+   Central Hospital Register Card
+   ========================================================================== */
+
 .register-card {
-  background: var(--hosp-bg-card);
-  padding: 3.5rem 3rem;
-  border-radius: var(--hosp-radius-card);
-  border: 1px solid #e2e8f0;
-  box-shadow: var(--hosp-shadow-card);
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 480px;
+  padding: 3rem 2.5rem;
   box-sizing: border-box;
+  background: var(--hosp-bg-card);
+  border: 1px solid var(--hosp-border-light);
+  border-top: 4px solid var(--hosp-accent-blue);
+  border-radius: var(--hosp-radius-card);
+  box-shadow: var(--hosp-shadow-card);
+  animation: registerCardEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Header Context Architecture */
+@keyframes registerCardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================================================
+   Brand & Header Group
+   ========================================================================== */
+
 .brand-header {
   text-align: center;
-  margin-bottom: 2.25rem;
-}
-
-.brand-logo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--hosp-text-title);
-  margin-bottom: 1rem;
-}
-
-/* Injecting custom branding color tint inline */
-.brand-logo svg {
-  color: #06b6d4;
+  margin-bottom: 2rem;
 }
 
 .brand-header h2 {
-  font-size: 1.875rem;
+  font-size: 1.65rem;
   font-weight: 700;
-  color: var(--hosp-text-title);
+  color: var(--hosp-text-headline);
   margin: 0 0 0.5rem 0;
   letter-spacing: -0.025em;
+  line-height: 1.25;
 }
 
 .brand-header p {
-  color: var(--hosp-text-body);
-  font-size: 0.875rem;
+  color: var(--hosp-text-muted);
+  font-size: 0.885rem;
   line-height: 1.5;
   margin: 0;
+  font-weight: 400;
 }
 
-/* Form Structural Controls */
+/* ==========================================================================
+   Error Alert Banner
+   ========================================================================== */
+
+.error-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--hosp-status-error-border);
+  border-left: 4px solid #ef4444;
+  border-radius: 10px;
+  background: var(--hosp-status-error-bg);
+  color: var(--hosp-status-error-text);
+  font-size: 0.84375rem;
+  line-height: 1.45;
+  animation: bannerSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  box-sizing: border-box;
+}
+
+@keyframes bannerSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-banner svg {
+  color: #dc2626;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   Form Controls & Inputs
+   ========================================================================== */
+
 .form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.15rem;
   text-align: left;
 }
 
 .form-group label {
   display: block;
-  font-size: 0.813rem;
-  font-weight: 600;
+  margin-bottom: 0.45rem;
   color: var(--hosp-text-body);
-  margin-bottom: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .input-wrapper {
@@ -105,140 +194,212 @@
 
 .input-wrapper input {
   width: 100%;
-  padding: 0.825rem 1rem;
-  font-size: 0.95rem;
-  line-height: 1.25rem;
-  background: var(--hosp-bg-card);
-  border: 1px solid #cbd5e1;
-  border-radius: var(--hosp-radius-field);
-  color: var(--hosp-text-title);
-  outline: none;
-  box-shadow: var(--hosp-shadow-sm);
-  transition:
-    border-color var(--hosp-transition),
-    box-shadow var(--hosp-transition);
+  height: 46px;
+  padding: 0 1rem;
   box-sizing: border-box;
+  border: 1.5px solid var(--hosp-border-input);
+  border-radius: var(--hosp-radius-input);
+  background: var(--hosp-bg-input);
+  color: var(--hosp-text-headline);
+  outline: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all var(--hosp-transition-standard);
 }
 
 .input-wrapper input::placeholder {
-  color: var(--hosp-text-muted);
+  color: var(--hosp-text-subtle);
 }
 
-/* AAA Focus Indicator Accessibility Rules */
+.input-wrapper input:hover {
+  border-color: var(--hosp-text-subtle);
+  background: #ffffff;
+}
+
 .input-wrapper input:focus {
-  border-color: var(--hosp-accent-blue);
+  border-color: var(--hosp-border-focus);
+  background: #ffffff;
   box-shadow: 0 0 0 4px var(--hosp-accent-glow);
 }
 
-.error-message {
-  color: var(--hosp-error-red);
-  font-size: 0.75rem;
-  font-weight: 500;
-  margin: 0.4rem 0 0 0;
-}
-
-/* Captcha Module Alignment */
-.turnstile-wrapper {
-  margin: 1.75rem 0;
-  display: flex;
-  justify-content: center;
-}
-
-/* Primary Execution Control */
-.submit-btn {
-  width: 100%;
-  background: var(--hosp-brand);
-  color: var(--hosp-bg-card);
-  border: 1px solid transparent;
-  padding: 0.875rem;
-  border-radius: var(--hosp-radius-field);
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: var(--hosp-shadow-sm);
-  transition: background-color var(--hosp-transition);
-}
-
-.submit-btn:hover {
-  background: var(--hosp-brand-hover);
-}
-
-/* Navigation Link Footer Group */
-.footer-text {
-  text-align: center;
-  font-size: 0.875rem;
-  color: var(--hosp-text-body);
-  margin: 1.75rem 0 0 0;
-  border-top: 1px solid #e2e8f0;
-  padding-top: 1.25rem;
-}
-
-.footer-text a {
-  color: var(--hosp-text-title);
-  text-decoration: none;
-  font-weight: 600;
-  margin-left: 0.35rem;
-}
-
-.footer-text a:hover {
-  text-decoration: underline;
-}
-
-/* Fix input border colors when Zod validation triggers an error state */
 .input-wrapper input[aria-invalid='true'] {
-  border-color: var(--hosp-error-red);
+  border-color: var(--hosp-status-error-text);
+  background-color: #fff8f8;
 }
 
 .input-wrapper input[aria-invalid='true']:focus {
-  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.08);
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
 }
 
-/* Global Form Server API Action Error Banner */
-.error-banner {
-  background-color: #fef2f2;
-  border: 1px solid var(--hosp-error-border, #fca5a5);
-  color: var(--hosp-error-red);
-  padding: 0.875rem 1rem;
-  border-radius: var(--hosp-radius-field);
-  font-size: 0.875rem;
+.error-message {
+  margin: 0.4rem 0 0 0.1rem;
+  color: var(--hosp-status-error-text);
+  font-size: 0.78125rem;
   font-weight: 500;
-  margin-bottom: 1.5rem;
-  text-align: left;
+  line-height: 1.4;
   display: flex;
   align-items: center;
-  gap: 0.625rem;
-  animation: regFadeIn 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 0.35rem;
+}
+
+/* ==========================================================================
+   Turnstile Captcha Responsive Centering
+   ========================================================================== */
+
+.turnstile-wrapper,
+.register-card form > div[class*='turnstile'],
+.register-card form iframe[src*='turnstile'],
+.register-card form > div:has(iframe) {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 1.25rem 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   Primary Execution Button
+   ========================================================================== */
+
+.submit-btn {
+  width: 100%;
+  height: 48px;
+  margin-top: 0.75rem;
+  border: none;
+  border-radius: var(--hosp-radius-button);
+  background: var(--hosp-brand-primary);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--hosp-shadow-button);
+  transition: all var(--hosp-transition-standard);
+  letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
 }
 
-@keyframes regFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.submit-btn:hover:not(:disabled) {
+  background: var(--hosp-accent-gradient);
+  box-shadow: var(--hosp-shadow-button-hover);
+  transform: translateY(-1px);
 }
 
-/* Media Query Engine for Device Fluidity */
-@media (max-width: 640px) {
+.submit-btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.2);
+}
+
+.submit-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--hosp-accent-glow);
+}
+
+.submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ==========================================================================
+   Footer Meta Link Navigation
+   ========================================================================== */
+
+.footer-text {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--hosp-text-muted);
+  margin: 1.75rem 0 0 0;
+  padding-top: 0;
+  border-top: none;
+  font-weight: 400;
+}
+
+.footer-text a {
+  color: var(--hosp-accent-blue);
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 0.35rem;
+  transition: color var(--hosp-transition-standard);
+}
+
+.footer-text a:hover {
+  color: var(--hosp-accent-cyan);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints (Mobile, Tablet, Desktop, 4K)
+   ========================================================================== */
+
+/* Large Desktops / 4K Displays (>= 1200px) */
+@media (min-width: 1200px) {
   .register-card {
-    padding: 2.5rem 2rem;
+    max-width: 500px;
+    padding: 3.25rem 2.75rem;
   }
 }
 
+/* Tablets (768px to 1023px) */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .register-container {
+    padding: 2.25rem 1.5rem;
+  }
+
+  .register-card {
+    max-width: 460px;
+    padding: 2.75rem 2.25rem;
+  }
+}
+
+/* Mobile Devices (481px to 767px) */
+@media (max-width: 767px) {
+  .register-container {
+    padding: 1.5rem 1rem;
+    align-items: center;
+  }
+
+  .register-card {
+    padding: 2.25rem 1.5rem;
+    border-radius: 16px;
+    max-width: 100%;
+  }
+
+  .brand-header h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Small Mobile Screens (320px to 480px) */
 @media (max-width: 480px) {
   .register-container {
-    background: var(--hosp-bg-card);
-    align-items: flex-start;
-    padding-top: 2rem;
+    padding: 1.25rem 0.75rem;
+    min-height: 100vh;
   }
 
   .register-card {
-    border: none;
-    box-shadow: none;
-    padding: 0;
+    padding: 2rem 1.25rem;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+  }
+
+  .brand-header h2 {
+    font-size: 1.375rem;
+  }
+
+  .input-wrapper input {
+    height: 44px;
+    font-size: 0.9rem;
+  }
+
+  .submit-btn {
+    height: 46px;
+    font-size: 0.9rem;
   }
 }
+

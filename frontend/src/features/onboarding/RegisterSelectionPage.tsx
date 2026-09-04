@@ -1,22 +1,18 @@
 import { Link } from 'react-router-dom';
+import MediFindLogo from '../../components/common/MediFindLogo/MediFindLogo';
 import './gateWay.css';
 
 export default function GatewayPage() {
   return (
     <div className="gateway-container">
       {/* Platform Entry Header */}
-      {/* <header className="gateway-header">
-        <div className="brand-logo" aria-hidden="true">
-          MediFind
-        </div>
-        <h1>Welcome</h1>
+      <header className="gateway-header">
+        <MediFindLogo size="lg" subtitle="Healthcare Gateway" />
+        <h1>Choose Your Gateway</h1>
         <p>
-          Find trusted healthcare services or onboard your hospital to manage doctors, appointments,
-          and patients.
+          Join MediFind to access trusted healthcare services or onboard your hospital system.
         </p>
-      </header> */}
-
-     
+      </header>
 
       {/* Grid Configuration Segment */}
       <nav className="gateway-grid" aria-label="Portal Navigation Actions">
@@ -24,12 +20,12 @@ export default function GatewayPage() {
         <Link to="/register/user" className="gateway-card patient-path">
           <div className="card-icon" aria-hidden="true">
             <svg
-              width="24"
-              height="24"
+              width="26"
+              height="26"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2.5"
+              strokeWidth="2.2"
             >
               <path d="M21 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path>
               <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -39,7 +35,7 @@ export default function GatewayPage() {
             </svg>
           </div>
           <h2>Find Healthcare</h2>
-          <p>Search hospitals, discover specialists, and book appointments.</p>
+          <p>Search hospitals, discover specialists, and book appointments online.</p>
           <span className="card-action-link">
             Get Started
             <svg
@@ -60,12 +56,12 @@ export default function GatewayPage() {
         <Link to="/register/hospital" className="gateway-card hospital-path">
           <div className="card-icon" aria-hidden="true">
             <svg
-              width="24"
-              height="24"
+              width="26"
+              height="26"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2.5"
+              strokeWidth="2.2"
             >
               <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
               <line x1="12" y1="8" x2="12" y2="16"></line>
@@ -90,6 +86,11 @@ export default function GatewayPage() {
           </span>
         </Link>
       </nav>
+
+      <footer className="gateway-footer">
+        Already have an account? <Link to="/user/login">Login Here</Link>
+      </footer>
     </div>
   );
 }
+

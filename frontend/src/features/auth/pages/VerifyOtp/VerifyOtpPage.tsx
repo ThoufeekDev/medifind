@@ -35,8 +35,9 @@ export default function VerifyOtpPage() {
     try {
        
           setResendSuccess('');
+          setOtpError('');
       const response = await resentOtp({ email });
-      console.log("this is resent otp respone you must call",response)
+
           setOtpExpireIn(response.data.otpExpireAt);
           setResendSuccess(response.message);
       

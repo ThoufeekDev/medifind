@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from '../../../auth/store/auth.store';
 import { loginSchema, type LoginFormData } from '../../../auth/validators/login.schema';
 
 import { getErrorMessage } from '../../../../shared/utils/getErrorMessage';
+import MediFindLogo from '../../../../components/common/MediFindLogo/MediFindLogo';
 
 import './adminLogin.css';
 
@@ -45,26 +46,7 @@ export default function AdminLoginPage() {
     <div className="admin-login-container">
       <main className="admin-login-card">
         <header className="admin-login-header">
-          <div className="admin-brand">
-            <div className="admin-brand-mark" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M3 21h18" />
-                <path d="M5 21V7l7-4 7 4v14" />
-                <path d="M9 21v-6h6v6" />
-                <path d="M9 9h.01" />
-                <path d="M15 9h.01" />
-              </svg>
-            </div>
-
-            <span>MediFind</span>
-          </div>
+          <MediFindLogo size="md" subtitle="Admin Portal" />
 
           <h1>Admin Login</h1>
         </header>
@@ -124,7 +106,12 @@ export default function AdminLoginPage() {
             {isLoading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
+
+        <footer className="admin-footer-text">
+          Need an account? <Link to="/register">Register Here</Link>
+        </footer>
       </main>
     </div>
   );
 }
+

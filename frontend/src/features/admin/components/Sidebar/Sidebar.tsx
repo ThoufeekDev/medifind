@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import { logoutUser } from '../../../auth/services/auth.service';
 import { useAuthStore } from '../../../auth/store/auth.store';
+import MediFindLogo from '../../../../components/common/MediFindLogo/MediFindLogo';
 
 interface SidebarProps {
   activeTab: string;
@@ -142,12 +143,7 @@ const Sidebar: React.FC<SidebarProps> = React.memo(
           {/* Header */}
 
           <div className="sidebar-header">
-            <div className="brand-logo">M</div>
-
-            <div className="brand-info">
-              <h2>MediFind</h2>
-              <span>Admin Portal</span>
-            </div>
+            <MediFindLogo size="sm" variant="light" subtitle="Admin Portal" />
           </div>
 
           {/* Search */}

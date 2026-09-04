@@ -1,15 +1,48 @@
+/* ==========================================================================
+   MediFind Classic Auth System - Verify OTP Stylesheet
+   Design System: Industry-Level Healthcare Classic Standard UI
+   ========================================================================== */
+
 :root {
-  --primary: #06b6d4;
-  --primary-hover: #0891b2;
-  --primary-glow: rgba(6, 182, 212, 0.2);
-  --bg-slate: #f8fafc;
-  --card-bg: #ffffff;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --border-color: #e2e8f0;
-  --error-color: #ef4444;
-  --error-bg: #fef2f2;
+  /* Brand System Color Palette */
+  --auth-bg-page: #f8fafc;
+  --auth-bg-gradient: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.08) 0%, rgba(2, 132, 199, 0.03) 40%, rgba(248, 250, 252, 1) 100%);
+  --auth-bg-card: #ffffff;
+  
+  --auth-text-headline: #0f172a;
+  --auth-text-body: #334155;
+  --auth-text-muted: #64748b;
+  --auth-text-subtle: #94a3b8;
+
+  --auth-brand-primary: #0f172a;
+  --auth-brand-hover: #1e293b;
+  --auth-accent-teal: #06b6d4;
+  --auth-accent-cyan: #0284c7;
+  --auth-accent-gradient: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+  --auth-accent-glow: rgba(6, 182, 212, 0.16);
+
+  --auth-border-light: #e2e8f0;
+  --auth-border-input: #cbd5e1;
+  --auth-border-focus: #06b6d4;
+
+  --auth-status-error-bg: #fef2f2;
+  --auth-status-error-border: #fca5a5;
+  --auth-status-error-text: #dc2626;
+
+  --auth-radius-card: 20px;
+  --auth-radius-input: 10px;
+  --auth-radius-button: 10px;
+
+  --auth-shadow-card: 0 20px 40px -15px rgba(15, 23, 42, 0.07), 0 0 1px rgba(15, 23, 42, 0.12);
+  --auth-shadow-button: 0 4px 14px rgba(15, 23, 42, 0.12);
+  --auth-shadow-button-hover: 0 6px 20px rgba(6, 182, 212, 0.28);
+
+  --auth-transition-standard: 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* ==========================================================================
+   Page Container & Card Placement
+   ========================================================================== */
 
 .otp-container {
   position: relative;
@@ -17,20 +50,22 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: var(--bg-slate);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  padding: 1.5rem;
+  min-height: 100dvh;
+  background-color: var(--auth-bg-page);
+  background-image: var(--auth-bg-gradient);
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  padding: 2.5rem 1.25rem;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
-/* Subtle decorative backdrop glow */
+/* Ambient Radial Glow */
 .otp-background-glow {
   position: absolute;
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--primary-glow) 0%, rgba(255, 255, 255, 0) 70%);
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, rgba(255, 255, 255, 0) 70%);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -41,24 +76,124 @@
 .otp-card {
   position: relative;
   z-index: 1;
-  background: var(--card-bg);
+  background: var(--auth-bg-card);
   padding: 3rem 2.5rem;
-  border-radius: 1.5rem;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow:
-    0 20px 35px -10px rgba(15, 23, 42, 0.06),
-    0 1px 3px rgba(0, 0, 0, 0.02);
+  border-radius: var(--auth-radius-card);
+  border: 1px solid var(--auth-border-light);
+  border-top: 4px solid var(--auth-accent-teal);
+  box-shadow: var(--auth-shadow-card);
   width: 100%;
   max-width: 460px;
   box-sizing: border-box;
   text-align: center;
-  animation: fadeIn 0.3s ease-out;
+  animation: otpCardEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes fadeIn {
+@keyframes otpCardEntrance {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================================================
+   Brand Header & Medical Badge
+   ========================================================================== */
+
+.brand-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.brand-header h2 {
+  font-size: 1.65rem;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--auth-text-headline);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+.brand-header p {
+  color: var(--auth-text-muted);
+  font-size: 0.885rem;
+  line-height: 1.5;
+  margin: 0;
+  font-weight: 400;
+}
+
+.email-highlight {
+  color: var(--auth-text-headline);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Success Banner
+   ========================================================================== */
+
+.otp-success-message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--auth-radius-input);
+  background: #f0fdf4;
+  color: #166534;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: left;
+  animation: successSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.success-check {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: checkPop 0.35s ease-out;
+}
+
+.success-check svg {
+  width: 14px;
+  height: 14px;
+}
+
+.success-check path {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: checkDraw 0.4s 0.15s ease forwards;
+}
+
+@keyframes checkPop {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes checkDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes successSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
   }
   to {
     opacity: 1;
@@ -66,79 +201,22 @@
   }
 }
 
-.brand-header {
-  margin-bottom: 2rem;
-}
+/* ==========================================================================
+   Segmented 6-Digit OTP Box Grid
+   ========================================================================== */
 
-.brand-logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text-main);
-  margin-bottom: 1.5rem;
-}
-
-.logo-icon-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: rgba(6, 182, 212, 0.1);
-  color: var(--primary);
-}
-
-.brand-header h2 {
-  font-size: 1.65rem;
-  font-weight: 700;
-  color: var(--text-main);
-  margin: 0 0 0.5rem 0;
-  letter-spacing: -0.025em;
-}
-
-.brand-header p {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  line-height: 1.55;
-  margin: 0;
-}
-
-.email-highlight {
-  color: var(--text-main);
-  font-weight: 600;
-}
-
-/* Alert Notification */
-.alert-banner {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: var(--error-bg);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  color: var(--error-color);
-  padding: 0.75rem 1rem;
-  border-radius: 0.75rem;
-  font-size: 0.85rem;
-  font-weight: 500;
+.form-group {
   margin-bottom: 1.5rem;
   text-align: left;
 }
 
-/* 6-Box Grid Input */
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
 .otp-label {
   display: block;
-  font-size: 0.825rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  color: var(--auth-text-body);
   margin-bottom: 0.75rem;
   text-align: left;
 }
@@ -147,83 +225,106 @@
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .otp-digit-box {
-  width: 100%;
-  height: 54px;
+  flex: 1;
+  min-width: 0;
+  height: 52px;
   font-size: 1.35rem;
   font-weight: 700;
-  color: var(--text-main);
+  color: var(--auth-text-headline);
   text-align: center;
-  border: 1.5px solid var(--border-color);
-  border-radius: 0.75rem;
-  background: #ffffff;
+  border: 1.5px solid var(--auth-border-input);
+  border-radius: var(--auth-radius-input);
+  background: var(--auth-bg-page);
   outline: none;
-  transition: all 0.15s ease-in-out;
+  transition: all var(--auth-transition-standard);
   box-sizing: border-box;
 }
 
+.otp-digit-box:hover {
+  border-color: var(--auth-text-subtle);
+  background: var(--auth-bg-card);
+}
+
 .otp-digit-box:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-glow);
-  transform: scale(1.02);
+  border-color: var(--auth-border-focus);
+  background: var(--auth-bg-card);
+  box-shadow: 0 0 0 4px var(--auth-accent-glow);
+  transform: translateY(-1px);
 }
 
 .otp-digit-box.filled {
-  border-color: #94a3b8;
-  background-color: #fcfcfd;
+  border-color: var(--auth-accent-teal);
+  background-color: #ffffff;
+  color: var(--auth-text-headline);
 }
 
 .otp-digit-box.error {
-  border-color: var(--error-color);
+  border-color: var(--auth-status-error-text);
+  background-color: #fff8f8;
 }
 
 .field-error {
-  color: var(--error-color);
-  font-size: 0.78rem;
+  color: var(--auth-status-error-text);
+  font-size: 0.78125rem;
+  font-weight: 500;
   text-align: left;
-  margin: 0.5rem 0 0 0.1rem;
+  margin: 0.4rem 0 0 0.1rem;
 }
 
 .timer-wrapper {
   margin-bottom: 1.5rem;
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--auth-text-muted);
 }
 
-/* Button & Spinners */
+/* ==========================================================================
+   Submit Button & Resend Action
+   ========================================================================== */
+
 .submit-btn {
   width: 100%;
   height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--primary);
-  color: white;
+  background: var(--auth-brand-primary);
+  color: #ffffff;
   border: none;
-  border-radius: 0.75rem;
+  border-radius: var(--auth-radius-button);
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px var(--primary-glow);
+  box-shadow: var(--auth-shadow-button);
+  transition: all var(--auth-transition-standard);
+  letter-spacing: 0.01em;
+  box-sizing: border-box;
 }
 
 .submit-btn:hover:not(:disabled) {
-  background-color: var(--primary-hover);
-  box-shadow: 0 6px 16px var(--primary-glow);
+  background: var(--auth-accent-gradient);
+  box-shadow: var(--auth-shadow-button-hover);
+  transform: translateY(-1px);
+}
+
+.submit-btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.2);
 }
 
 .submit-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.65;
   cursor: not-allowed;
   box-shadow: none;
+  transform: none;
 }
 
 .btn-spinner {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: #ffffff;
   border-radius: 50%;
@@ -242,12 +343,12 @@
 
 .resend-text {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--auth-text-muted);
   margin: 0;
 }
 
 .resend-btn {
-  color: var(--primary);
+  color: var(--auth-accent-cyan);
   text-decoration: none;
   font-weight: 600;
   background: none;
@@ -255,130 +356,89 @@
   padding: 0;
   cursor: pointer;
   margin-left: 0.25rem;
-  transition: color 0.15s;
+  transition: color var(--auth-transition-standard);
+  font-size: 0.875rem;
 }
 
-.resend-btn:hover {
-  color: var(--primary-hover);
+.resend-btn:hover:not(:disabled) {
+  color: var(--auth-accent-teal);
   text-decoration: underline;
 }
 
-.error-banner {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  background-color: #fef2f2;
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-  padding: 0.75rem 1rem;
-  border-radius: 0.75rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  margin-bottom: 1.5rem;
-  text-align: left;
+.resend-btn:disabled {
+  color: var(--auth-text-subtle);
+  cursor: not-allowed;
 }
 
+/* ==========================================================================
+   Responsive Media Queries (Mobile, Tablet, Desktop, 4K)
+   ========================================================================== */
 
-.otp-success-message {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  margin-bottom: 20px;
-  padding: 12px 16px;
-
-  border: 1px solid #bbf7d0;
-  border-radius: 10px;
-
-  background: #f0fdf4;
-  color: #166534;
-
-  font-size: 14px;
-  font-weight: 500;
-
-  animation: checkPop 0.45s ease-out 0.10s both;
-}
-
-.success-check {
-  width: 26px;
-  height: 26px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  flex-shrink: 0;
-
-  border-radius: 50%;
-  background: #22c55e;
-
-  animation: checkPop 0.35s ease-out;
-}
-
-.success-check svg {
-  width: 16px;
-  height: 16px;
-}
-
-.success-check path {
-  fill: none;
-  stroke: white;
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-
-  stroke-dasharray: 24;
-  stroke-dashoffset: 24;
-
-  animation: checkDraw 0.4s 0.15s ease forwards;
-}
-
-@keyframes checkPop {
-  0% {
-    transform: scale(0);
-  }
-
-  70% {
-    transform: scale(1.15);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes checkDraw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes successSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive adjustments */
-@media (max-width: 480px) {
+/* Large Desktops / 4K Displays (>= 1200px) */
+@media (min-width: 1200px) {
   .otp-card {
-    padding: 2rem 1.25rem;
-    box-shadow: none;
-    border: none;
-    background: transparent;
+    max-width: 480px;
+    padding: 3.25rem 2.75rem;
   }
+}
+
+/* Tablets (768px to 1023px) */
+@media (max-width: 1023px) and (min-width: 768px) {
   .otp-container {
-    background-color: #ffffff;
-    align-items: flex-start;
+    padding: 2.25rem 1.5rem;
   }
+
+  .otp-card {
+    max-width: 440px;
+    padding: 2.75rem 2.25rem;
+  }
+}
+
+/* Mobile Landscape & Standard Devices (481px to 767px) */
+@media (max-width: 767px) {
+  .otp-container {
+    padding: 1.5rem 1rem;
+    align-items: center;
+  }
+
+  .otp-card {
+    padding: 2.25rem 1.5rem;
+    border-radius: 16px;
+    max-width: 100%;
+  }
+
   .otp-digit-box {
     height: 48px;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
   }
 }
+
+/* Small Mobile Screens (320px to 480px) */
+@media (max-width: 480px) {
+  .otp-container {
+    padding: 1.25rem 0.75rem;
+    min-height: 100vh;
+  }
+
+  .otp-card {
+    padding: 2rem 1.25rem;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+  }
+
+  .otp-box-grid {
+    gap: 0.35rem;
+  }
+
+  .otp-digit-box {
+    height: 46px;
+    font-size: 1.15rem;
+    border-radius: 8px;
+  }
+
+  .submit-btn {
+    height: 46px;
+    font-size: 0.9rem;
+  }
+}
+

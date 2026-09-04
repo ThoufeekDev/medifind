@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Turnstile } from 'react-turnstile';
 import { getErrorMessage } from '../../../../shared/utils/getErrorMessage';
+import MediFindLogo from '../../../../components/common/MediFindLogo/MediFindLogo';
 import './AdminRegister.css';
 
 import { registerUser } from '../../../auth/services/auth.service';
@@ -51,9 +52,7 @@ export default function HospitalRegisterPage() {
       <main className="register-card">
         {/* Brand Header */}
         <header className="brand-header">
-          <div  aria-hidden="true">
-            MediFind
-          </div>
+          <MediFindLogo size="md" subtitle="Hospital Admin Registration" />
           <h2>Register Hospital</h2>
           <p>Create your hospital admin account workspace</p>
         </header>

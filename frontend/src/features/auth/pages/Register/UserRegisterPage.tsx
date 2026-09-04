@@ -122,7 +122,7 @@ export default function UserRegisterPage() {
         <SocialLoginButtons />
 
         <p className="footer-text">
-          Already have an account? <Link to="/login">Login</Link>
+          Already have an account? <Link to="/user/login">Login</Link>
         </p>
       </div>
     </div>

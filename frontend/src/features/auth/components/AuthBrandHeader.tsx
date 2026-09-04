@@ -1,4 +1,4 @@
-// features/auth/components/AuthBrandHeader.tsx
+import MediFindLogo from '../../../components/common/MediFindLogo/MediFindLogo';
 
 interface AuthBrandHeaderProps {
   title: string;
@@ -8,12 +8,11 @@ interface AuthBrandHeaderProps {
 export default function AuthBrandHeader({ title, description }: AuthBrandHeaderProps) {
   return (
     <header className="brand-header">
-      <div aria-hidden="true">
-        MediFind
-      </div>
+      <MediFindLogo size="md" />
 
       <h2>{title}</h2>
       <p>{description}</p>
     </header>
   );
 }
+

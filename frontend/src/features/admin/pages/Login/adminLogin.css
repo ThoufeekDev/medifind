@@ -1,301 +1,369 @@
+/* ==========================================================================
+   MediFind Enterprise System - Admin Login Stylesheet
+   Design System: Industry-Level Classic Light Standard UI
+   ========================================================================== */
+
 :root {
-  --admin-bg: #f5f6f8;
-  --admin-surface: #ffffff;
-  --admin-text: #111827;
-  --admin-text-secondary: #6b7280;
-  --admin-border: #e5e7eb;
-  --admin-border-focus: #9ca3af;
-  --admin-danger: #dc2626;
-  --admin-danger-bg: #fef2f2;
-  --admin-danger-border: #fecaca;
-  --admin-radius: 10px;
+  /* Brand System Color Palette */
+  --admin-bg-page: #f8fafc;
+  --admin-bg-gradient: radial-gradient(circle at 50% 0%, rgba(2, 132, 199, 0.08) 0%, rgba(6, 182, 212, 0.03) 40%, rgba(248, 250, 252, 1) 100%);
+  --admin-bg-card: #ffffff;
+  --admin-bg-input: #f8fafc;
+  
+  --admin-text-headline: #0f172a;
+  --admin-text-body: #334155;
+  --admin-text-muted: #64748b;
+  --admin-text-subtle: #94a3b8;
+
+  --admin-brand-primary: #0f172a;
+  --admin-brand-hover: #1e293b;
+  --admin-accent-blue: #0284c7;
+  --admin-accent-cyan: #06b6d4;
+  --admin-accent-gradient: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  --admin-accent-glow: rgba(2, 132, 199, 0.16);
+
+  --admin-border-light: #e2e8f0;
+  --admin-border-input: #cbd5e1;
+  --admin-border-focus: #0284c7;
+
+  --admin-status-error-bg: #fef2f2;
+  --admin-status-error-border: #fca5a5;
+  --admin-status-error-text: #dc2626;
+
+  --admin-radius-card: 20px;
+  --admin-radius-input: 10px;
+  --admin-radius-button: 10px;
+
+  --admin-shadow-card: 0 20px 40px -15px rgba(15, 23, 42, 0.07), 0 0 1px rgba(15, 23, 42, 0.12);
+  --admin-shadow-button: 0 4px 14px rgba(15, 23, 42, 0.12);
+  --admin-shadow-button-hover: 0 6px 20px rgba(2, 132, 199, 0.28);
+
+  --admin-transition-standard: 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-
-/* Page */
+/* ==========================================================================
+   Page Wrapper & Placement
+   ========================================================================== */
 
 .admin-login-container {
   min-height: 100vh;
   min-height: 100dvh;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  padding: 24px;
+  padding: 2.5rem 1.25rem;
   box-sizing: border-box;
-
-  background: var(--admin-bg);
-
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  background-color: var(--admin-bg-page);
+  background-image: var(--admin-bg-gradient);
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  position: relative;
+  overflow-x: hidden;
 }
 
+/* Subtle background accent glow */
+.admin-login-container::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(2, 132, 199, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
 
-/* Card */
+/* ==========================================================================
+   Central White Card Structure
+   ========================================================================== */
 
 .admin-login-card {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 400px;
-
-  padding: 40px;
-
+  max-width: 440px;
+  padding: 3rem 2.5rem;
   box-sizing: border-box;
-
-  background: var(--admin-surface);
-
-  border: 1px solid var(--admin-border);
-  border-radius: 14px;
-
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    0 8px 24px rgba(0, 0, 0, 0.05);
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border-light);
+  border-top: 4px solid var(--admin-accent-blue);
+  border-radius: var(--admin-radius-card);
+  box-shadow: var(--admin-shadow-card);
+  animation: adminCardEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes adminCardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 
-/* Header */
+/* ==========================================================================
+   Brand & Header Group
+   ========================================================================== */
 
 .admin-login-header {
-  margin-bottom: 32px;
-  text-align: center;
-}
-
-.admin-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-
-  margin-bottom: 24px;
-
-  color: var(--admin-text);
-
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.admin-brand-mark {
-  width: 30px;
-  height: 30px;
-
+  margin-bottom: 2rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-
-  border-radius: 7px;
-
-  background: var(--admin-text);
-  color: #ffffff;
-}
-
-.admin-brand-mark svg {
-  width: 17px;
-  height: 17px;
 }
 
 .admin-login-header h1 {
-  margin: 0;
-
-  color: var(--admin-text);
-
-  font-size: 26px;
+  margin: 0.5rem 0 0 0;
+  color: var(--admin-text-headline);
+  font-size: 1.65rem;
   font-weight: 700;
   line-height: 1.25;
-
   letter-spacing: -0.025em;
 }
 
-
-/* Error */
+/* ==========================================================================
+   Error Alert Banner
+   ========================================================================== */
 
 .admin-login-error {
   display: flex;
   align-items: flex-start;
-  gap: 9px;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--admin-status-error-border);
+  border-left: 4px solid #ef4444;
+  border-radius: 10px;
+  background: var(--admin-status-error-bg);
+  color: var(--admin-status-error-text);
+  font-size: 0.84375rem;
+  line-height: 1.45;
+  animation: adminErrorSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 
-  margin-bottom: 22px;
-  padding: 11px 13px;
-
-  border: 1px solid var(--admin-danger-border);
-  border-radius: 8px;
-
-  background: var(--admin-danger-bg);
-  color: var(--admin-danger);
-
-  font-size: 13px;
-  line-height: 1.5;
+@keyframes adminErrorSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .admin-login-error svg {
-  width: 17px;
-  height: 17px;
-
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
-
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
-
-/* Form */
+/* ==========================================================================
+   Form Controls & Inputs
+   ========================================================================== */
 
 .admin-form-group {
-  margin-bottom: 20px;
+  margin-bottom: 1.35rem;
+  text-align: left;
 }
 
 .admin-form-group label {
   display: block;
-
-  margin-bottom: 7px;
-
-  color: #374151;
-
-  font-size: 13px;
+  margin-bottom: 0.45rem;
+  color: var(--admin-text-body);
+  font-size: 0.8125rem;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
-
-
-/* Inputs */
 
 .admin-form-group input {
   width: 100%;
-
-  min-height: 44px;
-
-  padding: 10px 12px;
-
+  height: 46px;
+  padding: 0 1rem;
   box-sizing: border-box;
-
-  border: 1px solid #d1d5db;
-  border-radius: var(--admin-radius);
-
-  background: #ffffff;
-  color: var(--admin-text);
-
+  border: 1.5px solid var(--admin-border-input);
+  border-radius: var(--admin-radius-input);
+  background: var(--admin-bg-input);
+  color: var(--admin-text-headline);
   outline: none;
-
   font-family: inherit;
-  font-size: 14px;
-
-  transition:
-    border-color 150ms ease,
-    box-shadow 150ms ease;
+  font-size: 0.95rem;
+  transition: all var(--admin-transition-standard);
 }
 
 .admin-form-group input::placeholder {
-  color: #9ca3af;
+  color: var(--admin-text-subtle);
 }
 
 .admin-form-group input:hover {
-  border-color: #9ca3af;
+  border-color: var(--admin-text-subtle);
+  background: #ffffff;
 }
 
 .admin-form-group input:focus {
   border-color: var(--admin-border-focus);
-
-  box-shadow:
-    0 0 0 3px rgba(17, 24, 39, 0.08);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px var(--admin-accent-glow);
 }
 
-.admin-form-group input[aria-invalid="true"] {
-  border-color: var(--admin-danger);
+.admin-form-group input[aria-invalid='true'] {
+  border-color: var(--admin-status-error-text);
+  background-color: #fff8f8;
 }
 
-.admin-form-group input[aria-invalid="true"]:focus {
-  box-shadow:
-    0 0 0 3px rgba(220, 38, 38, 0.08);
+.admin-form-group input[aria-invalid='true']:focus {
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
 }
-
-
-/* Field Error */
 
 .admin-field-error {
-  margin: 6px 0 0;
-
-  color: var(--admin-danger);
-
-  font-size: 12px;
+  margin: 0.4rem 0 0 0.1rem;
+  color: var(--admin-status-error-text);
+  font-size: 0.78125rem;
+  font-weight: 500;
   line-height: 1.4;
 }
 
-
-/* Login Button */
+/* ==========================================================================
+   Primary Enterprise Submit Button
+   ========================================================================== */
 
 .admin-login-button {
   width: 100%;
-
-  min-height: 44px;
-
-  margin-top: 4px;
-
-  border: 1px solid #111827;
-  border-radius: var(--admin-radius);
-
-  background: #111827;
+  height: 48px;
+  margin-top: 0.5rem;
+  border: none;
+  border-radius: var(--admin-radius-button);
+  background: var(--admin-brand-primary);
   color: #ffffff;
-
   font-family: inherit;
-  font-size: 14px;
+  font-size: 0.95rem;
   font-weight: 600;
-
   cursor: pointer;
-
-  transition:
-    background-color 150ms ease,
-    border-color 150ms ease,
-    transform 100ms ease;
+  box-shadow: var(--admin-shadow-button);
+  transition: all var(--admin-transition-standard);
+  letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .admin-login-button:hover:not(:disabled) {
-  background: #1f2937;
-  border-color: #1f2937;
+  background: var(--admin-accent-gradient);
+  box-shadow: var(--admin-shadow-button-hover);
+  transform: translateY(-1px);
 }
 
 .admin-login-button:active:not(:disabled) {
   transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.2);
 }
 
 .admin-login-button:focus-visible {
-  outline: 2px solid #111827;
-  outline-offset: 3px;
+  outline: none;
+  box-shadow: 0 0 0 4px var(--admin-accent-glow);
 }
 
 .admin-login-button:disabled {
-  opacity: 0.6;
+  opacity: 0.65;
   cursor: not-allowed;
+  transform: none;
 }
 
+/* ==========================================================================
+   Footer Navigation Link
+   ========================================================================== */
 
-/* Responsive */
+.admin-footer-text {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--admin-text-muted);
+  margin: 1.75rem 0 0 0;
+  font-weight: 400;
+}
 
-@media (max-width: 480px) {
+.admin-footer-text a {
+  color: var(--admin-accent-blue);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--admin-transition-standard);
+}
+
+.admin-footer-text a:hover {
+  color: var(--admin-accent-cyan);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints (Mobile, Tablet, Desktop, 4K)
+   ========================================================================== */
+
+/* Large Desktops / 4K Displays (>= 1200px) */
+@media (min-width: 1200px) {
+  .admin-login-card {
+    max-width: 450px;
+    padding: 3.25rem 2.75rem;
+  }
+}
+
+/* Tablets (768px to 1023px) */
+@media (max-width: 1023px) and (min-width: 768px) {
   .admin-login-container {
-    align-items: flex-start;
-
-    padding: 32px 20px;
-
-    background: #ffffff;
+    padding: 2.25rem 1.5rem;
   }
 
   .admin-login-card {
-    max-width: 100%;
-
-    padding: 20px 0;
-
-    border: none;
-    box-shadow: none;
+    max-width: 420px;
+    padding: 2.75rem 2.25rem;
   }
 }
 
-@media (max-width: 360px) {
+/* Mobile Devices (481px to 767px) */
+@media (max-width: 767px) {
   .admin-login-container {
-    padding: 24px 16px;
+    padding: 1.5rem 1rem;
+  }
+
+  .admin-login-card {
+    padding: 2.25rem 1.5rem;
+    border-radius: 16px;
+    max-width: 100%;
   }
 
   .admin-login-header h1 {
-    font-size: 24px;
+    font-size: 1.5rem;
+  }
+}
+
+/* Small Mobile Screens (320px to 480px) */
+@media (max-width: 480px) {
+  .admin-login-container {
+    padding: 1.25rem 0.75rem;
+    min-height: 100vh;
+  }
+
+  .admin-login-card {
+    padding: 2rem 1.25rem;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+  }
+
+  .admin-login-header h1 {
+    font-size: 1.375rem;
+  }
+
+  .admin-form-group input {
+    height: 44px;
+    font-size: 0.9rem;
+  }
+
+  .admin-login-button {
+    height: 46px;
+    font-size: 0.9rem;
   }
 }
