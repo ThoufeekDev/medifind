@@ -23,6 +23,8 @@ import { makeVerifyOTPUseCase } from '../../infrastructure/factories/makeVerifyO
 // Error Handling
 import { UnauthorizedError } from '../../../../shared/exceptions/UnauthorizedError';
 import { UserResponserRegisterDTO } from '../../application/dtos/response/UserResponseRegisterDTO';
+import { makeResendOtpUseCase } from '../../infrastructure/factories/makeResendOtpUseCase';
+import { success } from 'zod';
 
 export class AuthController {
   async register(req: Request, res: Response) {
@@ -83,6 +85,31 @@ export class AuthController {
       success: true,
       data: result,
     });
+  }
+
+  async resendOTP(req: Request, res: Response) {
+    try {
+
+      console.log('trigger1 ',req.body)
+      const  {email}  = req.body;
+
+      console.log('trigger resend',email);
+      
+
+      console.log('email is ',email)
+
+      const resendUserCase = makeResendOtpUseCase();
+
+      const result = await resendUserCase.execute({ email });
+
+      return res.status(200).json({
+        success: true,
+        message: 'OTP resent succesfully',
+        data: result,
+      });
+    } catch (error) {
+      console.log('error occured while rending otp',error);
+    }
   }
 
   async login(req: Request, res: Response) {

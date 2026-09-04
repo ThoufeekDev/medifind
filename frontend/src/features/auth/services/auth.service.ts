@@ -2,6 +2,7 @@ import api from '../../../api/axios';
 
 import type { LoginDTO } from '../dtos/login.dto';
 import type { RegisterDTO } from '../dtos/register.dto';
+import type { ResendOtp } from '../dtos/resent_otp.dto';
 import type { VerifyOtpDTO } from '../dtos/verify-otp.dto';
 
 export const registerUser = async (data: RegisterDTO) => {
@@ -35,3 +36,11 @@ export const refreshAccessToken = async () => {
   const response = await api.post('/auth/refresh-token');
   return response.data;
 };
+
+
+export const resendOtp = async (data: ResendOtp) => {
+  console.log("tigger 2",data)
+  const response = await api.post('/auth/resend-otp',data);
+  console.log("resend otp response is ",response)
+  return response.data;
+}

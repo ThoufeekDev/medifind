@@ -1,6 +1,10 @@
 import React from 'react';
 import { SIDEBAR_ITEMS } from '../../../../data/mockData';
 import './sidebar.css';
+import axios from 'axios';
+import { Navigate } from 'react-router-dom';
+import { logoutUser } from '../../../auth/services/auth.service';
+import { useAuthStore } from '../../../auth/store/auth.store';
 
 interface SidebarProps {
   activeTab: string;
@@ -8,6 +12,9 @@ interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
 }
+
+
+
 
 const icons: Record<string, React.ReactNode> = {
   dashboard: (
@@ -110,8 +117,23 @@ const LogoutIcon = () => (
   </svg>
 );
 
+
+
+
+
 const Sidebar: React.FC<SidebarProps> = React.memo(
+  
   ({ activeTab, setActiveTab, isOpen, toggleSidebar }) => {
+
+    const logout = useAuthStore((state) => state.logout);
+
+    async function handleLogout() {
+      try {
+        await logout();
+      } catch (error) {
+        console.log(error);
+      }
+    }
     return (
       <>
         {isOpen && <div className="sidebar-overlay" onClick={toggleSidebar} aria-hidden="true" />}
@@ -185,7 +207,7 @@ const Sidebar: React.FC<SidebarProps> = React.memo(
               </div>
             </div>
 
-            <button className="sidebar-logout" aria-label="Logout">
+            <button className="sidebar-logout" aria-label="Logout" onClick={handleLogout}>
               <LogoutIcon />
             </button>
           </div>

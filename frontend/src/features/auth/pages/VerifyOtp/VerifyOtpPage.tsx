@@ -7,23 +7,43 @@ import OtpTimer from '../../components/OtpTimer';
 import AuthErrorBanner from '../../components/AuthErrorBanner';
 import AuthBrandHeader from '../../components/AuthBrandHeader';
 import { verifyOtpSchema, type VerifyOtpFormData } from '../../validators/verify-otp.schema';
+
 import './verifyOtp.css';
 
 const OTP_LENGTH = 6;
 
 export default function VerifyOtpPage() {
+    const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const email = location.state?.email || '';
+  
+
   const [otpDigits, setOtpDigits] = useState<string[]>(Array(OTP_LENGTH).fill(''));
   const [otpError, setOtpError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState('');
 
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [otpExpireIn,setOtpExpireIn] = useState(location.state?.otpExpireIn || '')
 
-  const email = location.state?.email || '';
-  const otpExpireIn = location.state?.otpExpireIn || '';
+  // let otpExpireIn = location.state?.otpExpireIn || '';
 
   const verifyOtpAndLogin = useAuthStore((state) => state.verifyOtpAndLogin);
+  const resentOtp = useAuthStore((state) => state.resendOtp);
+  async function handleResentOtp() {
+   
+    try {
+       
+          setResendSuccess('');
+          const response = await resentOtp({ email });
+          setOtpExpireIn(response.data.otpExpireAt);
+          setResendSuccess(response.message);
+      
+     } catch (error:any) {
+       setOtpError(error.response.data?.message || 'Failed to resend OTP')
+     }
+  
+  }
 
   const {
     setValue,
@@ -83,6 +103,7 @@ export default function VerifyOtpPage() {
   const onSubmit = async (data: VerifyOtpFormData) => {
     try {
       setOtpError('');
+      setResendSuccess('');
       setIsSubmitting(true);
       await verifyOtpAndLogin(data);
 
@@ -114,6 +135,18 @@ export default function VerifyOtpPage() {
 
         {/* Reusable Error Banner Component */}
         {otpError && <AuthErrorBanner message={otpError} />}
+
+        {resendSuccess && (
+          <div className="otp-success-message">
+            <div className="success-check">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12.5L9.5 17L19 7" />
+              </svg>
+            </div>
+
+            <span>{resendSuccess}</span>
+          </div>
+        )}
 
         {/* Verification Form */}
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -167,8 +200,13 @@ export default function VerifyOtpPage() {
         <div className="resend-wrapper">
           <p className="resend-text">
             Didn't receive the email?{' '}
-            <button type="button" className="resend-btn">
-              Resend Code
+            <button
+              type="button"
+              className="resend-btn"
+              onClick={handleResentOtp}
+              disabled={Date.now() < otpExpireIn}
+            >
+              {Date.now() < otpExpireIn ? 'please wait after 5 minutes ' : 'Resend Code'}
             </button>
           </p>
         </div>

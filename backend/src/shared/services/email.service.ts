@@ -18,7 +18,11 @@ export const sendOtpEmail = async (email: string, otp: string) => {
     });
 
     console.log('RESEND RESPONSE:', response);
+        if (response.error) {
+          throw new Error(response.error.message);
+        }
   } catch (error) {
     console.error('EMAIL ERROR:', error);
+    throw error
   }
 };

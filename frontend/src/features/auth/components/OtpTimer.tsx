@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
+
 interface OtpTimerProps {
   expiresAt: number;
 }
-function OtpTimer({ expiresAt }: OtpTimerProps) {
+
+const OtpTimer = memo(function OtpTimer({ expiresAt }: OtpTimerProps) {
   const [remaining, setRemaining] = useState(0);
 
   useEffect(() => {
@@ -33,6 +35,6 @@ function OtpTimer({ expiresAt }: OtpTimerProps) {
       )}
     </div>
   );
-}
+});
 
 export default OtpTimer;

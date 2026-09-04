@@ -14,7 +14,9 @@ const authController = new AuthController();
 
 // Register & Logout routes
 router.post('/register', verifyTurnStile, otpRateLimit, authController.register);
+router.post('/resend-otp', authController.resendOTP);
 router.post('/verify-otp', authController.verifyOtp);
+
 
 // Logout Route
 router.post('/login', authController.login);

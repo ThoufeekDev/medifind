@@ -231,7 +231,7 @@ export default function AppRoutes() {
               element={
                 <ComingSoon
                   title="settings"
-                  description="Hospital settings22122 features are coming soon."
+                  description="Hospital settings features are coming soon."
                   backTo="/admin/dashboard"
                   backLabel="Back to Dashboard"
                 />

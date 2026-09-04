@@ -6,6 +6,7 @@ import {
   getProfile,
   registerUser,
   verifyOtpPaylod,
+  resendOtp
 } from '../services/auth.service';
 
 import type { LoginDTO } from '../dtos/login.dto';
@@ -13,6 +14,8 @@ import type { User } from '../types/auth.types';
 import type { RegisterDTO } from '../dtos/register.dto';
 import type { VerifyOtpDTO } from '../dtos/verify-otp.dto';
 import { useHospitalStore } from '../../admin/store/hospital.store';
+import type { ResendOtp } from '../dtos/resent_otp.dto';
+import type { ResendOtpResponse } from '../dtos/resentOtpResponse.dto';
 
 interface AuthStore {
   user: User | null;
@@ -30,6 +33,8 @@ interface AuthStore {
   fetchProfile: () => Promise<void>;
 
   verifyOtpAndLogin: (data: VerifyOtpDTO) => Promise<void>;
+
+  resendOtp: (data:ResendOtp) => Promise<ResendOtpResponse>;
 }
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
@@ -92,6 +97,21 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     }
   },
 
+  // logout: async () => {
+  //   try {
+  //     await logoutUser();
+  //   } catch (error) {
+  //     console.error('Logout request failed:', error);
+  //   } finally {
+  //     useHospitalStore.getState().resetHospital();
+
+  //     set({
+  //       user: null,
+  //       isAuthenticated: false,
+  //     });
+  //   }
+  // },
+
   fetchProfile: async () => {
     try {
       set({
@@ -133,4 +153,14 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       });
     }
   },
+
+  resendOtp: async (data)=>{
+    try {
+
+      return await resendOtp(data)
+      
+    } catch (error) {
+      
+    }
+  }
 }));
