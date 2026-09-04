@@ -1,0 +1,657 @@
+/* =========================================================
+   DOCTOR GRID
+========================================================= */
+
+.doctors-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+
+/* =========================================================
+   DOCTOR CARD
+========================================================= */
+
+.doctor-card {
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.doctor-card:hover {
+  transform: translateY(-2px);
+  border-color: #d1d5db;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+}
+
+
+/* =========================================================
+   INACTIVE CARD
+========================================================= */
+
+.doctor-card.is-inactive {
+  background: #fafafa;
+}
+
+.doctor-card.is-inactive .doctor-photo {
+  filter: grayscale(0.8);
+  opacity: 0.72;
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.card-header-row {
+  width: 100%;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding: 20px 20px 0;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DOCTOR PHOTO
+========================================================= */
+
+.photo-container {
+  position: relative;
+
+  width: 68px;
+  height: 68px;
+
+  flex-shrink: 0;
+}
+
+.doctor-photo {
+  width: 68px;
+  height: 68px;
+
+  display: block;
+
+  object-fit: cover;
+
+  border-radius: 14px;
+
+  background: #f3f4f6;
+
+  border: 1px solid #e5e7eb;
+
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+/* =========================================================
+   DUTY STATUS BADGE
+========================================================= */
+
+.status-badge-wrapper {
+  position: absolute;
+
+  right: -5px;
+  bottom: -5px;
+
+  width: 23px;
+  height: 23px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+
+  box-sizing: border-box;
+}
+
+.status-badge-wrapper.on-duty {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.status-badge-wrapper.off-duty {
+  background: #9ca3af;
+  color: #ffffff;
+}
+
+.badge-svg {
+  width: 11px;
+  height: 11px;
+}
+
+
+/* =========================================================
+   RATING
+========================================================= */
+
+.rating-block {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  gap: 4px;
+
+  padding-top: 2px;
+}
+
+.rating-value {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #111827;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.star-icon {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.review-count {
+  color: #9ca3af;
+
+  font-size: 11px;
+  font-weight: 500;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   CARD BODY
+========================================================= */
+
+.card-body {
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DOCTOR TITLE
+========================================================= */
+
+.doctor-title-row {
+  min-width: 0;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.doctor-title-row > div {
+  min-width: 0;
+}
+
+.doctor-name {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.35;
+
+  overflow-wrap: anywhere;
+}
+
+.doctor-specialty {
+  margin: 5px 0 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   INACTIVE LABEL
+========================================================= */
+
+.inactive-label {
+  flex-shrink: 0;
+
+  padding: 4px 8px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+
+  background: #f3f4f6;
+
+  color: #6b7280;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+
+/* =========================================================
+   DETAILS
+========================================================= */
+
+.doctor-details-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 11px;
+
+  margin-top: 20px;
+}
+
+.detail-item {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  color: #6b7280;
+
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.detail-item span {
+  min-width: 0;
+
+  overflow-wrap: anywhere;
+}
+
+.detail-icon {
+  width: 15px;
+  height: 15px;
+
+  flex-shrink: 0;
+
+  color: #9ca3af;
+}
+
+.fee-item {
+  color: #374151;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.card-divider {
+  width: calc(100% - 40px);
+
+  height: 1px;
+
+  margin: 0 20px;
+
+  background: #f0f1f3;
+}
+
+
+/* =========================================================
+   CARD ACTIONS
+========================================================= */
+
+.card-actions {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 10px;
+
+  padding: 14px 20px 18px;
+
+  box-sizing: border-box;
+}
+
+.card-actions button {
+  min-width: 0;
+  min-height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 9px 12px;
+
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.card-actions button:active {
+  transform: scale(0.98);
+}
+
+.card-actions button svg {
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   VIEW DETAILS
+========================================================= */
+
+.btn-card-secondary {
+  border: 1px solid #e5e7eb;
+
+  background: #ffffff;
+
+  color: #374151;
+}
+
+.btn-card-secondary:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  color: #111827;
+}
+
+
+/* =========================================================
+   ACTIVATE / DEACTIVATE
+========================================================= */
+
+.btn-card-primary {
+  border: 1px solid transparent;
+}
+
+.btn-card-primary.deactivate {
+  background: #111827;
+  color: #ffffff;
+}
+
+.btn-card-primary.deactivate:hover {
+  background: #1f2937;
+}
+
+.btn-card-primary.activate {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #15803d;
+}
+
+.btn-card-primary.activate:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+
+/* =========================================================
+   LARGE LAPTOP
+========================================================= */
+
+@media (max-width: 1280px) {
+  .doctors-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+
+/* =========================================================
+   TABLET / iPAD
+========================================================= */
+
+@media (max-width: 900px) {
+  .doctors-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .card-header-row {
+    padding: 18px 18px 0;
+  }
+
+  .card-body {
+    padding: 18px;
+  }
+
+  .card-divider {
+    width: calc(100% - 36px);
+    margin: 0 18px;
+  }
+
+  .card-actions {
+    padding: 13px 18px 16px;
+  }
+
+  .doctor-name {
+    font-size: 16px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .doctors-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .doctor-card {
+    border-radius: 14px;
+  }
+
+  .card-header-row {
+    padding: 18px 18px 0;
+  }
+
+  .card-body {
+    padding: 18px;
+  }
+
+  .doctor-details-list {
+    margin-top: 18px;
+  }
+
+  .card-divider {
+    width: calc(100% - 36px);
+    margin: 0 18px;
+  }
+
+  .card-actions {
+    padding: 12px 18px 16px;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 480px) {
+  .card-header-row {
+    gap: 12px;
+
+    padding: 16px 16px 0;
+  }
+
+  .photo-container,
+  .doctor-photo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .status-badge-wrapper {
+    width: 21px;
+    height: 21px;
+
+    right: -4px;
+    bottom: -4px;
+
+    border-width: 2px;
+  }
+
+  .badge-svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  .card-body {
+    padding: 16px;
+  }
+
+  .doctor-name {
+    font-size: 15px;
+  }
+
+  .doctor-specialty {
+    font-size: 12px;
+  }
+
+  .detail-item {
+    font-size: 12px;
+  }
+
+  .card-divider {
+    width: calc(100% - 32px);
+    margin: 0 16px;
+  }
+
+  .card-actions {
+    gap: 8px;
+
+    padding: 12px 16px 15px;
+  }
+
+  .card-actions button {
+    min-height: 38px;
+
+    padding: 8px 9px;
+
+    font-size: 11px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 360px) {
+  .card-header-row {
+    padding: 14px 14px 0;
+  }
+
+  .photo-container,
+  .doctor-photo {
+    width: 54px;
+    height: 54px;
+  }
+
+  .rating-value {
+    font-size: 13px;
+  }
+
+  .review-count {
+    font-size: 10px;
+  }
+
+  .card-body {
+    padding: 14px;
+  }
+
+  .doctor-title-row {
+    gap: 8px;
+  }
+
+  .doctor-name {
+    font-size: 14px;
+  }
+
+  .inactive-label {
+    padding: 3px 6px;
+    font-size: 9px;
+  }
+
+  .doctor-details-list {
+    gap: 9px;
+    margin-top: 16px;
+  }
+
+  .detail-item {
+    gap: 7px;
+    font-size: 11px;
+  }
+
+  .detail-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .card-divider {
+    width: calc(100% - 28px);
+    margin: 0 14px;
+  }
+
+  .card-actions {
+    grid-template-columns: 1fr;
+
+    padding: 10px 14px 14px;
+  }
+}

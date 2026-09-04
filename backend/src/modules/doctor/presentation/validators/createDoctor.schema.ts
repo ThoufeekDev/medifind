@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const createDoctorSchema = z.object({
   name: z.string().min(2),
@@ -11,7 +11,7 @@ export const createDoctorSchema = z.object({
 
   experience: z.coerce.number().min(0),
 
-  gender:z.enum(["MALE","FEMALE"]),
+  gender: z.enum(['MALE', 'FEMALE']),
 
   consultationFee: z.coerce.number().min(0),
 

@@ -1,62 +1,47 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 
-import Loader from "../components/common/Loader";
+import Loader from '../components/common/Loader';
 
 // Lazy Loaded Pages
-const LoginPage = lazy(
-  () => import("../features/auth/pages/Login/LoginPage")
-);
+const LoginPage = lazy(() => import('../features/auth/pages/Login/LoginPage'));
 
-const UserRegisterPage = lazy(
-  () => import("../features/auth/pages/Register/UserRegisterPage")
-);
+const UserRegisterPage = lazy(() => import('../features/auth/pages/Register/UserRegisterPage'));
 
-const VerifyOtpPage = lazy(
-  () => import("../features/auth/pages/VerifyOtp/VerifyOtpPage")
-);
+const VerifyOtpPage = lazy(() => import('../features/auth/pages/VerifyOtp/VerifyOtpPage'));
 
-const HomePage = lazy(
-  () => import("../features/auth/pages/Home/HomePage")
-);
+const HomePage = lazy(() => import('../features/auth/pages/Home/HomePage'));
 
-const GatewayPage = lazy(
-  () => import("../features/onboarding/RegisterSelectionPage")
-);
+const GatewayPage = lazy(() => import('../features/onboarding/RegisterSelectionPage'));
 
-const AdminLoginPage = lazy(
-  () => import("../features/admin/pages/Login/AdminLoginPage")
-);
+const AdminLoginPage = lazy(() => import('../features/admin/pages/Login/AdminLoginPage'));
 
 const HospitalRegisterPage = lazy(
-  () => import("../features/admin/pages/Register/AdminRegisterPage")
+  () => import('../features/admin/pages/Register/AdminRegisterPage'),
 );
 
 const CreateHospitalPage = lazy(
-  () => import("../features/admin/pages/CreateHospital/CreateHospitalPage")
+  () => import('../features/admin/pages/CreateHospital/CreateHospitalPage'),
 );
 
 const AdminDashboardPage = lazy(
-  () => import("../features/admin/pages/Dashboard/AdminDashboardPage")
+  () => import('../features/admin/pages/Dashboard/AdminDashboardPage'),
 );
 
-const DoctorPage = lazy(
-  () => import("../features/admin/pages/Doctor/DoctorsPage")
-);
+const DoctorPage = lazy(() => import('../features/admin/pages/Doctor/DoctorsPage'));
 
-const NotFoundPage = lazy(
-  () => import("../shared/pages/NotFoundPage")
-);
+const NotFoundPage = lazy(() => import('../shared/pages/NotFoundPage'));
 
 // Route Components
-import HospitalOnboardingRoute from "./HospitalOnboardingRoute";
-import AdminOnboardingRoute from "./AdminOnboardingRoute";
-import AdminRoute from "./AdminProtectedRoute";
-import AdminPublicRoute from "./AdminPublicRoute";
-import AdminLayoutWrapper from "./AdminLayoutWrapper";
-import PublicRoute from "./PublicRoute";
-import ProtectedRoute from "./ProtectedRoute";
-import AdminRedirect from "./AdminRedirect";
+import HospitalOnboardingRoute from './HospitalOnboardingRoute';
+import AdminOnboardingRoute from './AdminOnboardingRoute';
+import AdminRoute from './AdminProtectedRoute';
+import AdminPublicRoute from './AdminPublicRoute';
+import AdminLayoutWrapper from './AdminLayoutWrapper';
+import PublicRoute from './PublicRoute';
+import ProtectedRoute from './ProtectedRoute';
+import AdminRedirect from './AdminRedirect';
+import ComingSoon from '../shared/components/ComingSoon/ComingSoon';
 
 export default function AppRoutes() {
   return (
@@ -129,10 +114,7 @@ export default function AppRoutes() {
           />
 
           {/* Admin Redirect */}
-          <Route
-            path="/admin"
-            element={<AdminRedirect />}
-          />
+          <Route path="/admin" element={<AdminRedirect />} />
 
           {/* Hospital Creation */}
           <Route
@@ -156,28 +138,109 @@ export default function AppRoutes() {
               </AdminRoute>
             }
           >
+            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+
+            <Route path="/admin/doctors" element={<DoctorPage />} />
+
             <Route
-              path="/admin/dashboard"
-              element={<AdminDashboardPage />}
+              path="/admin/departments"
+              element={
+                <ComingSoon
+                  title="Departments"
+                  description="Hospital Departments features are coming soon."
+                  backTo="/admin/dashboard"
+                  backLabel="Back to Dashboard"
+                />
+              }
             />
 
-                 <Route
-            path="/admin/doctors"
-            element={<DoctorPage/>}
+            <Route
+              path="/admin/appointments"
+              element={
+                <ComingSoon
+                  title="appointments"
+                  description="Hospital appointments features are coming soon."
+                  backTo="/admin/dashboard"
+                  backLabel="Back to Dashboard"
+                />
+              }
             />
-            
+
+            <Route
+              path="/admin/patients"
+              element={
+                <ComingSoon
+                  title="patients"
+                  description="Hospital patients features are coming soon."
+                  backTo="/admin/dashboard"
+                  backLabel="Back to Dashboard"
+                />
+              }
+            />
+
+            <Route
+              path="/admin/appointments"
+              element={
+                <ComingSoon
+                  title="appointments"
+                  description="Hospital appointments features are coming soon."
+                  backTo="/admin/dashboard"
+                  backLabel="Back to Dashboard"
+                />
+              }
+            />
+
+            <Route
+              path="/admin/reviews"
+              element={
+                <ComingSoon
+                  title="reviews"
+                  description="Hospital reviews features are coming soon."
+                  backTo="/admin/dashboard"
+                  backLabel="Back to Dashboard"
+                />
+              }
+            />
+
+            <Route
+              path="/admin/queue"
+              element={
+                <ComingSoon
+                  title="queue"
+                  description="Hospital queue features are coming soon."
+                  backTo="/admin/dashboard"
+                  backLabel="Back to Dashboard"
+                />
+              }
+            />
+
+            <Route
+              path="/admin/analytics"
+              element={
+                <ComingSoon
+                  title="analytics"
+                  description="Hospital analytics features are coming soon."
+                  backTo="/admin/dashboard"
+                  backLabel="Back to Dashboard"
+                />
+              }
+            />
+
+            <Route
+              path="/admin/settings"
+              element={
+                <ComingSoon
+                  title="settings"
+                  description="Hospital settings features are coming soon."
+                  backTo="/admin/dashboard"
+                  backLabel="Back to Dashboard"
+                />
+              }
+            />
           </Route>
 
-       
-
-
           {/* 404 */}
-          <Route
-            path="*"
-            element={<NotFoundPage />}
-          />
-
-     
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

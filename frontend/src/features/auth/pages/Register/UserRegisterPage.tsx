@@ -1,30 +1,26 @@
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Link, useNavigate } from 'react-router-dom';
+import { Turnstile } from 'react-turnstile';
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "react-router-dom";
-import { Turnstile } from "react-turnstile";
+import Button from '../../../../shared/components/Button/Button';
+import Input from '../../../../shared/components/Input/Input';
+import { getErrorMessage } from '../../../../shared/utils/getErrorMessage';
 
-import Button from "../../../../shared/components/Button/Button";
-import Input from "../../../../shared/components/Input/Input";
-import { getErrorMessage } from "../../../../shared/utils/getErrorMessage";
+import AuthBrandHeader from '../../components/AuthBrandHeader';
+import AuthDivider from '../../components/AuthDivider';
+import AuthErrorBanner from '../../components/AuthErrorBanner';
+import SocialLoginButtons from '../../components/SocialLoginButtons';
 
-import AuthBrandHeader from "../../components/AuthBrandHeader";
-import AuthDivider from "../../components/AuthDivider";
-import AuthErrorBanner from "../../components/AuthErrorBanner";
-import SocialLoginButtons from "../../components/SocialLoginButtons";
+import { registerUser } from '../../services/auth.service';
+import { registerSchema, type RegisterFormData } from '../../validators/register.schema';
 
-import { registerUser } from "../../services/auth.service";
-import {
-  registerSchema,
-  type RegisterFormData,
-} from "../../validators/register.schema";
-
-import "./userRegister.css";
+import './userRegister.css';
 
 export default function UserRegisterPage() {
-  const [turnstileToken, setTurnstileToken] = useState("");
-  const [authError, setAuthError] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const [authError, setAuthError] = useState('');
 
   const navigate = useNavigate();
 
@@ -38,18 +34,18 @@ export default function UserRegisterPage() {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      setAuthError("");
+      setAuthError('');
 
       const response = await registerUser({
         ...data,
-        role: "USER",
+        role: 'USER',
         turnstileToken,
       });
 
-      navigate("/verify-otp", {
+      navigate('/verify-otp', {
         state: {
           email: data.email,
-          otpExpireIn:response.data.otpExpireIn
+          otpExpireIn: response.data.otpExpireIn,
         },
       });
     } catch (error) {
@@ -60,25 +56,21 @@ export default function UserRegisterPage() {
   return (
     <div className="register-container">
       <div className="register-card">
-
         <AuthBrandHeader
           title="Create Account"
           description="Sign up to get started with MediFind"
         />
 
-        {authError && (
-          <AuthErrorBanner message={authError} />
-        )}
+        {authError && <AuthErrorBanner message={authError} />}
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
-
           <Input
             id="name"
             label="Full Name"
             type="text"
             placeholder="John Doe"
             error={errors.name?.message}
-            {...register("name")}
+            {...register('name')}
           />
 
           <Input
@@ -88,7 +80,7 @@ export default function UserRegisterPage() {
             placeholder="you@example.com"
             autoComplete="email"
             error={errors.email?.message}
-            {...register("email")}
+            {...register('email')}
           />
 
           <Input
@@ -98,7 +90,7 @@ export default function UserRegisterPage() {
             placeholder="••••••••"
             autoComplete="new-password"
             error={errors.password?.message}
-            {...register("password")}
+            {...register('password')}
           />
 
           <Input
@@ -108,7 +100,7 @@ export default function UserRegisterPage() {
             placeholder="••••••••"
             autoComplete="new-password"
             error={errors.confirmPassword?.message}
-            {...register("confirmPassword")}
+            {...register('confirmPassword')}
           />
 
           <Turnstile
@@ -118,13 +110,9 @@ export default function UserRegisterPage() {
             }}
           />
 
-          <Button
-            type="submit"
-            className="submit-btn"
-          >
+          <Button type="submit" className="submit-btn">
             Create Account
           </Button>
-
         </form>
 
         <AuthDivider />
@@ -132,14 +120,9 @@ export default function UserRegisterPage() {
         <SocialLoginButtons />
 
         <p className="footer-text">
-          Already have an account?{" "}
-          <Link to="/login">
-            Login
-          </Link>
+          Already have an account? <Link to="/login">Login</Link>
         </p>
-
       </div>
     </div>
   );
 }
-

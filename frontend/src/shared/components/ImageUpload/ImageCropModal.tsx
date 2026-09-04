@@ -1,6 +1,6 @@
-import { useState } from "react";
-import Cropper from "react-easy-crop";
-import getCroppedImg from  './cropImage'
+import { useState } from 'react';
+import Cropper from 'react-easy-crop';
+import getCroppedImg from './cropImage';
 
 interface Props {
   imageSrc: string;
@@ -8,11 +8,7 @@ interface Props {
   onCropDone: (file: File) => void;
 }
 
-export default function ImageCropModal({
-  imageSrc,
-  onClose,
-  onCropDone,
-}: Props) {
+export default function ImageCropModal({ imageSrc, onClose, onCropDone }: Props) {
   const [crop, setCrop] = useState({
     x: 0,
     y: 0,
@@ -20,22 +16,14 @@ export default function ImageCropModal({
 
   const [zoom, setZoom] = useState(1);
 
-  const [croppedAreaPixels, setCroppedAreaPixels] =
-    useState<any>(null);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
 
-  const onCropComplete = (
-    _: any,
-    croppedPixels: any
-  ) => {
+  const onCropComplete = (_: any, croppedPixels: any) => {
     setCroppedAreaPixels(croppedPixels);
   };
 
   const handleSave = async () => {
-    const croppedFile =
-      await getCroppedImg(
-        imageSrc,
-        croppedAreaPixels
-      );
+    const croppedFile = await getCroppedImg(imageSrc, croppedAreaPixels);
 
     onCropDone(croppedFile);
   };
@@ -55,13 +43,9 @@ export default function ImageCropModal({
       </div>
 
       <div className="crop-actions">
-        <button onClick={onClose}>
-          Cancel
-        </button>
+        <button onClick={onClose}>Cancel</button>
 
-        <button onClick={handleSave}>
-          Save Crop
-        </button>
+        <button onClick={handleSave}>Save Crop</button>
       </div>
     </div>
   );

@@ -1,13 +1,11 @@
-import {Doctor} from "../entities/Doctor";
-import {CreateDoctorDTO} from "../../application/dtos/CreateDoctorDTO";
-import { DoctorListItemDTO } from "../../application/dtos/DotctorListItemDTO";
-import { GetDoctorsDTO } from "../../application/dtos/GetDoctorsDTO";
+import { Doctor } from '../entities/Doctor';
+import { CreateDoctorDTO } from '../../application/dtos/CreateDoctorDTO';
+import { DoctorListItemDTO } from '../../application/dtos/DotctorListItemDTO';
+import { GetDoctorsDTO } from '../../application/dtos/GetDoctorsDTO';
 export interface IDoctorRepository {
-    create(data:CreateDoctorDTO &{hospitalId:string;}):Promise<Doctor>;
+  create(data: CreateDoctorDTO & { hospitalId: string }): Promise<Doctor>;
 
-    existsByEmail(email:string):Promise<boolean>;
+  existsByEmail(email: string): Promise<boolean>;
 
-    findByHospitalId(hospitalId:string,filters:GetDoctorsDTO):Promise<DoctorListItemDTO[]>;
-
-
+  findByHospitalId(hospitalId: string, filters: GetDoctorsDTO): Promise<DoctorListItemDTO[]>;
 }

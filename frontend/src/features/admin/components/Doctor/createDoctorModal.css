@@ -5,14 +5,15 @@
   --mdl-text-title: #0f172a;
   --mdl-text-body: #475569;
   --mdl-text-muted: #94a3b8;
-  
+
   --mdl-brand-primary: #0f172a;
   --mdl-color-accent: #06b6d4; /* MediFind Cyan Accent */
   --mdl-color-accent-glow: rgba(6, 182, 212, 0.08);
-  
+
   --mdl-radius-main: 16px;
   --mdl-radius-inner: 8px;
-  --mdl-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px #e2e8f0;
+  --mdl-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px #e2e8f0;
   --mdl-transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -119,7 +120,9 @@
   color: var(--mdl-text-title);
   outline: none;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  transition: border-color var(--mdl-transition), box-shadow var(--mdl-transition);
+  transition:
+    border-color var(--mdl-transition),
+    box-shadow var(--mdl-transition);
   box-sizing: border-box;
 }
 
@@ -145,7 +148,7 @@
 }
 
 /* Customized File Upload Area */
-.modal-input-wrapper input[type="file"] {
+.modal-input-wrapper input[type='file'] {
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
   color: var(--mdl-text-body);
@@ -182,7 +185,7 @@
   user-select: none;
 }
 
-.radio-pill-label input[type="radio"] {
+.radio-pill-label input[type='radio'] {
   accent-color: var(--mdl-color-accent);
   margin: 0;
   width: 16px;
@@ -239,8 +242,14 @@
 }
 
 @keyframes mdlSlideUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsiveness handling for phone layouts */
@@ -255,7 +264,8 @@
   .modal-scroll-form {
     padding: 1.25rem;
   }
-  .modal-header, .modal-actions-dock {
+  .modal-header,
+  .modal-actions-dock {
     padding: 1rem 1.25rem;
   }
 }

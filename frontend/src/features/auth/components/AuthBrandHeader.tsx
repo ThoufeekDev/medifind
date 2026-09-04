@@ -5,14 +5,10 @@ interface AuthBrandHeaderProps {
   description: string;
 }
 
-export default function AuthBrandHeader({
-  title,
-  description,
-}: AuthBrandHeaderProps) {
+export default function AuthBrandHeader({ title, description }: AuthBrandHeaderProps) {
   return (
     <header className="brand-header">
-      <div className="brand-logo" aria-hidden="true">
-        {/* SVG */}
+      <div aria-hidden="true">
         MediFind
       </div>
 

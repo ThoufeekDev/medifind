@@ -1,197 +1,301 @@
 :root {
-  /* Design Tokens (Matching Standard User Auth System) */
-  --auth-bg-main: #f8fafc;
-  --auth-bg-surface: #ffffff;
-  --auth-text-primary: #0f172a;
-  --auth-text-secondary: #475569;
-  --auth-text-muted: #94a3b8;
-  
-  --auth-color-brand: #0f172a;
-  --auth-color-brand-hover: #1e293b;
-  --auth-color-accent: #06b6d4; /* MediFind Patient Cyan Accent */
-  --auth-color-accent-glare: rgba(6, 182, 212, 0.1);
-  
-  --auth-status-error: #dc2626;
-  --auth-status-error-bg: #fef2f2;
-  --auth-status-error-border: #fca5a5;
-  
-  --auth-radius-main: 12px;
-  --auth-radius-inner: 8px;
-  
-  --auth-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --auth-shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
-  
-  --auth-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --admin-bg: #f5f6f8;
+  --admin-surface: #ffffff;
+  --admin-text: #111827;
+  --admin-text-secondary: #6b7280;
+  --admin-border: #e5e7eb;
+  --admin-border-focus: #9ca3af;
+  --admin-danger: #dc2626;
+  --admin-danger-bg: #fef2f2;
+  --admin-danger-border: #fecaca;
+  --admin-radius: 10px;
 }
 
-/* Base Wrapper Grid */
+
+/* Page */
+
 .admin-login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
-  background-color: var(--auth-bg-main);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  padding: 1.5rem;
-  box-sizing: border-box;
-}
+  min-height: 100dvh;
 
-/* Central Card Structure */
-.admin-login-card {
-  background: var(--auth-bg-surface);
-  padding: 3.5rem 3rem;
-  border-radius: var(--auth-radius-main);
-  border: 1px solid #e2e8f0;
-  box-shadow: var(--auth-shadow-card);
-  width: 100%;
-  max-width: 460px;
-  box-sizing: border-box;
-}
-
-/* Header Context Group */
-.brand-header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-}
-
-.brand-logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--auth-text-primary);
-  margin-bottom: 1rem;
+
+  padding: 24px;
+  box-sizing: border-box;
+
+  background: var(--admin-bg);
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
-.brand-logo svg {
-  color: var(--auth-color-accent);
+
+/* Card */
+
+.admin-login-card {
+  width: 100%;
+  max-width: 400px;
+
+  padding: 40px;
+
+  box-sizing: border-box;
+
+  background: var(--admin-surface);
+
+  border: 1px solid var(--admin-border);
+  border-radius: 14px;
+
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
-.brand-header h2 {
-  font-size: 1.875rem;
+
+/* Header */
+
+.admin-login-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.admin-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-bottom: 24px;
+
+  color: var(--admin-text);
+
+  font-size: 18px;
   font-weight: 700;
-  color: var(--auth-text-primary);
-  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.admin-brand-mark {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 7px;
+
+  background: var(--admin-text);
+  color: #ffffff;
+}
+
+.admin-brand-mark svg {
+  width: 17px;
+  height: 17px;
+}
+
+.admin-login-header h1 {
+  margin: 0;
+
+  color: var(--admin-text);
+
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.25;
+
   letter-spacing: -0.025em;
 }
 
-.brand-header p {
-  color: var(--auth-text-secondary);
-  font-size: 0.875rem;
+
+/* Error */
+
+.admin-login-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+
+  margin-bottom: 22px;
+  padding: 11px 13px;
+
+  border: 1px solid var(--admin-danger-border);
+  border-radius: 8px;
+
+  background: var(--admin-danger-bg);
+  color: var(--admin-danger);
+
+  font-size: 13px;
   line-height: 1.5;
-  margin: 0;
 }
 
-/* Standardized Form Alerts */
-.alert-error {
-  background-color: var(--auth-status-error-bg);
-  border: 1px solid var(--auth-status-error-border);
-  color: var(--auth-status-error);
-  padding: 0.875rem 1rem;
-  border-radius: var(--auth-radius-inner);
-  font-size: 0.875rem;
-  margin-bottom: 1.75rem;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  font-weight: 500;
+.admin-login-error svg {
+  width: 17px;
+  height: 17px;
+
+  flex-shrink: 0;
+
+  margin-top: 1px;
 }
 
-/* Inputs & Form Layouts */
-.form-group {
-  margin-bottom: 1.5rem;
-  text-align: left;
+
+/* Form */
+
+.admin-form-group {
+  margin-bottom: 20px;
 }
 
-.form-group label {
+.admin-form-group label {
   display: block;
-  font-size: 0.813rem;
+
+  margin-bottom: 7px;
+
+  color: #374151;
+
+  font-size: 13px;
   font-weight: 600;
-  color: var(--auth-text-secondary);
-  margin-bottom: 0.5rem;
 }
 
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
 
-.input-wrapper input {
+/* Inputs */
+
+.admin-form-group input {
   width: 100%;
-  padding: 0.875rem 1rem;
-  font-size: 0.95rem;
-  line-height: 1.25rem;
-  background: var(--auth-bg-surface);
-  border: 1px solid #cbd5e1;
-  border-radius: var(--auth-radius-inner);
-  color: var(--auth-text-primary);
-  outline: none;
-  box-shadow: var(--auth-shadow-sm);
-  transition: border-color var(--auth-transition-fast), box-shadow var(--auth-transition-fast);
+
+  min-height: 44px;
+
+  padding: 10px 12px;
+
   box-sizing: border-box;
+
+  border: 1px solid #d1d5db;
+  border-radius: var(--admin-radius);
+
+  background: #ffffff;
+  color: var(--admin-text);
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
 }
 
-.input-wrapper input::placeholder {
-  color: var(--auth-text-muted);
+.admin-form-group input::placeholder {
+  color: #9ca3af;
 }
 
-.input-wrapper input:focus {
-  border-color: var(--auth-color-accent);
-  box-shadow: 0 0 0 4px var(--auth-color-accent-glare);
+.admin-form-group input:hover {
+  border-color: #9ca3af;
 }
 
-.error-message {
-  color: var(--auth-status-error);
-  font-size: 0.75rem;
-  font-weight: 500;
-  margin: 0.45rem 0 0 0;
+.admin-form-group input:focus {
+  border-color: var(--admin-border-focus);
+
+  box-shadow:
+    0 0 0 3px rgba(17, 24, 39, 0.08);
 }
 
-/* Core Form Commit Button */
-.submit-btn {
+.admin-form-group input[aria-invalid="true"] {
+  border-color: var(--admin-danger);
+}
+
+.admin-form-group input[aria-invalid="true"]:focus {
+  box-shadow:
+    0 0 0 3px rgba(220, 38, 38, 0.08);
+}
+
+
+/* Field Error */
+
+.admin-field-error {
+  margin: 6px 0 0;
+
+  color: var(--admin-danger);
+
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+
+/* Login Button */
+
+.admin-login-button {
   width: 100%;
-  background: var(--auth-color-brand);
-  color: var(--auth-bg-surface);
-  border: 1px solid transparent;
-  padding: 0.875rem;
-  border-radius: var(--auth-radius-inner);
-  font-size: 0.95rem;
+
+  min-height: 44px;
+
+  margin-top: 4px;
+
+  border: 1px solid #111827;
+  border-radius: var(--admin-radius);
+
+  background: #111827;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
   font-weight: 600;
+
   cursor: pointer;
-  box-shadow: var(--auth-shadow-sm);
-  transition: background-color var(--auth-transition-fast);
+
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 100ms ease;
 }
 
-.submit-btn:hover {
-  background: var(--auth-color-brand-hover);
+.admin-login-button:hover:not(:disabled) {
+  background: #1f2937;
+  border-color: #1f2937;
 }
 
-.submit-btn:focus-visible {
-  outline: 2px solid var(--auth-color-accent);
-  outline-offset: 2px;
+.admin-login-button:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
-/* Fluid Responsive Breakpoints */
-@media (max-width: 640px) {
-  .admin-login-card {
-    padding: 2.5rem 2rem;
-  }
+.admin-login-button:focus-visible {
+  outline: 2px solid #111827;
+  outline-offset: 3px;
 }
+
+.admin-login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* Responsive */
 
 @media (max-width: 480px) {
   .admin-login-container {
-    background: var(--auth-bg-surface);
     align-items: flex-start;
-    padding-top: 3rem;
+
+    padding: 32px 20px;
+
+    background: #ffffff;
   }
-  
+
   .admin-login-card {
+    max-width: 100%;
+
+    padding: 20px 0;
+
     border: none;
     box-shadow: none;
-    padding: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .admin-login-container {
+    padding: 24px 16px;
+  }
+
+  .admin-login-header h1 {
+    font-size: 24px;
   }
 }

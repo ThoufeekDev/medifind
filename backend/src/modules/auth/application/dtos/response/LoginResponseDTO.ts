@@ -1,5 +1,5 @@
-import { UserResponseDTO } from "./UserResponseDTO";
+import { UserResponseDTO } from './UserResponseDTO';
 
 export interface LoginResponseDTO {
-    user: UserResponseDTO;
+  user: UserResponseDTO;
 }

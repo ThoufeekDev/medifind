@@ -1,28 +1,27 @@
 export interface CreateHospitalDTO {
+  name: string;
 
-  name:string;
+  email: string;
 
-  email:string;
+  phone: string;
 
-  phone:string;
+  address: string;
 
-  address:string;
+  city: string;
 
-  city:string;
+  state: string;
 
-  state:string;
+  country: string;
 
-  country:string;
+  zipcode: string;
 
-  zipcode:string;
+  imageUrl: string;
 
-  imageUrl:string;
+  latitude: number;
 
-  latitude:number;
+  longitude: number;
 
-  longitude:number;
+  licenseNumber: string;
 
-  licenseNumber:string;
-
-  description:string;
+  description: string;
 }

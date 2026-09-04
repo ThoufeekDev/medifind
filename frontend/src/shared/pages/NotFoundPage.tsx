@@ -1,6 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./NotFoundPage.css";
+import { Link } from 'react-router-dom';
+import './NotFoundPage.css';
 
 export default function NotFoundPage() {
   return (
@@ -32,8 +31,8 @@ export default function NotFoundPage() {
           <h2 className="heading">Page Not Found</h2>
 
           <p className="subtext">
-            Sorry, we couldn't find the page you're looking for.
-            The page may have been moved, deleted, or the URL may be incorrect.
+            Sorry, we couldn't find the page you're looking for. The page may have been moved,
+            deleted, or the URL may be incorrect.
           </p>
         </div>
 
@@ -43,11 +42,7 @@ export default function NotFoundPage() {
             Return to Home
           </Link>
 
-          <button
-            type="button"
-            onClick={() => window.history.back()}
-            className="btn-secondary"
-          >
+          <button type="button" onClick={() => window.history.back()} className="btn-secondary">
             Go Back
           </button>
         </div>
@@ -55,9 +50,7 @@ export default function NotFoundPage() {
 
       {/* Footer */}
       <footer className="error-footer">
-        <p>
-          &copy; {new Date().getFullYear()} MediFind. All rights reserved.
-        </p>
+        <p>&copy; {new Date().getFullYear()} MediFind. All rights reserved.</p>
       </footer>
     </main>
   );

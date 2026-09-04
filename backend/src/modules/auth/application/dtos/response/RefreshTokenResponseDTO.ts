@@ -1,3 +1,3 @@
 export interface RefreshTokenResponseDTO {
-    accessToken: string;
+  accessToken: string;
 }

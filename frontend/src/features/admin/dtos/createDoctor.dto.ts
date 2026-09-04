@@ -4,9 +4,9 @@ export interface CreateDoctorDTO {
   phone: string;
   qualification: string;
   experience: number;
-  gender:"MALE" | "FEMALE";
+  gender: 'MALE' | 'FEMALE';
   consultationFee: number;
-  image?:File;
+  image?: File;
   specializationId: string;
   bio?: string;
 }

@@ -1,73 +1,63 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useHospitalStore } from "../../store/hospital.store";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useHospitalStore } from '../../store/hospital.store';
 
-import ImageUpload from "../../../../shared/components/ImageUpload/ImageUpload";
+import ImageUpload from '../../../../shared/components/ImageUpload/ImageUpload';
 
-
-import "./createHospitalPage.css"
+import './createHospitalPage.css';
 
 import {
   createHospitalSchema,
-  type CreateHospitalFormData
-} from "../../validators/createHospital.Schema";
+  type CreateHospitalFormData,
+} from '../../validators/createHospital.schema';
 
 export default function CreateHospitalPage() {
   const navigate = useNavigate();
-  const [serverError, setServerError] = useState("");
-  const createHospitalAction = useHospitalStore(state => state.createHospitalAction);
-  const loading = useHospitalStore(state => state.loading);
-  
-  const [hospitalImage,setHospitalImage] = useState<File | null>(null);
+  const [serverError, setServerError] = useState('');
+  const createHospitalAction = useHospitalStore((state) => state.createHospitalAction);
+  const loading = useHospitalStore((state) => state.loading);
+
+  const [hospitalImage, setHospitalImage] = useState<File | null>(null);
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm<CreateHospitalFormData>({
-    resolver: zodResolver(createHospitalSchema)
+    resolver: zodResolver(createHospitalSchema),
   });
 
   const onSubmit = async (data: CreateHospitalFormData) => {
     try {
-      setServerError("");
-   const formData = new FormData();
+      setServerError('');
+      const formData = new FormData();
 
-Object.entries(data).forEach(
-  ([key, value]) => {
-    formData.append(
-      key,
-      String(value)
-    );
-  }
-);
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, String(value));
+      });
 
-console.log("hosptial image",hospitalImage)
+      console.log('hosptial image', hospitalImage);
 
-if (hospitalImage) {
-  formData.append(
-    "image",
-    hospitalImage
-  );
-}
+      if (hospitalImage) {
+        formData.append('image', hospitalImage);
+      }
 
-console.log('teigger 1',formData)
+      console.log('teigger 1', formData);
 
-const res = await createHospitalAction(formData);
-console.log('trigger 2')
-console.log('res',res)
-      navigate("/admin/dashboard");
+      const res = await createHospitalAction(formData);
+      console.log('trigger 2');
+      console.log('res', res);
+      navigate('/admin/dashboard');
     } catch (error) {
       console.error(error);
-      setServerError("An unexpected gateway exception occurred during profile creation.");
+      setServerError('An unexpected gateway exception occurred during profile creation.');
     }
   };
 
   return (
     <div className="create-hospital-container">
       <main className="create-hospital-card">
-        
         {/* Identity Context Headers */}
         <header className="hospital-header">
           <h1>Create Hospital</h1>
@@ -77,7 +67,15 @@ console.log('res',res)
         {/* Action Failure Warnings */}
         {serverError && (
           <div className="server-error" role="alert">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              aria-hidden="true"
+            >
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
@@ -88,7 +86,6 @@ console.log('res',res)
 
         {/* Dynamic Data Gathering Matrix */}
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
-
           {/* HOSPITAL NAME */}
           <div className="form-group">
             <label htmlFor="hosp-name">Hospital Name</label>
@@ -96,8 +93,8 @@ console.log('res',res)
               id="hosp-name"
               type="text"
               placeholder="Aster Medcity"
-              aria-invalid={errors.name ? "true" : "false"}
-              {...register("name")}
+              aria-invalid={errors.name ? 'true' : 'false'}
+              {...register('name')}
             />
             {errors.name && <p className="error-message">{errors.name.message}</p>}
           </div>
@@ -110,8 +107,8 @@ console.log('res',res)
                 id="hosp-email"
                 type="email"
                 placeholder="hospital@gmail.com"
-                aria-invalid={errors.email ? "true" : "false"}
-                {...register("email")}
+                aria-invalid={errors.email ? 'true' : 'false'}
+                {...register('email')}
               />
               {errors.email && <p className="error-message">{errors.email.message}</p>}
             </div>
@@ -122,8 +119,8 @@ console.log('res',res)
                 id="hosp-phone"
                 type="tel"
                 placeholder="+91 9876543210"
-                aria-invalid={errors.phone ? "true" : "false"}
-                {...register("phone")}
+                aria-invalid={errors.phone ? 'true' : 'false'}
+                {...register('phone')}
               />
               {errors.phone && <p className="error-message">{errors.phone.message}</p>}
             </div>
@@ -136,8 +133,8 @@ console.log('res',res)
               id="hosp-address"
               type="text"
               placeholder="123 Healthcare Boulevard, Suite 40"
-              aria-invalid={errors.address ? "true" : "false"}
-              {...register("address")}
+              aria-invalid={errors.address ? 'true' : 'false'}
+              {...register('address')}
             />
             {errors.address && <p className="error-message">{errors.address.message}</p>}
           </div>
@@ -150,8 +147,8 @@ console.log('res',res)
                 id="hosp-city"
                 type="text"
                 placeholder="Kochi"
-                aria-invalid={errors.city ? "true" : "false"}
-                {...register("city")}
+                aria-invalid={errors.city ? 'true' : 'false'}
+                {...register('city')}
               />
               {errors.city && <p className="error-message">{errors.city.message}</p>}
             </div>
@@ -162,8 +159,8 @@ console.log('res',res)
                 id="hosp-state"
                 type="text"
                 placeholder="Kerala"
-                aria-invalid={errors.state ? "true" : "false"}
-                {...register("state")}
+                aria-invalid={errors.state ? 'true' : 'false'}
+                {...register('state')}
               />
               {errors.state && <p className="error-message">{errors.state.message}</p>}
             </div>
@@ -177,8 +174,8 @@ console.log('res',res)
                 id="hosp-country"
                 type="text"
                 placeholder="India"
-                aria-invalid={errors.country ? "true" : "false"}
-                {...register("country")}
+                aria-invalid={errors.country ? 'true' : 'false'}
+                {...register('country')}
               />
               {errors.country && <p className="error-message">{errors.country.message}</p>}
             </div>
@@ -189,8 +186,8 @@ console.log('res',res)
                 id="hosp-zipcode"
                 type="text"
                 placeholder="682027"
-                aria-invalid={errors.zipcode ? "true" : "false"}
-                {...register("zipcode")}
+                aria-invalid={errors.zipcode ? 'true' : 'false'}
+                {...register('zipcode')}
               />
               {errors.zipcode && <p className="error-message">{errors.zipcode.message}</p>}
             </div>
@@ -205,8 +202,8 @@ console.log('res',res)
                 type="number"
                 step="any"
                 placeholder="10.0261"
-                aria-invalid={errors.latitude ? "true" : "false"}
-                {...register("latitude", { valueAsNumber: true })}
+                aria-invalid={errors.latitude ? 'true' : 'false'}
+                {...register('latitude', { valueAsNumber: true })}
               />
               {errors.latitude && <p className="error-message">{errors.latitude.message}</p>}
             </div>
@@ -218,8 +215,8 @@ console.log('res',res)
                 type="number"
                 step="any"
                 placeholder="76.3096"
-                aria-invalid={errors.longitude ? "true" : "false"}
-                {...register("longitude", { valueAsNumber: true })}
+                aria-invalid={errors.longitude ? 'true' : 'false'}
+                {...register('longitude', { valueAsNumber: true })}
               />
               {errors.longitude && <p className="error-message">{errors.longitude.message}</p>}
             </div>
@@ -232,10 +229,12 @@ console.log('res',res)
               id="hosp-license"
               type="text"
               placeholder="MCI-HOSP-2026-X"
-              aria-invalid={errors.licenseNumber ? "true" : "false"}
-              {...register("licenseNumber")}
+              aria-invalid={errors.licenseNumber ? 'true' : 'false'}
+              {...register('licenseNumber')}
             />
-            {errors.licenseNumber && <p className="error-message">{errors.licenseNumber.message}</p>}
+            {errors.licenseNumber && (
+              <p className="error-message">{errors.licenseNumber.message}</p>
+            )}
           </div>
 
           {/* PROFILE SUMMARY EXTENSION */}
@@ -245,29 +244,21 @@ console.log('res',res)
               id="hosp-description"
               rows={5}
               placeholder="Outline specialized medical departments, clinical facilities, emergency trauma care capabilities, and overall corporate history..."
-              aria-invalid={errors.description ? "true" : "false"}
-              {...register("description")}
+              aria-invalid={errors.description ? 'true' : 'false'}
+              {...register('description')}
             />
             {errors.description && <p className="error-message">{errors.description.message}</p>}
           </div>
 
-            {/* HOSPITAL IMAGE */}
-  <div className="form-group">
-    <ImageUpload
-      label="Hospital Image"
-      onImageSelect={setHospitalImage}
-    />
-  </div>
+          {/* HOSPITAL IMAGE */}
+          <div className="form-group">
+            <ImageUpload label="Hospital Image" onImageSelect={setHospitalImage} />
+          </div>
 
           {/* ACTION SUBMISSION ENGINE PIN */}
-          <button
-            type="submit"
-            className="submit-btn"
-            disabled={loading}
-          >
-            {loading ? "Registering Workspace Assets..." : "Save Hospital Profile"}
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading ? 'Registering Workspace Assets...' : 'Save Hospital Profile'}
           </button>
-
         </form>
       </main>
     </div>

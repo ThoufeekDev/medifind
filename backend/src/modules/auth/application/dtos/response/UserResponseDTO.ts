@@ -1,6 +1,6 @@
 // import { Role } from "@prisma/client"
 
-import { Role } from "../../../../../shared/enums/Role";
+import { Role } from '../../../../../shared/enums/Role';
 // export class UserResponseDTO {
 //      constructor(
 //         public readonly id:string,
@@ -12,9 +12,9 @@ import { Role } from "../../../../../shared/enums/Role";
 // }
 
 export interface UserResponseDTO {
-    id: string;
-    name: string;
-    email: string;
-    role: Role;
-    isVerified: boolean;
+  id: string;
+  name: string;
+  email: string;
+  role: Role;
+  isVerified: boolean;
 }

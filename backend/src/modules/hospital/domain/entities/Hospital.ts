@@ -1,20 +1,19 @@
 export interface Hospital {
+  id: string;
 
-  id:string;
+  name: string;
 
-  name:string;
+  address: string;
 
-  address:string;
+  latitude: number;
 
-  latitude:number;
+  longitude: number;
 
-  longitude:number;
+  description: string;
 
-  description:string;
+  adminId: string;
 
-  adminId:string;
+  createdAt: Date;
 
-  createdAt:Date;
-
-  updatedAt:Date;
+  updatedAt: Date;
 }

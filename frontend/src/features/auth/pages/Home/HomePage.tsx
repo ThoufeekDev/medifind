@@ -1,12 +1,7 @@
 const HomePage = () => {
-
   return (
-
     <div>
-
-      <h1>
-        Welcome to MediFind
-      </h1>
+      <h1>Welcome to MediFind</h1>
 
       <input
         type="text"
@@ -16,7 +11,6 @@ const HomePage = () => {
           diseases...
         "
       />
-
     </div>
   );
 };

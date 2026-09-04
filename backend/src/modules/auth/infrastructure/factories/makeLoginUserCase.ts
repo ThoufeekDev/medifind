@@ -1,9 +1,8 @@
-
-import { LoginUserUseCase } from "../../application/use-cases/LoginUserUseCase";
+import { LoginUserUseCase } from '../../application/use-cases/LoginUserUseCase';
 import { PrismaUserRepository } from '../repositories/PrismaUserRepository';
 
 export function makeLoginUserCase() {
-      const userRepository = new PrismaUserRepository();
-      
-      return new LoginUserUseCase(userRepository);
+  const userRepository = new PrismaUserRepository();
+
+  return new LoginUserUseCase(userRepository);
 }

@@ -1,10 +1,9 @@
-import { ISpecializationRepository } from "../../../../../../../domain/repositories/ISpecializationRepository";
-
+import { ISpecializationRepository } from '../../../../../../../domain/repositories/ISpecializationRepository';
 
 export class GetAllSpecialization {
-    constructor(private specializationRepository:ISpecializationRepository){}
+  constructor(private specializationRepository: ISpecializationRepository) {}
 
-    async execute(){
-        return this.specializationRepository.getAll();
-    }
+  async execute() {
+    return this.specializationRepository.getAll();
+  }
 }

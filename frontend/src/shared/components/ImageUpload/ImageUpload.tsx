@@ -1,29 +1,24 @@
-import { useState } from "react";
-import ImageCropModal from "./ImageCropModal";
-import './ImageUpload.css'
+import { useState } from 'react';
+import ImageCropModal from './ImageCropModal';
+import './ImageUpload.css';
 
 interface ImageUploadProps {
   label: string;
   onImageSelect: (file: File) => void;
 }
 
-export default function ImageUpload({
-  label,
-  onImageSelect,
-}: ImageUploadProps) {
-  const [imageSrc, setImageSrc] = useState("");
-  const [preview, setPreview] = useState("");
+export default function ImageUpload({ label, onImageSelect }: ImageUploadProps) {
+  const [imageSrc, setImageSrc] = useState('');
+  const [preview, setPreview] = useState('');
   const [isCropOpen, setIsCropOpen] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
-      alert("Image must be less than 5MB");
+      alert('Image must be less than 5MB');
       return;
     }
 
@@ -47,18 +42,11 @@ export default function ImageUpload({
     <div className="image-upload-wrapper">
       <label>{label}</label>
 
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleChange}
-      />
+      <input type="file" accept="image/*" onChange={handleChange} />
 
       {preview && (
         <div className="image-preview">
-          <img
-            src={preview}
-            alt="preview"
-          />
+          <img src={preview} alt="preview" />
         </div>
       )}
 

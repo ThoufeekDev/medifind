@@ -4,7 +4,7 @@
   align-items: center;
   min-height: 100vh;
   background-color: #f8fafc;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .register-card {
@@ -149,11 +149,11 @@
 }
 
 .divider:not(:empty)::before {
-  margin-right: .5em;
+  margin-right: 0.5em;
 }
 
 .divider:not(:empty)::after {
-  margin-left: .5em;
+  margin-left: 0.5em;
 }
 
 .social-grid {
